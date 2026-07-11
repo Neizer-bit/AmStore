@@ -290,7 +290,7 @@ export const brand: Brand = {
   hero: {
     badge: "New in · Hand-dyed batik",
     eyebrow: "Hand-dyed. Ethically made.",
-    title: "Made with purpose. Worn with pride.",
+    title: "Bold prints, Easy fits.",
     subtitle:
       "Hand-dyed batik and adire, crafted into flowy maxi dresses, oversized boubou tops, and easy-to-wear rompers — proudly made in Ghana.",
     perk: "Free delivery within Accra on orders over GH₵300.",

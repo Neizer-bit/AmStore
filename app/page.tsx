@@ -16,12 +16,14 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-/**
- * Cinematic full-bleed hero shot. Only /hero/1.jpg is landscape (1528×1029);
- * the others are portrait studio shots that would crop to a thin band in a
- * wide banner, so the hero runs as a single image rather than a slider.
- */
-const HERO_IMAGE = "/hero/1.jpg";
+/** Hero slideshow: cross-fades with a slow Ken Burns drift; tap to advance. */
+const HERO_IMAGES = [
+  "/hero/1.jpg",
+  "/hero/2.jpg",
+  "/hero/3.jpg",
+  "/hero/4.jpg",
+  "/hero/5.jpg",
+];
 
 /** Lifestyle shots reused for the sale band and the #AmayaliStyle strip. */
 const PROMO_IMAGE = "/hero/2.jpg";
@@ -61,9 +63,9 @@ export default async function HomePage() {
             ? { label: brand.hero.secondaryCtaLabel, href: brand.hero.secondaryCtaHref }
             : undefined
         }
-        imageUrl={HERO_IMAGE}
+        imageUrl={HERO_IMAGES[0]}
         imageAlt="Amayali hand-dyed fashion"
-        announcement={brand.announceBar?.message}
+        images={HERO_IMAGES}
       />
 
       {/* Full-bleed category strip — the way into the marketplace. */}
