@@ -46,7 +46,6 @@ app/
   sitemap-page/page.tsx          HTML sitemap
   sitemap.ts, robots.ts          XML sitemap, robots.txt
   llms.txt/route.ts              LLM-friendly site index
-  opensearch.xml/route.ts        Browser search description
   error.tsx, not-found.tsx       Global boundaries
 ```
 
@@ -68,8 +67,8 @@ app/
 | `app/account/*/page.tsx` | `brand.account` (SDK account pages render the UI) |
 | `app/products/[slug]/page.tsx` | `brand.name`, `brand.currency` (Product JSON-LD: brand, offer, availability) |
 | `app/llms.txt/route.ts` | `brand.llms`, contact, currency |
-| `app/opensearch.xml/route.ts` | `brand.shortName`, `brand.name` |
 | `components/header.tsx` | `brand.shortName`, `brand.microTag`, `brand.header.nav` |
+| `components/header-search.tsx` | `brand.header.nav` (routes a typed term to its category page), `brand.header.searchPlaceholder` |
 | `components/footer.tsx` | `brand.footer`, `brand.contact`, `brand.socials` |
 | `components/promo-banner.tsx` | `brand.promo` (renders nothing if absent) |
 | `components/trade-in-cta.tsx` | `brand.tradeIn` (renders nothing if absent) |

@@ -34,7 +34,7 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
           aria-hidden={i !== 0}
           fill
           sizes="(min-width: 1024px) 50vw, 100vw"
-          className="object-cover transition-opacity duration-[1000ms] ease-in-out"
+          className="object-cover object-[50%_38%] transition-opacity duration-[1000ms] ease-in-out"
           style={{ opacity: i === active ? 1 : 0 }}
           priority={i === 0}
         />

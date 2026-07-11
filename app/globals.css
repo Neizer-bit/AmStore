@@ -77,3 +77,24 @@
     to { opacity: 1; }
   }
 }
+
+/* ── Product detail — add-to-cart row ───────────────────────────────
+   The SDK's ProductPage renders the Add-to-Cart button and quantity stepper
+   with no slot hooks, so we resize them via their stable data-attributes.
+   Element+attribute selectors outrank the SDK's utility classes (h-14, w-10…),
+   so no !important is needed. Goal: a slightly smaller CTA, a slightly larger
+   quantity stepper. */
+button[data-cimplify-customizer-submit="true"] {
+  height: 2.75rem;      /* was h-14 (3.5rem) */
+  font-size: 0.875rem;  /* was text-base */
+}
+button[data-cimplify-quantity-increment="true"],
+button[data-cimplify-quantity-decrement="true"] {
+  width: 2.75rem;       /* was w-10 (2.5rem) */
+  height: 2.75rem;
+  font-size: 1.125rem;  /* larger +/− glyphs */
+}
+input[data-cimplify-quantity-value="true"] {
+  width: 2.75rem;       /* was w-8 (2rem) — fits two digits */
+  font-size: 1.125rem;  /* larger quantity number */
+}

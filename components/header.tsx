@@ -21,8 +21,8 @@ function PersonIcon() {
 
 function HeartIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-      <path d="M12 20s-7-4.35-9.3-8.5C1.3 8.9 2.6 6 5.4 6c1.8 0 3 .9 3.6 2 .6-1.1 1.8-2 3.6-2 2.8 0 4.1 2.9 2.7 5.5C19 15.65 12 20 12 20z" strokeLinejoin="round" />
+    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
     </svg>
   );
 }

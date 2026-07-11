@@ -37,7 +37,9 @@ export function Providers({
       initialLocations={initialLocations}
       linkComponent={Link}
     >
-      <CartDrawerProvider>
+      {/* openOnAdd={false}: adding to cart updates the count silently; the
+          drawer only opens when the shopper clicks the cart icon. */}
+      <CartDrawerProvider openOnAdd={false}>
         {children}
         <AuthErrorToast />
       </CartDrawerProvider>

@@ -105,6 +105,8 @@ export interface Brand {
     title: string;
     /** Subtitle. May span multiple paragraphs by separating with \n\n. */
     subtitle: string;
+    /** Optional highlighted perk line (e.g. free-delivery threshold). */
+    perk?: string;
     primaryCtaLabel: string;
     secondaryCtaLabel?: string;
     secondaryCtaHref?: string;
@@ -259,7 +261,6 @@ export const brand: Brand = {
 
   header: {
     nav: [
-      { label: "Shop All", href: "/shop" },
       { label: "Dresses", href: "/categories/dresses" },
       { label: "Rompers", href: "/categories/rompers" },
       { label: "Skirts", href: "/categories/skirts" },
@@ -276,9 +277,10 @@ export const brand: Brand = {
 
   hero: {
     badge: "New in · Hand-dyed batik",
-    title: "Bold prints, easy fits.",
+    title: "Bold prints. Easy fits.",
     subtitle:
-      "Hand-dyed batik and adire, cut into flowy maxis, oversized boubou tops, and easy rompers — made in Accra. Free delivery in Accra on orders over GH₵500.",
+      "Hand-dyed batik and adire, crafted into flowy maxi dresses, oversized boubou tops, and easy-to-wear rompers — proudly made in Ghana.",
+    perk: "Free delivery within Accra on orders over GH₵300.",
     primaryCtaLabel: "Shop new in",
     secondaryCtaLabel: "Shop sale",
     secondaryCtaHref: "/collections/sale",
@@ -351,9 +353,9 @@ export const brand: Brand = {
   },
 
   newsletter: {
-    eyebrow: "The List",
-    title: "First dibs on every drop.",
-    body: "One email a week: new prints, restocked sizes, and subscriber-only deals. Sign up and take 10% off your first order.",
+    eyebrow: "First dibs · Exclusive perks",
+    title: "Be the first to know.",
+    body: "New prints, restocks and subscriber-only deals. Sign up and enjoy 10% off your first order.",
     placeholder: "you@email.com",
     submitLabel: "Sign me up",
     successLabel: "You're in ✓",
@@ -629,17 +631,6 @@ export const brand: Brand = {
       "Hand-dyed batik and adire fashion, made in Accra. Flowy maxis, boubou tops, and easy rompers. Free Accra delivery over GH₵500, 14-day exchanges, and made-to-measure on request.",
     sitemap: [
       {
-        title: "Shop",
-        links: [
-          { label: "Shop all", href: "/shop" },
-          { label: "Dresses", href: "/categories/dresses" },
-          { label: "Rompers", href: "/categories/rompers" },
-          { label: "Skirts", href: "/categories/skirts" },
-          { label: "Activewear", href: "/categories/activewear" },
-          { label: "Sale", href: "/collections/sale" },
-        ],
-      },
-      {
         title: "Support",
         links: [
           { label: "Contact", href: "/contact" },
@@ -647,23 +638,6 @@ export const brand: Brand = {
           { label: "Shipping", href: "/shipping" },
           { label: "Returns & guarantee", href: "/returns" },
           { label: "FAQ", href: "/faq" },
-        ],
-      },
-      {
-        title: "Account",
-        links: [
-          { label: "Sign in", href: "/login" },
-          { label: "Create account", href: "/signup" },
-          { label: "Your orders", href: "/account/orders" },
-        ],
-      },
-      {
-        title: "Company",
-        links: [
-          { label: "Our story", href: "/about" },
-          { label: "Terms of Service", href: "/terms" },
-          { label: "Privacy Policy", href: "/privacy" },
-          { label: "Accessibility", href: "/accessibility" },
         ],
       },
     ],

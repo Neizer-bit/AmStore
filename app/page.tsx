@@ -43,10 +43,9 @@ export default async function HomePage() {
   return (
     <>
       <FeatureHero
-        eyebrow="New in · hand-dyed batik"
-        badge="Made in Ghana"
         title={brand.hero.title}
         description={brand.hero.subtitle}
+        perk={brand.hero.perk}
         primaryCta={{ label: brand.hero.primaryCtaLabel, href: "#shop" }}
         secondaryCta={
           brand.hero.secondaryCtaLabel && brand.hero.secondaryCtaHref

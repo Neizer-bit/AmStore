@@ -46,7 +46,6 @@ const STATIC_LINKS: { title: string; links: { href: string; label: string }[] }[
     links: [
       { href: "/", label: "Home" },
       { href: "/shop", label: "Shop" },
-      { href: "/search", label: "Search" },
     ],
   },
   {
@@ -85,7 +84,6 @@ const STATIC_LINKS: { title: string; links: { href: string; label: string }[] }[
       { href: "/sitemap.xml", label: "sitemap.xml (search engines)" },
       { href: "/llms.txt", label: "llms.txt (LLM agents)" },
       { href: "/robots.txt", label: "robots.txt" },
-      { href: "/opensearch.xml", label: "opensearch.xml (browser search)" },
     ],
   },
 ];
