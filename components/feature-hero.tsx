@@ -27,11 +27,17 @@ function Headline({ title }: { title: React.ReactNode }) {
   return (
     <>
       {sentences.map((s, i) => (
-        <span
-          key={i}
-          className={`block ${i === sentences.length - 1 && sentences.length > 1 ? "text-[#a17c48]" : "text-foreground"}`}
-        >
-          {s}
+        // .hero-line clips the line; the inner span slides up from behind it.
+        <span key={i} className="hero-line">
+          <span
+            className={
+              i === sentences.length - 1 && sentences.length > 1
+                ? "text-[#a17c48]"
+                : "text-foreground"
+            }
+          >
+            {s}
+          </span>
         </span>
       ))}
     </>

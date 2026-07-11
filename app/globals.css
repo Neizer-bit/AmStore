@@ -76,6 +76,38 @@
     from { opacity: 0; }
     to { opacity: 1; }
   }
+
+  /* Headline mask-reveal: each line slides up from behind its own clip box on
+     load. The padding/negative-margin pair keeps descenders (the "p" in
+     "prints") from being clipped by the overflow. */
+  .hero-line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+  .hero-line > span {
+    display: block;
+    transform: translateY(110%);
+    animation: amayali-line-rise 1.1s cubic-bezier(0.22, 0.61, 0.2, 1) forwards;
+  }
+  .hero-line:nth-child(2) > span { animation-delay: 0.12s; }
+  @keyframes amayali-line-rise {
+    to { transform: translateY(0); }
+  }
+
+  /* Infinite marquee. The track holds the list twice, so translating it -50%
+     loops seamlessly. Pauses on hover. */
+  .marquee-track {
+    animation: amayali-marquee 38s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+  @keyframes amayali-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
 }
 
 /* ── Product detail — add-to-cart row ───────────────────────────────

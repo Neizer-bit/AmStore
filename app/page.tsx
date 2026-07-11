@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getServerClient, tags } from "@/lib/store-client";
 import { FeatureHero } from "@/components/feature-hero";
 import { CategoryTiles } from "@/components/category-tiles";
+import { MarqueeStrip } from "@/components/marquee-strip";
 import { ValueProps } from "@/components/value-props";
 import { PromoBanner } from "@/components/promo-banner";
 import { SocialProof } from "@/components/social-proof";
@@ -68,6 +69,9 @@ export default async function HomePage() {
 
       {/* Full-bleed category strip — the way into the marketplace. */}
       <CategoryTiles categories={categories} />
+
+      {/* Scrolling craft marquee: batik · adire · tie-dye … */}
+      <MarqueeStrip />
 
       {/* Made with purpose. Worn with pride. */}
       <ValueProps />

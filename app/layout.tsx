@@ -4,6 +4,8 @@ import "./globals.css";
 import { Providers } from "@/components/providers";
 import { getServerClient, tags } from "@/lib/store-client";
 import { ScrollReveal } from "@/components/scroll-reveal";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { BackToTop } from "@/components/back-to-top";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { ProductModal } from "@/components/product-modal";
@@ -78,11 +80,13 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </Suspense>
         <Providers initialBusiness={initialBusiness} initialLocations={initialLocations}>
           <ScrollReveal />
+          <ScrollProgress />
           <Header />
           <main className="flex-1 pb-12 w-full">
             <Suspense fallback={null}>{children}</Suspense>
           </main>
           <Footer />
+          <BackToTop />
           <Suspense fallback={null}>
             <ProductModal />
           </Suspense>
