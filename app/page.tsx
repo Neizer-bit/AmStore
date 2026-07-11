@@ -4,7 +4,6 @@ import { getServerClient, tags } from "@/lib/store-client";
 import { FeatureHero } from "@/components/feature-hero";
 import { CategoryTiles } from "@/components/category-tiles";
 import { MarqueeStrip } from "@/components/marquee-strip";
-import { ValueProps } from "@/components/value-props";
 import { PromoBanner } from "@/components/promo-banner";
 import { SocialProof } from "@/components/social-proof";
 import { Newsletter } from "@/components/newsletter";
@@ -73,9 +72,6 @@ export default async function HomePage() {
 
       {/* Scrolling craft marquee: batik · adire · tie-dye … */}
       <MarqueeStrip />
-
-      {/* Made with purpose. Worn with pride. */}
-      <ValueProps />
 
       {/* New in — heading on the left, a taste of the catalogue on the right. */}
       {products.length > 0 && (
