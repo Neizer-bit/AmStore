@@ -84,10 +84,7 @@ export function ShopClient({
   return (
     <section className="max-w-7xl mx-auto px-6 sm:px-8 py-8 sm:py-10">
       <div className="border-b border-border pb-3 mb-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <p className="text-sm text-muted-foreground">
-            {visible.length} {visible.length === 1 ? "item" : "items"}
-          </p>
+        <div className="flex flex-wrap items-center justify-end gap-4">
           <label className="flex items-center gap-2 text-sm">
             <span className="hidden sm:inline text-muted-foreground">Sort by</span>
             <select
