@@ -1,103 +1,91 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Category } from "@cimplify/sdk";
+import { brand } from "@/lib/brand";
 
-interface CategoryTilesProps {
-  categories: Category[];
-}
-
-const ICONS: Record<string, React.ReactNode> = {
-  phones: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7" aria-hidden>
-      <rect x="6" y="2" width="12" height="20" rx="2.5" />
-      <line x1="12" y1="18" x2="12" y2="18" strokeWidth="2.5" strokeLinecap="round" />
-    </svg>
-  ),
-  laptops: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7" aria-hidden>
-      <rect x="3" y="4" width="18" height="12" rx="1.5" />
-      <line x1="2" y1="20" x2="22" y2="20" strokeLinecap="round" />
-    </svg>
-  ),
-  audio: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7" aria-hidden>
-      <path d="M3 14v-2a9 9 0 0 1 18 0v2" />
-      <rect x="2" y="14" width="5" height="6" rx="1.5" />
-      <rect x="17" y="14" width="5" height="6" rx="1.5" />
-    </svg>
-  ),
-  accessories: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7" aria-hidden>
-      <rect x="2" y="6" width="14" height="10" rx="2" />
-      <path d="M16 12h4l2 2v0l-2 2h-4" />
-    </svg>
-  ),
-  gaming: (
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7" aria-hidden>
-      <path d="M5 7h14a3 3 0 0 1 3 3v4a3 3 0 0 1-3 3h-1l-2-3H8l-2 3H5a3 3 0 0 1-3-3v-4a3 3 0 0 1 3-3z" />
-      <line x1="9" y1="11" x2="9" y2="13" strokeLinecap="round" />
-      <line x1="8" y1="12" x2="10" y2="12" strokeLinecap="round" />
-      <circle cx="15" cy="11" r="0.75" fill="currentColor" />
-      <circle cx="17" cy="13" r="0.75" fill="currentColor" />
-    </svg>
-  ),
+/**
+ * "Shop by category" tile grid — the landing page's main way into the
+ * marketplace. Each tile is a category photo that zooms on hover (Gucci /
+ * Nike style) and links to that category's listing, where the pieces can be
+ * browsed and bought. Tiles reveal on scroll in a staggered cascade.
+ */
+/**
+ * The catalogue API returns `image` and `product_ids` on a category, but the
+ * SDK's `Category` type doesn't declare them. Widen locally, and fall back to
+ * the declared `product_count` when a live backend sends that instead.
+ */
+type CategoryTile = Category & {
+  image?: string | null;
+  product_ids?: string[];
 };
 
-export function CategoryTiles({ categories }: CategoryTilesProps) {
+export function CategoryTiles({ categories }: { categories: Category[] }) {
   if (categories.length === 0) return null;
+  const copy = brand.landing.categories;
+
   return (
     <section className="max-w-7xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
-      <div className="flex items-end justify-between gap-6 mb-8">
-        <div>
-          <p className="text-[11px] font-mono uppercase tracking-[0.16em] text-primary mb-2">
-            Shop the catalogue
-          </p>
-          <h2 className="text-[clamp(1.75rem,3vw,2.25rem)] font-bold -tracking-[0.025em]">
-            Pick your category.
-          </h2>
-        </div>
-        <Link
-          href="/shop"
-          className="text-sm font-semibold text-primary hover:underline whitespace-nowrap hidden sm:inline-flex items-center gap-1"
-        >
-          See everything
-          <svg viewBox="0 0 12 12" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-            <path d="M3 6h7m0 0L7 3m3 3L7 9" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Link>
+      <div data-reveal className="mb-8 sm:mb-10 max-w-xl">
+        <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-foreground/55">
+          {copy.eyebrow}
+        </p>
+        <h2 className="m-0 [font-family:var(--font-display)] text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium leading-tight text-foreground">
+          {copy.title}
+        </h2>
+        <p className="mt-3 leading-relaxed text-muted-foreground">{copy.body}</p>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-        {categories.map((c, i) => (
-          <Link
-            key={c.id}
-            href={`/categories/${c.slug}`}
-            className="group relative overflow-hidden rounded-2xl bg-card border border-border p-5 hover:border-primary hover:-translate-y-0.5 transition-all"
-          >
-            <div className="flex items-start justify-between mb-12">
-              <div className="grid place-items-center w-10 h-10 rounded-lg bg-primary/10 text-primary">
-                {ICONS[c.slug] ?? (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-7 h-7" aria-hidden>
-                    <rect x="3" y="3" width="18" height="18" rx="2" />
-                  </svg>
+
+      <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
+        {(categories as CategoryTile[]).map((cat, i) => {
+          const count = cat.product_ids?.length ?? cat.product_count ?? 0;
+          return (
+            <Link
+              key={cat.id}
+              href={`/categories/${encodeURIComponent(cat.slug)}`}
+              data-reveal
+              data-reveal-delay={String((i % 4) + 1)}
+              className="group block"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden rounded-xl bg-muted">
+                {cat.image ? (
+                  <Image
+                    src={cat.image}
+                    alt={cat.name}
+                    fill
+                    sizes="(min-width: 1024px) 25vw, 50vw"
+                    className="object-cover object-[50%_35%] transition-transform duration-[900ms] ease-out group-hover:scale-[1.07]"
+                  />
+                ) : (
+                  <div className="grid h-full w-full place-items-center text-xs text-muted-foreground">
+                    {cat.name}
+                  </div>
                 )}
+                {/* Subtle wash that deepens on hover. */}
+                <div className="absolute inset-0 bg-foreground/0 transition-colors duration-500 group-hover:bg-foreground/10" />
               </div>
-              <span className="text-[10px] font-mono text-muted-foreground tabular-nums">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-            </div>
-            <p className="text-base font-semibold mb-1 -tracking-[0.015em]">{c.name}</p>
-            {c.product_count != null && (
-              <p className="text-xs text-muted-foreground">
-                {c.product_count} {c.product_count === 1 ? "product" : "products"}
-              </p>
-            )}
-            <span className="absolute right-4 bottom-4 grid place-items-center w-7 h-7 rounded-full bg-foreground text-background opacity-0 group-hover:opacity-100 transition-opacity">
-              <svg viewBox="0 0 12 12" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                <path d="M3 6h7m0 0L7 3m3 3L7 9" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </span>
-          </Link>
-        ))}
+
+              <div className="mt-3 flex items-center justify-between gap-2">
+                <span className="text-sm font-medium text-foreground">
+                  {cat.name}
+                  <span className="ml-2 text-xs font-normal text-muted-foreground">
+                    {count} {count === 1 ? "piece" : "pieces"}
+                  </span>
+                </span>
+                {/* Arrow slides in on hover. */}
+                <svg
+                  viewBox="0 0 12 12"
+                  aria-hidden
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  className="h-3.5 w-3.5 shrink-0 -translate-x-1 text-foreground opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                >
+                  <path d="M3 6h6m0 0L6.5 3.5M9 6l-2.5 2.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </section>
   );

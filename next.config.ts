@@ -39,8 +39,8 @@ const nextConfig: NextConfig = {
     return [
       { source: "/login", destination: "/account", permanent: false },
       { source: "/signup", destination: "/account", permanent: false },
-      // The full shop IS the storefront — land it at the root.
-      { source: "/shop", destination: "/", permanent: false },
+      // NOTE: `/` is the landing page; `/shop` is the full marketplace.
+      // Do not redirect /shop — it renders the whole catalogue.
     ];
   },
   async rewrites() {

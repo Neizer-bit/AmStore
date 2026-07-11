@@ -130,6 +130,21 @@ export interface Brand {
     ctaHref: string;
   };
 
+  // ─── Landing page sections ────────────────────────────────────
+  landing: {
+    /** "Shop by category" tile grid. */
+    categories: { eyebrow: string; title: string; body: string };
+    /** Featured product rail + link into the full marketplace. */
+    featured: { eyebrow: string; title: string; ctaLabel: string; ctaHref: string };
+  };
+
+  // ─── Marketplace (/shop) header ───────────────────────────────
+  shopPage: {
+    eyebrow: string;
+    title: string;
+    body: string;
+  };
+
   // ─── Trade-in CTA (optional) ──────────────────────────────────
   tradeIn?: {
     eyebrow: string;
@@ -330,11 +345,31 @@ export const brand: Brand = {
   },
 
   promo: {
-    badge: "Limited · ends Sunday",
-    title: "Buy 2 pieces, get 15% off the drop.",
-    body: "Refresh the wardrobe. Add any two dresses, tops, or rompers to your bag and the discount lands automatically at checkout.",
-    ctaLabel: "Shop the drop",
-    ctaHref: "/collections/new-in",
+    badge: "Limited · while stock lasts",
+    title: "The sale edit is live.",
+    body: "Marked-down batik and adire — dresses, skirts, rompers, and sets from GH₵100.",
+    ctaLabel: "Shop the sale",
+    ctaHref: "/collections/sale",
+  },
+
+  landing: {
+    categories: {
+      eyebrow: "Shop by category",
+      title: "Find your fit.",
+      body: "Dresses, rompers, skirts, and activewear — every piece hand-dyed in Ghana.",
+    },
+    featured: {
+      eyebrow: "New in",
+      title: "Fresh off the dye table.",
+      ctaLabel: "Shop all pieces",
+      ctaHref: "/shop",
+    },
+  },
+
+  shopPage: {
+    eyebrow: "The marketplace",
+    title: "Every piece, in one place.",
+    body: "Filter by category and sort by price. Hand-dyed batik and adire, made in Ghana.",
   },
 
   tradeIn: {
