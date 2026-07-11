@@ -3,7 +3,9 @@ import Link from "next/link";
 import { getServerClient, tags } from "@/lib/store-client";
 import { FeatureHero } from "@/components/feature-hero";
 import { CategoryTiles } from "@/components/category-tiles";
+import { ValueProps } from "@/components/value-props";
 import { PromoBanner } from "@/components/promo-banner";
+import { SocialProof } from "@/components/social-proof";
 import { Newsletter } from "@/components/newsletter";
 import { StoreProductCard } from "@/components/store-product-card";
 import { brand } from "@/lib/brand";
@@ -18,8 +20,12 @@ export const revalidate = 3600;
 // Hero slider images (public/hero/). Tap to advance; also auto-cross-fades.
 const HERO_IMAGES = ["/hero/1.jpg", "/hero/2.jpg", "/hero/3.jpg", "/hero/4.jpg"];
 
+/** Lifestyle shots reused for the sale band and the #AmayaliStyle strip. */
+const PROMO_IMAGE = "/hero/2.jpg";
+const SOCIAL_IMAGES = ["/hero/1.jpg", "/hero/2.jpg", "/hero/3.jpg", "/hero/4.jpg"];
+
 /** How many pieces to preview in the "New in" rail before sending shoppers to /shop. */
-const FEATURED_COUNT = 8;
+const FEATURED_COUNT = 4;
 
 async function getLandingData() {
   const client = getServerClient();
@@ -45,6 +51,7 @@ export default async function HomePage() {
   return (
     <>
       <FeatureHero
+        eyebrow={brand.hero.eyebrow}
         title={brand.hero.title}
         description={brand.hero.subtitle}
         perk={brand.hero.perk}
@@ -59,51 +66,47 @@ export default async function HomePage() {
         images={HERO_IMAGES}
       />
 
-      {/* Shop by category — the way into the marketplace. */}
+      {/* Full-bleed category strip — the way into the marketplace. */}
       <CategoryTiles categories={categories} />
 
-      {/* New in — a taste of the catalogue, then straight to the full shop. */}
+      {/* Made with purpose. Worn with pride. */}
+      <ValueProps />
+
+      {/* New in — heading on the left, a taste of the catalogue on the right. */}
       {products.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 sm:px-8 pb-14 sm:pb-20">
-          <div data-reveal className="mb-8 flex flex-wrap items-end justify-between gap-4">
-            <div>
-              <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-foreground/55">
+        <section className="max-w-7xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
+          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,3fr)] lg:gap-14">
+            <div data-reveal className="lg:self-center">
+              <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.22em] text-foreground/55">
                 {featured.eyebrow}
               </p>
-              <h2 className="m-0 [font-family:var(--font-display)] text-[clamp(1.75rem,3.5vw,2.75rem)] font-medium leading-tight text-foreground">
+              <h2 className="m-0 [font-family:var(--font-display)] text-[clamp(1.75rem,3.2vw,2.5rem)] font-medium leading-[1.15] text-foreground">
                 {featured.title}
               </h2>
-            </div>
-            <Link
-              href={featured.ctaHref}
-              className="group inline-flex items-center gap-2 rounded-full border border-foreground/20 px-5 py-2.5 text-sm font-medium text-foreground transition-colors hover:bg-foreground hover:text-background"
-            >
-              {featured.ctaLabel}
-              <svg
-                viewBox="0 0 12 12"
-                aria-hidden
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.8"
-                className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1"
+              <Link
+                href={featured.ctaHref}
+                className="mt-6 inline-flex items-center justify-center bg-foreground px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-90"
               >
-                <path d="M3 6h6m0 0L6.5 3.5M9 6l-2.5 2.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-            </Link>
-          </div>
+                {featured.ctaLabel}
+              </Link>
+            </div>
 
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-12 md:grid-cols-3 lg:grid-cols-4">
-            {products.map((p, i) => (
-              <div key={p.id} data-reveal data-reveal-delay={String((i % 4) + 1)}>
-                <StoreProductCard product={p} />
-              </div>
-            ))}
+            <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-5 lg:grid-cols-4">
+              {products.map((p, i) => (
+                <div key={p.id} data-reveal data-reveal-delay={String((i % 4) + 1)}>
+                  <StoreProductCard product={p} />
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       )}
 
-      {/* Sale promo band. */}
-      <PromoBanner />
+      {/* Sale band with a model shot. */}
+      <PromoBanner imageUrl={PROMO_IMAGE} />
+
+      {/* #AmayaliStyle */}
+      <SocialProof images={SOCIAL_IMAGES} />
 
       <div data-reveal>
         <Newsletter />

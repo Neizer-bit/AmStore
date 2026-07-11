@@ -102,6 +102,8 @@ export interface Brand {
   // ─── Hero ─────────────────────────────────────────────────────
   hero: {
     badge: string;
+    /** Small letter-spaced line above the headline. */
+    eyebrow?: string;
     title: string;
     /** Subtitle. May span multiple paragraphs by separating with \n\n. */
     subtitle: string;
@@ -132,10 +134,17 @@ export interface Brand {
 
   // ─── Landing page sections ────────────────────────────────────
   landing: {
-    /** "Shop by category" tile grid. */
-    categories: { eyebrow: string; title: string; body: string };
+    /** Full-bleed category tiles: the CTA shown under each tile's name. */
+    categories: { ctaLabel: string };
+    /** "Made with purpose" value pillars. */
+    values: {
+      title: string;
+      items: { iconKey: "hand" | "heart" | "leaf" | "globe"; title: string; body: string }[];
+    };
     /** Featured product rail + link into the full marketplace. */
     featured: { eyebrow: string; title: string; ctaLabel: string; ctaHref: string };
+    /** UGC / social-proof strip. */
+    social: { eyebrow: string; title: string; followLabel: string };
   };
 
   // ─── Marketplace (/shop) header ───────────────────────────────
@@ -292,6 +301,7 @@ export const brand: Brand = {
 
   hero: {
     badge: "New in · Hand-dyed batik",
+    eyebrow: "Hand-dyed. Ethically made.",
     title: "Bold prints. Easy fits.",
     subtitle:
       "Hand-dyed batik and adire, crafted into flowy maxi dresses, oversized boubou tops, and easy-to-wear rompers — proudly made in Ghana.",
@@ -353,16 +363,45 @@ export const brand: Brand = {
   },
 
   landing: {
-    categories: {
-      eyebrow: "Shop by category",
-      title: "Find your fit.",
-      body: "Dresses, rompers, skirts, and activewear — every piece hand-dyed in Ghana.",
+    categories: { ctaLabel: "Shop now" },
+
+    values: {
+      title: "Made with purpose. Worn with pride.",
+      items: [
+        {
+          iconKey: "hand",
+          title: "Hand-dyed",
+          body: "Each piece is dyed by hand using traditional techniques.",
+        },
+        {
+          iconKey: "heart",
+          title: "Ethically made",
+          body: "Made in small batches by skilled artisans in Ghana.",
+        },
+        {
+          iconKey: "leaf",
+          title: "Sustainable",
+          body: "We use natural fabrics and low-impact dyes.",
+        },
+        {
+          iconKey: "globe",
+          title: "Made in Ghana",
+          body: "Supporting local communities and preserving heritage.",
+        },
+      ],
     },
+
     featured: {
       eyebrow: "New in",
       title: "Fresh off the dye table.",
-      ctaLabel: "Shop all pieces",
+      ctaLabel: "Shop all new in",
       ctaHref: "/shop",
+    },
+
+    social: {
+      eyebrow: "Loved by you",
+      title: "#AmayaliStyle",
+      followLabel: "Follow us",
     },
   },
 

@@ -69,7 +69,7 @@ export function FeatureHero({
               </span>
             )}
             {eyebrow && (
-              <p className="text-[12px] font-mono uppercase tracking-[0.2em] text-muted-foreground mb-3">
+              <p className="mb-4 text-[11px] font-medium uppercase tracking-[0.22em] text-foreground/55">
                 {eyebrow}
               </p>
             )}
@@ -98,17 +98,14 @@ export function FeatureHero({
             <div className="flex flex-wrap items-center gap-3 mt-8">
               <Link
                 href={primaryCta.href}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background font-semibold text-sm hover:opacity-90 transition-opacity"
+                className="inline-flex items-center justify-center bg-foreground px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-background transition-opacity hover:opacity-90"
               >
                 {primaryCta.label}
-                <svg viewBox="0 0 12 12" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-                  <path d="M3 6h7m0 0L7 3m3 3L7 9" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
               </Link>
               {secondaryCta && (
                 <Link
                   href={secondaryCta.href}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-foreground/20 text-foreground hover:bg-foreground/5 transition-colors text-sm font-medium"
+                  className="inline-flex items-center justify-center border border-foreground/30 px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground transition-colors hover:bg-foreground hover:text-background"
                 >
                   {secondaryCta.label}
                 </Link>
