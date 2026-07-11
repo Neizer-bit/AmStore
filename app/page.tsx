@@ -18,8 +18,12 @@ export const metadata: Metadata = {
 
 export const revalidate = 3600;
 
-// Hero slider images (public/hero/). Tap to advance; also auto-cross-fades.
-const HERO_IMAGES = ["/hero/1.jpg", "/hero/2.jpg", "/hero/3.jpg", "/hero/4.jpg"];
+/**
+ * Cinematic full-bleed hero shot. Only /hero/1.jpg is landscape (1528×1029);
+ * the others are portrait studio shots that would crop to a thin band in a
+ * wide banner, so the hero runs as a single image rather than a slider.
+ */
+const HERO_IMAGE = "/hero/1.jpg";
 
 /** Lifestyle shots reused for the sale band and the #AmayaliStyle strip. */
 const PROMO_IMAGE = "/hero/2.jpg";
@@ -52,19 +56,16 @@ export default async function HomePage() {
   return (
     <>
       <FeatureHero
-        eyebrow={brand.hero.eyebrow}
         title={brand.hero.title}
-        description={brand.hero.subtitle}
-        perk={brand.hero.perk}
         primaryCta={{ label: brand.hero.primaryCtaLabel, href: "/shop" }}
         secondaryCta={
           brand.hero.secondaryCtaLabel && brand.hero.secondaryCtaHref
             ? { label: brand.hero.secondaryCtaLabel, href: brand.hero.secondaryCtaHref }
             : undefined
         }
-        imageUrl={HERO_IMAGES[0]}
+        imageUrl={HERO_IMAGE}
         imageAlt="Amayali hand-dyed fashion"
-        images={HERO_IMAGES}
+        announcement={brand.announceBar?.message}
       />
 
       {/* Full-bleed category strip — the way into the marketplace. */}

@@ -97,6 +97,8 @@ export interface Brand {
     region: string;
     /** Right-side trust signals. */
     items: string[];
+    /** Single centred message shown as a thin strip above the hero. */
+    message?: string;
   };
 
   // ─── Hero ─────────────────────────────────────────────────────
@@ -297,16 +299,17 @@ export const brand: Brand = {
   announceBar: {
     region: "Ship to Ghana 🇬🇭",
     items: ["Free delivery over GH₵500", "Easy 14-day returns", "Secure checkout"],
+    message: "Free delivery within Accra on orders over GH₵300 · Nationwide shipping",
   },
 
   hero: {
     badge: "New in · Hand-dyed batik",
     eyebrow: "Hand-dyed. Ethically made.",
-    title: "Bold prints. Easy fits.",
+    title: "Made with purpose. Worn with pride.",
     subtitle:
       "Hand-dyed batik and adire, crafted into flowy maxi dresses, oversized boubou tops, and easy-to-wear rompers — proudly made in Ghana.",
     perk: "Free delivery within Accra on orders over GH₵300.",
-    primaryCtaLabel: "Shop new in",
+    primaryCtaLabel: "Shop all",
     secondaryCtaLabel: "Shop sale",
     secondaryCtaHref: "/collections/sale",
   },
