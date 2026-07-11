@@ -10,14 +10,10 @@ import { brand } from "@/lib/brand";
  * browsed and bought. Tiles reveal on scroll in a staggered cascade.
  */
 /**
- * The catalogue API returns `image` and `product_ids` on a category, but the
- * SDK's `Category` type doesn't declare them. Widen locally, and fall back to
- * the declared `product_count` when a live backend sends that instead.
+ * The catalogue API returns an `image` on a category, but the SDK's `Category`
+ * type doesn't declare it. Widen locally.
  */
-type CategoryTile = Category & {
-  image?: string | null;
-  product_ids?: string[];
-};
+type CategoryTile = Category & { image?: string | null };
 
 export function CategoryTiles({ categories }: { categories: Category[] }) {
   if (categories.length === 0) return null;
@@ -37,7 +33,6 @@ export function CategoryTiles({ categories }: { categories: Category[] }) {
 
       <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 lg:grid-cols-4">
         {(categories as CategoryTile[]).map((cat, i) => {
-          const count = cat.product_ids?.length ?? cat.product_count ?? 0;
           return (
             <Link
               key={cat.id}
@@ -65,12 +60,7 @@ export function CategoryTiles({ categories }: { categories: Category[] }) {
               </div>
 
               <div className="mt-3 flex items-center justify-between gap-2">
-                <span className="text-sm font-medium text-foreground">
-                  {cat.name}
-                  <span className="ml-2 text-xs font-normal text-muted-foreground">
-                    {count} {count === 1 ? "piece" : "pieces"}
-                  </span>
-                </span>
+                <span className="text-sm font-medium text-foreground">{cat.name}</span>
                 {/* Arrow slides in on hover. */}
                 <svg
                   viewBox="0 0 12 12"
