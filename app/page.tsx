@@ -6,7 +6,6 @@ import { CategoryTiles } from "@/components/category-tiles";
 import { MarqueeStrip } from "@/components/marquee-strip";
 import { PromoBanner } from "@/components/promo-banner";
 import { SocialProof } from "@/components/social-proof";
-import { Newsletter } from "@/components/newsletter";
 import { StoreProductCard } from "@/components/store-product-card";
 import { brand } from "@/lib/brand";
 
@@ -108,10 +107,6 @@ export default async function HomePage() {
 
       {/* #AmayaliStyle */}
       <SocialProof images={SOCIAL_IMAGES} />
-
-      <div data-reveal>
-        <Newsletter />
-      </div>
     </>
   );
 }

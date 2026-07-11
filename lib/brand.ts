@@ -163,16 +163,6 @@ export interface Brand {
     steps: { step: string; title: string; body: string }[];
   };
 
-  // ─── Newsletter ───────────────────────────────────────────────
-  newsletter: {
-    eyebrow: string;
-    title: string;
-    body: string;
-    placeholder: string;
-    submitLabel: string;
-    successLabel: string;
-  };
-
   // ─── About page ───────────────────────────────────────────────
   about: {
     eyebrow: string;
@@ -398,14 +388,6 @@ export const brand: Brand = {
     ],
   },
 
-  newsletter: {
-    eyebrow: "First dibs · Exclusive perks",
-    title: "Be the first to know.",
-    body: "New prints, restocks and subscriber-only deals. Sign up and enjoy 10% off your first order.",
-    placeholder: "you@email.com",
-    submitLabel: "Sign me up",
-    successLabel: "You're in ✓",
-  },
 
   about: {
     eyebrow: "About Amayali",
