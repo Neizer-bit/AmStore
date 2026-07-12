@@ -136,8 +136,8 @@ export interface Brand {
 
   // ─── Landing page sections ────────────────────────────────────
   landing: {
-    /** Full-bleed category tiles: the CTA shown under each tile's name. */
-    categories: { ctaLabel: string };
+    /** "Shop by category" tile grid. */
+    categories: { title: string };
     /** Featured product rail + link into the full marketplace. */
     featured: { eyebrow: string; title: string; ctaLabel: string; ctaHref: string };
     /** UGC / social-proof strip. */
@@ -351,7 +351,7 @@ export const brand: Brand = {
   },
 
   landing: {
-    categories: { ctaLabel: "Shop now" },
+    categories: { title: "Shop By Category" },
 
     featured: {
       eyebrow: "New in",
