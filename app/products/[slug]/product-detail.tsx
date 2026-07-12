@@ -6,6 +6,7 @@ import { parsePrice, type Product, type ProductWithDetails } from "@cimplify/sdk
 import { useCart } from "@cimplify/sdk/react";
 import { ProductGallery } from "@/components/product-gallery";
 import { SizeGuideModal } from "@/components/size-guide-modal";
+import { TapeMeasureIcon } from "@/components/tape-measure-icon";
 import { SizeSheet, type SizeOption } from "@/components/size-sheet";
 import { StoreProductCard } from "@/components/store-product-card";
 import { brand } from "@/lib/brand";
@@ -150,9 +151,10 @@ export function ProductDetail({
               <button
                 type="button"
                 onClick={() => setGuideOpen(true)}
-                className="text-[13px] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+                className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
               >
-                {p.sizeGuideLabel}
+                <TapeMeasureIcon className="h-4 w-4 shrink-0" />
+                <span className="underline underline-offset-4">{p.sizeGuideLabel}</span>
               </button>
             </div>
 
