@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { brand } from "@/lib/brand";
+import { FooterNewsletter } from "@/components/footer-newsletter";
 
 const ICONS: Record<string, React.ReactNode> = {
   instagram: (
@@ -96,16 +97,17 @@ export async function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="mt-8 border-t border-border bg-muted text-sm text-muted-foreground">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 pt-8 pb-6">
-        <div className="flex flex-col gap-8 md:flex-row md:items-start md:justify-between">
-          <div className="max-w-md">
-            <span className="[font-family:var(--font-display)] text-2xl font-medium leading-none text-foreground">
+      <div className="max-w-7xl mx-auto px-6 sm:px-8 pt-14 pb-7 sm:pt-16">
+        <div className="grid gap-10 gap-x-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(3,minmax(0,0.7fr))_1.4fr] lg:gap-x-10">
+          {/* Brand */}
+          <div className="sm:col-span-2 lg:col-span-1 lg:max-w-xs">
+            <span className="[font-family:var(--font-display)] text-[26px] font-medium leading-none tracking-[0.02em] text-foreground">
               {brand.name}
             </span>
-            <p className="mt-3 leading-relaxed">{brand.footer.blurb}</p>
+            <p className="mt-4 text-[13px] leading-relaxed">{brand.footer.blurb}</p>
 
-            {/* Social icons — circular buttons for engagement. */}
-            <div className="mt-4 flex items-center gap-2.5">
+            {/* Socials — hairline circles, fill on hover. */}
+            <div className="mt-6 flex items-center gap-2">
               {brand.socials.map((s) => (
                 <a
                   key={s.label}
@@ -113,54 +115,59 @@ export async function Footer() {
                   aria-label={s.label}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-border bg-background text-foreground/70 transition-colors hover:border-foreground hover:bg-foreground hover:text-background"
+                  className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-foreground/15 text-foreground/60 transition-colors duration-300 hover:border-foreground hover:bg-foreground hover:text-background"
                 >
                   {(s.icon && ICONS[s.icon]) ?? FALLBACK_ICON}
                 </a>
               ))}
             </div>
+          </div>
 
-            {/* Contact — each line led by an icon for scannability. */}
-            <address className="mt-4 not-italic">
-              <ul className="m-0 list-none space-y-2 p-0">
-                <ContactRow icon="pin">{brand.contact.address}</ContactRow>
-                <ContactRow icon="phone">
-                  <a href={`tel:${brand.contact.phoneTel}`} className="transition-colors hover:text-foreground">
-                    {brand.contact.phone}
-                  </a>
-                </ContactRow>
-                <ContactRow icon="mail">
-                  <a href={`mailto:${brand.contact.email}`} className="transition-colors hover:text-foreground">
-                    {brand.contact.email}
-                  </a>
-                </ContactRow>
-                <ContactRow icon="clock">{brand.contact.hours}</ContactRow>
+          {/* Shop / About / Help */}
+          {brand.footer.sitemap.map((section) => (
+            <nav key={section.title} aria-labelledby={`footer-${section.title}`}>
+              <p
+                id={`footer-${section.title}`}
+                className="mb-4 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground"
+              >
+                {section.title}
+              </p>
+              <ul className="m-0 list-none space-y-3 p-0">
+                {section.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-[13px] text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
-            </address>
-          </div>
+            </nav>
+          ))}
 
-          <div className="flex flex-wrap gap-x-16 gap-y-8">
-            {brand.footer.sitemap.map((section) => (
-              <nav key={section.title} aria-labelledby={`footer-${section.title}`}>
-                <p
-                  id={`footer-${section.title}`}
-                  className="mb-3 text-[11px] font-medium uppercase tracking-[0.14em] text-foreground"
-                >
-                  {section.title}
-                </p>
-                <ul className="m-0 list-none space-y-2 p-0">
-                  {section.links.map((link) => (
-                    <li key={link.label}>
-                      <Link href={link.href} className="transition-colors hover:text-foreground">
-                        {link.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            ))}
-          </div>
+          {/* Newsletter */}
+          <FooterNewsletter />
         </div>
+
+        {/* Contact — a quiet hairline row under the columns. */}
+        <address className="mt-12 not-italic border-t border-border pt-6">
+          <ul className="m-0 flex list-none flex-col gap-3 p-0 text-[13px] sm:flex-row sm:flex-wrap sm:gap-x-8">
+            <ContactRow icon="pin">{brand.contact.address}</ContactRow>
+            <ContactRow icon="phone">
+              <a href={`tel:${brand.contact.phoneTel}`} className="transition-colors hover:text-foreground">
+                {brand.contact.phone}
+              </a>
+            </ContactRow>
+            <ContactRow icon="mail">
+              <a href={`mailto:${brand.contact.email}`} className="transition-colors hover:text-foreground">
+                {brand.contact.email}
+              </a>
+            </ContactRow>
+            <ContactRow icon="clock">{brand.contact.hours}</ContactRow>
+          </ul>
+        </address>
 
         <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-border pt-5 text-xs sm:flex-row">
           <p className="m-0">© {year} {brand.name}. All rights reserved.</p>

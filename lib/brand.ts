@@ -223,7 +223,22 @@ export interface Brand {
   footer: {
     blurb: string;
     sitemap: BrandSitemapSection[];
+    /** Signup block in the footer's last column. */
+    newsletter: {
+      title: string;
+      body: string;
+      placeholder: string;
+      submitLabel: string;
+      successLabel: string;
+    };
     poweredBy?: { label: string; href: string };
+  };
+
+  // ─── Journal (linked from the footer) ─────────────────────────
+  journal: {
+    eyebrow: string;
+    title: string;
+    body: string;
   };
 
   // ─── llms.txt summary (LLM-friendly site index) ───────────────
@@ -656,20 +671,47 @@ export const brand: Brand = {
 
   footer: {
     blurb:
-      "Hand-dyed batik and adire fashion, made in Accra. Flowy maxis, boubou tops, and easy rompers. Free Accra delivery over GH₵500, 14-day exchanges, and made-to-measure on request.",
+      "Hand-dyed batik and adire, made in Ghana. Flowy maxis, boubou tops, and easy rompers — cut in small batches, never mass-produced.",
     sitemap: [
       {
-        title: "Support",
+        title: "Shop",
         links: [
+          { label: "Dresses", href: "/categories/dresses" },
+          { label: "Skirts", href: "/categories/skirts" },
+          { label: "Rompers", href: "/categories/rompers" },
+        ],
+      },
+      {
+        title: "About",
+        links: [
+          { label: "Our Story", href: "/about" },
+          { label: "Journal", href: "/journal" },
           { label: "Contact", href: "/contact" },
-          { label: "Track an order", href: "/track-order" },
+        ],
+      },
+      {
+        title: "Help",
+        links: [
           { label: "Shipping", href: "/shipping" },
-          { label: "Returns & guarantee", href: "/returns" },
+          { label: "Returns", href: "/returns" },
           { label: "FAQ", href: "/faq" },
         ],
       },
     ],
+    newsletter: {
+      title: "Join our community.",
+      body: "New drops, restocks, and subscriber-only perks.",
+      placeholder: "Email address",
+      submitLabel: "Subscribe",
+      successLabel: "You're in — welcome.",
+    },
     poweredBy: { label: "Cimplify", href: "https://app.cimplify.io" },
+  },
+
+  journal: {
+    eyebrow: "Journal",
+    title: "Stories from the dye table.",
+    body: "Notes on batik and adire, the artisans behind each print, and how a piece travels from wax to wardrobe. First entries landing soon.",
   },
 
   llms: {
