@@ -47,17 +47,17 @@ export function MobileNav() {
       <nav
         id="mobile-nav-drawer"
         aria-label="Mobile navigation"
-        className="absolute inset-y-0 right-0 flex w-[85%] max-w-sm flex-col border-l border-border bg-background shadow-2xl"
+        className="absolute inset-y-0 right-0 flex w-[86%] max-w-sm flex-col bg-background shadow-2xl"
       >
-        <div className="flex items-center justify-between border-b border-border px-6 py-4">
-          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+        <div className="flex items-center justify-between px-6 py-5">
+          <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-muted-foreground">
             Menu
           </span>
           <button
             type="button"
             onClick={() => setOpen(false)}
             aria-label="Close menu"
-            className="-mr-2 grid h-11 w-11 place-items-center rounded-md text-foreground transition-colors hover:bg-muted"
+            className="-mr-3 grid h-11 w-11 place-items-center text-foreground transition-opacity hover:opacity-60"
           >
             <svg
               width="20"
@@ -65,7 +65,7 @@ export function MobileNav() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="2"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
               aria-hidden="true"
@@ -75,15 +75,31 @@ export function MobileNav() {
             </svg>
           </button>
         </div>
-        <ul className="flex flex-col gap-1 px-3 py-4">
+
+        {/* Category names in serif, separated by 1px hairlines. */}
+        <ul className="m-0 flex list-none flex-col border-t border-border p-0">
           {brand.header.nav.map((link) => (
-            <li key={link.href}>
+            <li key={link.href} className="border-b border-border">
               <Link
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
+                className="flex items-center justify-between px-6 py-5 transition-colors hover:bg-muted/50"
               >
-                {link.label}
+                <span className="[font-family:var(--font-display)] text-2xl font-medium text-foreground">
+                  {link.label}
+                </span>
+                <svg
+                  viewBox="0 0 12 12"
+                  aria-hidden
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.4"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-3 w-3 text-foreground/35"
+                >
+                  <path d="M3 6h6m0 0L6.5 3.5M9 6l-2.5 2.5" />
+                </svg>
               </Link>
             </li>
           ))}

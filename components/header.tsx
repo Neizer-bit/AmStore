@@ -2,13 +2,20 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { CartIconButton, CartIconSkeleton } from "./cart-pill";
 import { MobileNav } from "./mobile-nav";
+import { MobileSearch } from "./mobile-search";
 import { HeaderSearch } from "./header-search";
 import { brand } from "@/lib/brand";
 
 /**
- * Dark storefront header (ASOS-style): wordmark left, a large light search
- * pill, and account / wishlist / bag icons on the right — over a second nav
- * row that leads with a highlighted Sale tab. Charcoal bar on the cream page.
+ * Storefront header — charcoal bar over the cream page.
+ *
+ * Mobile: a single minimal row — hamburger, perfectly centred wordmark, and
+ * search / account / bag icons. All primary links live in the slide-out drawer,
+ * and search hides behind a magnifier so it never dominates the bar.
+ *
+ * Desktop (md+): wordmark left, a large light search pill, and account /
+ * wishlist / bag icons on the right, over a second nav row that leads with a
+ * highlighted Sale tab.
  */
 function PersonIcon() {
   return (
@@ -33,18 +40,48 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 bg-foreground text-background">
-      {/* Row 1: wordmark · search · icons */}
-      <div className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 lg:px-8 py-2.5">
+      {/* ── Mobile bar: hamburger · centred wordmark · icons ─────────────
+          `1fr auto 1fr` keeps the side groups equal width, so the logo is
+          perfectly centred no matter how many icons sit either side. */}
+      <div className="grid grid-cols-[1fr_auto_1fr] items-center px-2 py-1.5 md:hidden">
+        <div className="flex justify-start">
+          <MobileNav />
+        </div>
+
+        <Link href="/" aria-label={brand.name} className="group flex justify-center px-2">
+          <span className="[font-family:var(--font-brand)] font-bold normal-case text-[28px] leading-none text-background transition-opacity group-hover:opacity-80">
+            {brand.shortName}
+            <span className="ml-0.5 align-super text-[17px]" aria-hidden>♥</span>
+          </span>
+        </Link>
+
+        <div className="flex items-center justify-end text-background">
+          <MobileSearch />
+          <Link
+            href="/account"
+            aria-label="Account"
+            className="grid h-11 w-11 place-items-center transition-opacity hover:opacity-70"
+          >
+            <PersonIcon />
+          </Link>
+          <Suspense fallback={<CartIconSkeleton />}>
+            <CartIconButton />
+          </Suspense>
+        </div>
+      </div>
+
+      {/* ── Desktop bar: wordmark · search · icons ───────────────────── */}
+      <div className="hidden md:flex items-center gap-6 px-6 lg:px-8 py-2.5">
         <Link href="/" className="flex items-baseline gap-2 group shrink-0">
-          <span className="[font-family:var(--font-brand)] font-bold normal-case text-[32px] sm:text-[38px] leading-none text-background group-hover:opacity-80 transition-opacity">
+          <span className="[font-family:var(--font-brand)] font-bold normal-case text-[38px] leading-none text-background group-hover:opacity-80 transition-opacity">
             {brand.shortName}
             <span className="text-[19px] align-super ml-0.5" aria-hidden>♥</span>
           </span>
         </Link>
 
-        <HeaderSearch className="hidden md:block flex-1 max-w-2xl mx-auto" />
+        <HeaderSearch className="flex-1 max-w-2xl mx-auto" />
 
-        <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0 ml-auto text-background">
+        <div className="flex items-center gap-2.5 shrink-0 ml-auto text-background">
           <Link
             href="/account"
             aria-label="Account"
@@ -55,16 +92,13 @@ export function Header() {
           <Link
             href="/account"
             aria-label="Wishlist"
-            className="hidden sm:grid place-items-center w-9 h-9 hover:opacity-70 transition-opacity"
+            className="grid place-items-center w-9 h-9 hover:opacity-70 transition-opacity"
           >
             <HeartIcon />
           </Link>
           <Suspense fallback={<CartIconSkeleton />}>
             <CartIconButton />
           </Suspense>
-          <div className="md:hidden">
-            <MobileNav />
-          </div>
         </div>
       </div>
 
