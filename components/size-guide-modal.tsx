@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { AnimatePresence, motion } from "framer-motion";
 import { brand } from "@/lib/brand";
+import { TapeMeasureIcon } from "@/components/tape-measure-icon";
 
 /**
  * Size-guide modal. Serif heading over a hairline measurement chart.
@@ -125,19 +126,7 @@ export function SizeGuideModal({ open, onClose }: { open: boolean; onClose: () =
 
             {/* Measuring-tape note */}
             <div className="flex items-start gap-3 px-7 pb-8 pt-6 sm:px-9">
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.3"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="mt-0.5 h-5 w-5 shrink-0 text-foreground/60"
-              >
-                <path d="M4 9h16a2 2 0 0 1 2 2v2a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-2a2 2 0 0 1 2-2z" />
-                <path d="M6 9v2.5M10 9v2.5M14 9v2.5M18 9v2.5" />
-              </svg>
+              <TapeMeasureIcon className="mt-0.5 h-5 w-5 shrink-0 text-foreground/60" />
               <p className="m-0 text-[12px] leading-relaxed text-muted-foreground">{guide.note}</p>
             </div>
           </motion.div>
