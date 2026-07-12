@@ -255,7 +255,6 @@ export interface Brand {
     addToCartLabel: string;
     /** Bottom-sheet heading when a size still has to be chosen. */
     selectSizeLabel: string;
-    buyNowLabel: string;
     wishlistLabel: string;
     shareLabel: string;
     shareCopiedLabel: string;
@@ -748,7 +747,6 @@ export const brand: Brand = {
     quantityLabel: "Quantity",
     addToCartLabel: "Add to Cart",
     selectSizeLabel: "Select a size",
-    buyNowLabel: "Buy Now",
     wishlistLabel: "Add to Wishlist",
     shareLabel: "Share",
     shareCopiedLabel: "Link copied",

@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { parsePrice, type Product, type ProductWithDetails } from "@cimplify/sdk";
 import { useCart } from "@cimplify/sdk/react";
@@ -17,9 +16,9 @@ import { brand } from "@/lib/brand";
  * Left: the media column, scrolls. Right: the buy column, sticky on desktop.
  *
  * Add-to-cart defers rather than guesses: no size is pre-selected, so tapping
- * a CTA without one opens a bottom sheet, and picking a size completes the
- * original action (add or buy). The header bag pulses off the cart count, so
- * this file doesn't need to know the header exists.
+ * the CTA without one opens a bottom sheet, and picking a size completes the
+ * add. The header bag pulses off the cart count, so this file doesn't need to
+ * know the header exists.
  *
  * Sizes: products carry no real variants yet, so we fall back to a standard
  * size run and record the choice on the cart line via `specialInstructions`.
@@ -33,7 +32,6 @@ const money = new Intl.NumberFormat(brand.locale.replace("_", "-"), {
 });
 
 type Status = "idle" | "adding" | "added";
-type Action = "add" | "buy";
 
 export function ProductDetail({
   product,
@@ -42,7 +40,6 @@ export function ProductDetail({
   product: ProductWithDetails;
   related: Product[];
 }) {
-  const router = useRouter();
   const { addItem } = useCart();
   const p = brand.pdp;
 
@@ -65,10 +62,10 @@ export function ProductDetail({
   const [wished, setWished] = useState(false);
   const [copied, setCopied] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
-  const [pending, setPending] = useState<Action | null>(null);
+  const [pendingAdd, setPendingAdd] = useState(false);
 
   /** Perform the add for a known size. */
-  async function commit(action: Action, size: SizeOption | null) {
+  async function commit(size: SizeOption | null) {
     if (status !== "idle") return;
     setStatus("adding");
     try {
@@ -78,29 +75,29 @@ export function ProductDetail({
       });
       setStatus("added");
       window.setTimeout(() => setStatus("idle"), 1800);
-      if (action === "buy") router.push("/checkout");
     } catch {
       setStatus("idle");
     }
   }
 
-  /** Entry point for both CTAs: ask for a size first if one is still needed. */
-  function request(action: Action) {
+  /** CTA entry point: ask for a size first if one is still needed. */
+  function request() {
     if (sizes.length > 0 && !selected) {
-      setPending(action);
+      setPendingAdd(true);
       setSheetOpen(true);
       return;
     }
-    void commit(action, selected);
+    void commit(selected);
   }
 
-  /** Sheet selection resumes whatever the shopper originally tapped. */
+  /** Sheet selection resumes the add the shopper originally tapped. */
   function pickSize(i: number) {
     setSizeIdx(i);
     setSheetOpen(false);
-    const action = pending;
-    setPending(null);
-    if (action) void commit(action, sizes[i]);
+    if (pendingAdd) {
+      setPendingAdd(false);
+      void commit(sizes[i]);
+    }
   }
 
   async function share() {
@@ -193,21 +190,13 @@ export function ProductDetail({
               <div className="flex min-w-0 flex-1 flex-col gap-2.5">
                 <button
                   type="button"
-                  onClick={() => request("add")}
+                  onClick={request}
                   disabled={status !== "idle"}
                   className="w-full rounded-full bg-foreground px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
                 >
                   {ctaLabel(status, p.addToCartLabel)}
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => request("buy")}
-                  disabled={status !== "idle"}
-                  className="w-full rounded-full border border-foreground/30 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground transition-colors duration-200 hover:bg-foreground hover:text-background disabled:opacity-60"
-                >
-                  {p.buyNowLabel}
-                </button>
               </div>
             </div>
 
@@ -289,7 +278,7 @@ export function ProductDetail({
         onPick={pickSize}
         onClose={() => {
           setSheetOpen(false);
-          setPending(null);
+          setPendingAdd(false);
         }}
       />
     </>
