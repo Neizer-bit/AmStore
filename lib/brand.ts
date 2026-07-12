@@ -248,7 +248,14 @@ export interface Brand {
   pdp: {
     sizeLabel: string;
     sizeGuideLabel: string;
-    sizeGuideHref: string;
+    /** Chart shown in the size-guide modal. */
+    sizeGuide: {
+      title: string;
+      body: string;
+      columns: string[];
+      rows: string[][];
+      note: string;
+    };
     /** Fallback size run, used when a product carries no real variants. */
     sizes: string[];
     quantityLabel: string;
@@ -742,7 +749,18 @@ export const brand: Brand = {
   pdp: {
     sizeLabel: "Size",
     sizeGuideLabel: "Size Guide",
-    sizeGuideHref: "/faq",
+    sizeGuide: {
+      title: "Size Guide",
+      body: "Find your perfect fit with our size guide.",
+      columns: ["Size", "UK", "Bust", "Waist", "Hips"],
+      rows: [
+        ["S", "8–10", "84–89 cm", "66–71 cm", "91–96 cm"],
+        ["M", "12", "90–95 cm", "72–77 cm", "97–102 cm"],
+        ["L", "14", "96–101 cm", "78–83 cm", "103–108 cm"],
+        ["XL", "16", "102–107 cm", "84–89 cm", "109–114 cm"],
+      ],
+      note: "All measurements are in centimeters (cm). Measurements may vary slightly by style.",
+    },
     sizes: ["XS", "S", "M", "L", "XL"],
     quantityLabel: "Quantity",
     addToCartLabel: "Add to Cart",

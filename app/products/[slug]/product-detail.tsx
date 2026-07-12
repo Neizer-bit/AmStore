@@ -5,6 +5,7 @@ import { useState } from "react";
 import { parsePrice, type Product, type ProductWithDetails } from "@cimplify/sdk";
 import { useCart } from "@cimplify/sdk/react";
 import { ProductGallery } from "@/components/product-gallery";
+import { SizeGuideModal } from "@/components/size-guide-modal";
 import { SizeSheet, type SizeOption } from "@/components/size-sheet";
 import { StoreProductCard } from "@/components/store-product-card";
 import { brand } from "@/lib/brand";
@@ -63,6 +64,7 @@ export function ProductDetail({
   const [copied, setCopied] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [pendingAdd, setPendingAdd] = useState(false);
+  const [guideOpen, setGuideOpen] = useState(false);
 
   /** Perform the add for a known size. */
   async function commit(size: SizeOption | null) {
@@ -145,12 +147,13 @@ export function ProductDetail({
               <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-foreground">
                 {p.sizeLabel}
               </span>
-              <Link
-                href={p.sizeGuideHref}
+              <button
+                type="button"
+                onClick={() => setGuideOpen(true)}
                 className="text-[13px] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
               >
                 {p.sizeGuideLabel}
-              </Link>
+              </button>
             </div>
 
             <div className="mt-4 flex flex-wrap gap-2.5">
@@ -270,6 +273,9 @@ export function ProductDetail({
           </div>
         </section>
       )}
+
+      {/* Measurement chart. */}
+      <SizeGuideModal open={guideOpen} onClose={() => setGuideOpen(false)} />
 
       {/* Contextual size prompt. */}
       <SizeSheet
