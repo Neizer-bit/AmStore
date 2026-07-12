@@ -23,8 +23,9 @@ export function MarqueeStrip() {
             <span className="[font-family:var(--font-display)] text-lg font-medium tracking-[0.02em] sm:text-2xl">
               {label}
             </span>
-            {/* Diamond separator. */}
-            <span aria-hidden className="h-1.5 w-1.5 rotate-45 bg-background/45" />
+            <span aria-hidden className="text-sm text-background/50 sm:text-base">
+              ✦
+            </span>
           </span>
         ))}
       </div>

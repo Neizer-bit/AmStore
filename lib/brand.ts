@@ -359,18 +359,15 @@ export const brand: Brand = {
   ],
 
   brandStrip: {
-    headline: "Hand-dyed in Accra — batik, adire, and tie-dye, made by our studio",
+    headline: "Handcrafted in Ghana — authentic batik and adire, made to last",
     brands: [
-      "Batik",
-      "Adire",
-      "Tie-dye",
-      "Indigo",
-      "Kente-trim",
-      "Ankara",
-      "Hand-sewn",
-      "Made in Ghana",
-      "Small-batch",
-      "Slow fashion",
+      "Handcrafted in Ghana",
+      "Limited Collections",
+      "Authentic Batik & Adire",
+      "Slow Fashion",
+      "Made to Last",
+      "Natural Fabrics",
+      "Modern African Elegance",
     ],
   },
 
