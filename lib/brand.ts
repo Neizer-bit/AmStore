@@ -345,7 +345,7 @@ export const brand: Brand = {
   promo: {
     badge: "Limited · while stock lasts",
     title: "The sale edit is live.",
-    body: "Marked-down batik and adire — dresses, skirts, rompers, and sets from GH₵100.",
+    body: "Discover handcrafted batik and adire pieces designed for effortless elegance. Shop flowing dresses, statement skirts, easy rompers, and matching sets.",
     ctaLabel: "Shop the sale",
     ctaHref: "/collections/sale",
   },

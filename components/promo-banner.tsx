@@ -22,7 +22,7 @@ export function PromoBanner({ imageUrl }: { imageUrl?: string }) {
           <h2 className="m-0 mt-4 max-w-md [font-family:var(--font-display)] text-[clamp(1.9rem,4vw,3rem)] font-medium leading-[1.1]">
             {promo.title}
           </h2>
-          <p className="mt-4 max-w-sm leading-relaxed text-background/70">{promo.body}</p>
+          <p className="mt-4 max-w-md leading-relaxed text-background/70">{promo.body}</p>
 
           <Link
             href={promo.ctaHref}
