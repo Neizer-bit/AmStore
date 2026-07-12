@@ -241,7 +241,6 @@ export interface Brand {
     sizeGuideHref: string;
     /** Fallback size run, used when a product carries no real variants. */
     sizes: string[];
-    fitNote: string;
     quantityLabel: string;
     addToCartLabel: string;
     buyNowLabel: string;
@@ -731,7 +730,6 @@ export const brand: Brand = {
     sizeGuideLabel: "Size Guide",
     sizeGuideHref: "/faq",
     sizes: ["XS", "S", "M", "L", "XL"],
-    fitNote: "True to size. Model is 5'8\" and wears size S.",
     quantityLabel: "Quantity",
     addToCartLabel: "Add to Cart",
     buyNowLabel: "Buy Now",

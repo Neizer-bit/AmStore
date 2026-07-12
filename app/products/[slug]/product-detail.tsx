@@ -171,58 +171,45 @@ export function ProductDetail({
               ))}
             </div>
 
-            <p className="mt-4 flex items-center gap-2 text-[13px] text-muted-foreground">
-              <svg
-                viewBox="0 0 20 20"
-                aria-hidden
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                className="h-4 w-4 shrink-0 text-foreground/70"
-              >
-                <circle cx="10" cy="10" r="8" />
-                <path d="M6.5 10.5l2.5 2.5 4.5-5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              {p.fitNote}
-            </p>
-
-            {/* Quantity */}
-            <p className="mt-9 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground">
+            {/* Quantity + purchase actions: stepper on the left, the two CTAs
+                stacked beside it. */}
+            <p className="mt-8 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground">
               {p.quantityLabel}
             </p>
-            <div className="mt-4 inline-flex items-center border border-border">
-              <QtyButton label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))}>
-                −
-              </QtyButton>
-              <span className="w-12 text-center text-sm tabular-nums text-foreground">{qty}</span>
-              <QtyButton label="Increase quantity" onClick={() => setQty((q) => Math.min(99, q + 1))}>
-                +
-              </QtyButton>
-            </div>
+            <div className="mt-4 flex items-start gap-4">
+              <div className="inline-flex shrink-0 items-center border border-border">
+                <QtyButton label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))}>
+                  −
+                </QtyButton>
+                <span className="w-9 text-center text-sm tabular-nums text-foreground">{qty}</span>
+                <QtyButton label="Increase quantity" onClick={() => setQty((q) => Math.min(99, q + 1))}>
+                  +
+                </QtyButton>
+              </div>
 
-            {/* Actions */}
-            <div className="mt-7 space-y-3">
-              <button
-                type="button"
-                onClick={add}
-                disabled={status !== "idle"}
-                className="w-full bg-foreground px-6 py-4 text-[12px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
-              >
-                {status === "added"
-                  ? "Added to cart"
-                  : status === "adding"
-                    ? "Adding…"
-                    : p.addToCartLabel}
-              </button>
+              <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+                <button
+                  type="button"
+                  onClick={add}
+                  disabled={status !== "idle"}
+                  className="w-full rounded-full bg-foreground px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
+                >
+                  {status === "added"
+                    ? "Added to cart"
+                    : status === "adding"
+                      ? "Adding…"
+                      : p.addToCartLabel}
+                </button>
 
-              <button
-                type="button"
-                onClick={buyNow}
-                disabled={status !== "idle"}
-                className="w-full border border-foreground px-6 py-4 text-[12px] font-semibold uppercase tracking-[0.16em] text-foreground transition-colors duration-200 hover:bg-foreground hover:text-background disabled:opacity-60"
-              >
-                {p.buyNowLabel}
-              </button>
+                <button
+                  type="button"
+                  onClick={buyNow}
+                  disabled={status !== "idle"}
+                  className="w-full rounded-full border border-foreground/30 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground transition-colors duration-200 hover:bg-foreground hover:text-background disabled:opacity-60"
+                >
+                  {p.buyNowLabel}
+                </button>
+              </div>
             </div>
 
             {/* Micro-actions */}
@@ -337,7 +324,7 @@ function QtyButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="grid h-12 w-12 place-items-center text-lg text-foreground transition-colors hover:bg-muted"
+      className="grid h-11 w-10 place-items-center text-base text-foreground transition-colors hover:bg-muted"
     >
       {children}
     </button>
