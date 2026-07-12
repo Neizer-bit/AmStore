@@ -243,6 +243,10 @@ export interface Brand {
     sizes: string[];
     quantityLabel: string;
     addToCartLabel: string;
+    /** Primary CTA on the sticky mobile bar. */
+    addToBagLabel: string;
+    /** Bottom-sheet heading when a size still has to be chosen. */
+    selectSizeLabel: string;
     buyNowLabel: string;
     wishlistLabel: string;
     shareLabel: string;
@@ -728,6 +732,8 @@ export const brand: Brand = {
     sizes: ["XS", "S", "M", "L", "XL"],
     quantityLabel: "Quantity",
     addToCartLabel: "Add to Cart",
+    addToBagLabel: "Add to Bag",
+    selectSizeLabel: "Select a size",
     buyNowLabel: "Buy Now",
     wishlistLabel: "Add to Wishlist",
     shareLabel: "Share",

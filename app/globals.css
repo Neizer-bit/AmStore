@@ -114,6 +114,27 @@
     to { transform: translateY(0); }
   }
 
+  /* Cart-icon pulse — fires when an item lands in the bag. Deliberately short
+     and small: a nudge, not a bounce. */
+  .cart-pulse {
+    animation: amayali-cart-pulse 0.65s cubic-bezier(0.22, 0.61, 0.2, 1);
+  }
+  @keyframes amayali-cart-pulse {
+    0%   { transform: scale(1); }
+    28%  { transform: scale(1.2); }
+    55%  { transform: scale(0.95); }
+    100% { transform: scale(1); }
+  }
+
+  /* Bottom sheet rise. */
+  .sheet-rise {
+    animation: amayali-sheet-rise 0.32s cubic-bezier(0.22, 0.61, 0.2, 1);
+  }
+  @keyframes amayali-sheet-rise {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+
   /* Infinite marquee. The track holds the list twice, so translating it -50%
      loops seamlessly. Pauses on hover. */
   .marquee-track {

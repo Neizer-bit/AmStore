@@ -6,6 +6,7 @@ import { useState } from "react";
 import { parsePrice, type Product, type ProductWithDetails } from "@cimplify/sdk";
 import { useCart } from "@cimplify/sdk/react";
 import { ProductGallery } from "@/components/product-gallery";
+import { SizeSheet, type SizeOption } from "@/components/size-sheet";
 import { StoreProductCard } from "@/components/store-product-card";
 import { brand } from "@/lib/brand";
 
@@ -14,6 +15,12 @@ import { brand } from "@/lib/brand";
  * exposes no slots for this structure, so it's replaced wholesale).
  *
  * Left: the media column, scrolls. Right: the buy column, sticky on desktop.
+ * On mobile the CTA also pins to a fixed bar at the bottom of the screen.
+ *
+ * Add-to-bag defers rather than guesses: no size is pre-selected, so tapping
+ * the CTA without one opens a bottom sheet, and picking a size completes the
+ * original action (add or buy). The header bag pulses off the cart count, so
+ * this file doesn't need to know the header exists.
  *
  * Sizes: products carry no real variants yet, so we fall back to a standard
  * size run and record the choice on the cart line via `specialInstructions`.
@@ -27,6 +34,7 @@ const money = new Intl.NumberFormat(brand.locale.replace("_", "-"), {
 });
 
 type Status = "idle" | "adding" | "added";
+type Action = "add" | "buy";
 
 export function ProductDetail({
   product,
@@ -46,35 +54,54 @@ export function ProductDetail({
 
   // Real variants win; otherwise fall back to the standard size run.
   const variantSizes = product.variants?.map((v) => ({ id: v.id, label: v.name ?? v.sku ?? "" })) ?? [];
-  const sizes = variantSizes.length > 0 ? variantSizes : p.sizes.map((s) => ({ id: "", label: s }));
-  const [sizeIdx, setSizeIdx] = useState(() => Math.min(2, sizes.length - 1)); // default to "M"
-  const selected = sizes[sizeIdx];
+  const sizes: SizeOption[] =
+    variantSizes.length > 0 ? variantSizes : p.sizes.map((s) => ({ id: "", label: s }));
+
+  // Nothing pre-selected — the shopper must choose, or the sheet asks them to.
+  const [sizeIdx, setSizeIdx] = useState(-1);
+  const selected = sizeIdx >= 0 ? sizes[sizeIdx] : null;
 
   const [qty, setQty] = useState(1);
   const [status, setStatus] = useState<Status>("idle");
   const [wished, setWished] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
+  const [pending, setPending] = useState<Action | null>(null);
 
-  async function add() {
+  /** Perform the add for a known size. */
+  async function commit(action: Action, size: SizeOption | null) {
     if (status !== "idle") return;
     setStatus("adding");
     try {
       await addItem(product, qty, {
-        ...(selected?.id ? { variantId: selected.id } : {}),
-        ...(selected?.label ? { specialInstructions: `${p.sizeLabel}: ${selected.label}` } : {}),
+        ...(size?.id ? { variantId: size.id } : {}),
+        ...(size?.label ? { specialInstructions: `${p.sizeLabel}: ${size.label}` } : {}),
       });
       setStatus("added");
       window.setTimeout(() => setStatus("idle"), 1800);
-      return true;
+      if (action === "buy") router.push("/checkout");
     } catch {
       setStatus("idle");
-      return false;
     }
   }
 
-  async function buyNow() {
-    const ok = await add();
-    if (ok) router.push("/checkout");
+  /** Entry point for both CTAs: ask for a size first if one is still needed. */
+  function request(action: Action) {
+    if (sizes.length > 0 && !selected) {
+      setPending(action);
+      setSheetOpen(true);
+      return;
+    }
+    void commit(action, selected);
+  }
+
+  /** Sheet selection resumes whatever the shopper originally tapped. */
+  function pickSize(i: number) {
+    setSizeIdx(i);
+    setSheetOpen(false);
+    const action = pending;
+    setPending(null);
+    if (action) void commit(action, sizes[i]);
   }
 
   async function share() {
@@ -98,7 +125,8 @@ export function ProductDetail({
 
   return (
     <>
-      <section className="max-w-7xl mx-auto px-6 sm:px-10 py-12 sm:py-16">
+      {/* pb-32 on mobile keeps the sticky buy bar from covering the content. */}
+      <section className="max-w-7xl mx-auto px-6 sm:px-10 pt-12 pb-32 sm:pt-16 lg:pb-16">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
           {/* ── Media ───────────────────────────────────────────── */}
           <ProductGallery images={images} alt={product.name} />
@@ -167,20 +195,16 @@ export function ProductDetail({
               <div className="flex min-w-0 flex-1 flex-col gap-2.5">
                 <button
                   type="button"
-                  onClick={add}
+                  onClick={() => request("add")}
                   disabled={status !== "idle"}
                   className="w-full rounded-full bg-foreground px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
                 >
-                  {status === "added"
-                    ? "Added to cart"
-                    : status === "adding"
-                      ? "Adding…"
-                      : p.addToCartLabel}
+                  {ctaLabel(status, p.addToCartLabel)}
                 </button>
 
                 <button
                   type="button"
-                  onClick={buyNow}
+                  onClick={() => request("buy")}
                   disabled={status !== "idle"}
                   className="w-full rounded-full border border-foreground/30 px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-foreground transition-colors duration-200 hover:bg-foreground hover:text-background disabled:opacity-60"
                 >
@@ -259,8 +283,46 @@ export function ProductDetail({
           </div>
         </section>
       )}
+
+      {/* ── Sticky mobile buy bar ─────────────────────────────────
+          Pinned full-width at the bottom so the CTA is always in reach.
+          Sits above the back-to-top (z-50) but below the sheet (z-95). */}
+      <div className="fixed inset-x-0 bottom-0 z-[55] border-t border-border bg-background/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden">
+        <div className="mb-2 flex items-baseline justify-between gap-3">
+          <span className="truncate text-[13px] text-muted-foreground">
+            {selected ? `${p.sizeLabel} ${selected.label}` : p.selectSizeLabel}
+          </span>
+          <span className="shrink-0 text-sm font-semibold text-foreground">{money.format(price)}</span>
+        </div>
+        <button
+          type="button"
+          onClick={() => request("add")}
+          disabled={status !== "idle"}
+          className="w-full rounded-full bg-foreground py-4 text-[12px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
+        >
+          {ctaLabel(status, p.addToBagLabel)}
+        </button>
+      </div>
+
+      {/* Contextual size prompt. */}
+      <SizeSheet
+        open={sheetOpen}
+        sizes={sizes}
+        onPick={pickSize}
+        onClose={() => {
+          setSheetOpen(false);
+          setPending(null);
+        }}
+      />
     </>
   );
+}
+
+/** Loading → Added → back to rest. */
+function ctaLabel(status: Status, rest: string) {
+  if (status === "adding") return "Adding…";
+  if (status === "added") return "Added";
+  return rest;
 }
 
 function QtyButton({

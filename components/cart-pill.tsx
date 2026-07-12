@@ -1,7 +1,29 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
 import { useCartDrawer } from "@cimplify/sdk/react";
 import { useCartCount } from "@/lib/cart";
+
+/**
+ * Pulses whenever the cart count goes UP. Driven off the live count rather
+ * than an event, so any add — quick-add from the grid, the PDP, the sticky
+ * bar — animates the bag without those callers knowing about the header.
+ */
+function useAddedPulse(count: number) {
+  const [pulse, setPulse] = useState(false);
+  const prev = useRef(count);
+
+  useEffect(() => {
+    const grew = count > prev.current;
+    prev.current = count;
+    if (!grew) return;
+    setPulse(true);
+    const id = window.setTimeout(() => setPulse(false), 650);
+    return () => window.clearTimeout(id);
+  }, [count]);
+
+  return pulse;
+}
 
 /**
  * Cart pill — dynamic island. Reads the live cart count via the SDK and
@@ -51,6 +73,8 @@ function BagIcon() {
 export function CartIconButton() {
   const { count } = useCartCount();
   const { open } = useCartDrawer();
+  const pulse = useAddedPulse(count);
+
   return (
     <button
       type="button"
@@ -58,7 +82,9 @@ export function CartIconButton() {
       aria-label={`Open cart, ${count} ${count === 1 ? "item" : "items"}`}
       className="relative inline-grid place-items-center w-9 h-9 text-current hover:opacity-70 transition-opacity cursor-pointer"
     >
-      <BagIcon />
+      <span className={pulse ? "cart-pulse inline-grid place-items-center" : "inline-grid place-items-center"}>
+        <BagIcon />
+      </span>
       {count > 0 && (
         <span className="absolute top-0 right-0 min-w-[16px] h-4 px-1 grid place-items-center rounded-full bg-background text-foreground text-[10px] font-bold leading-none">
           {count}
