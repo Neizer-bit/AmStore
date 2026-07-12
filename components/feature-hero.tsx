@@ -15,10 +15,12 @@ interface FeatureHeroProps {
 }
 
 /**
- * Full-bleed cinematic hero: an edge-to-edge photo under a dark scrim, with an
- * oversized headline in caps and the CTAs centred on top. The image still
- * cross-fades and advances on tap — the overlay is pointer-transparent so taps
- * reach the carousel, while the buttons stay clickable.
+ * Full-bleed cinematic hero: the campaign shot covers the entire slide, with
+ * the headline in serif caps and the CTAs centred over a dark scrim.
+ *
+ * The imagery still cross-fades and advances on tap — the caption layer is
+ * pointer-transparent so taps reach the carousel, while the links stay
+ * clickable.
  */
 export function FeatureHero({
   title,
@@ -39,7 +41,7 @@ export function FeatureHero({
         </div>
       )}
 
-      <div className="relative h-[68vh] max-h-[760px] min-h-[440px] w-full overflow-hidden">
+      <div className="relative h-[74vh] max-h-[820px] min-h-[480px] w-full overflow-hidden">
         {gallery.length > 1 ? (
           <HeroCarousel images={gallery} alt={imageAlt} />
         ) : (
@@ -55,18 +57,22 @@ export function FeatureHero({
 
         {/* Scrim — keeps the caption legible. Pointer-transparent so taps still
             advance the carousel; sits below the progress dots (z-20). */}
-        <div className="pointer-events-none absolute inset-0 z-[15] bg-gradient-to-b from-black/35 via-black/40 to-black/50" />
+        <div className="pointer-events-none absolute inset-0 z-[15] bg-gradient-to-b from-black/30 via-black/35 to-black/50" />
 
-        {/* Centred caption. */}
+        {/* Centred caption over the full-bleed shot. */}
         <div className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center px-6 text-center">
           <h1
             data-reveal
-            className="m-0 max-w-4xl [font-family:var(--font-display)] text-[clamp(1.6rem,4.5vw,3.5rem)] font-medium uppercase leading-[1.15] tracking-[0.06em] text-white [text-shadow:0_1px_24px_rgba(0,0,0,0.35)]"
+            className="m-0 max-w-4xl [font-family:var(--font-display)] text-[clamp(1.75rem,4.5vw,3.5rem)] font-medium uppercase leading-[1.15] tracking-[0.06em] text-white [text-shadow:0_1px_24px_rgba(0,0,0,0.35)]"
           >
             {title}
           </h1>
 
-          <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
+          <div
+            data-reveal
+            data-reveal-delay="1"
+            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+          >
             <Link
               href={primaryCta.href}
               className="pointer-events-auto inline-flex items-center justify-center bg-white px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-foreground transition-opacity hover:opacity-90"
