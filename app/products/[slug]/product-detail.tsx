@@ -252,7 +252,7 @@ export function ProductDetail({
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-5 gap-y-14 md:grid-cols-3 lg:grid-cols-4 sm:gap-x-8 sm:gap-y-20">
+          <div className="grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-3 lg:grid-cols-4 sm:gap-x-8 sm:gap-y-20">
             {related.map((r) => (
               <StoreProductCard key={r.id} product={r} />
             ))}

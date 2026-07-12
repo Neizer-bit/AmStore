@@ -125,7 +125,7 @@ export function ShopClient({
       </div>
 
       {visible.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-14 sm:gap-x-8 sm:gap-y-20">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-14 sm:gap-x-8 sm:gap-y-20">
           {visible.map((p) => (
             <StoreProductCard key={p.id} product={p} />
           ))}

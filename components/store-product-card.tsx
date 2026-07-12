@@ -89,16 +89,15 @@ export function StoreProductCard({ product }: { product: Product }) {
           </svg>
         </button>
 
-        {/* Quick add — buy straight from the grid, no product page needed.
-            Always visible on touch; slides up on hover from sm+ . */}
+        {/* Quick add — desktop only, revealed on hover. Hidden on mobile so the
+            imagery stays completely unobstructed in the collection grid. */}
         <button
           type="button"
           onClick={quickAdd}
           disabled={addState !== "idle"}
           aria-label={`Add ${product.name} to cart`}
-          className={`absolute inset-x-2.5 bottom-2.5 z-10 inline-flex items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-semibold shadow-sm backdrop-blur transition-all duration-300 ease-out
-            translate-y-0 opacity-100
-            sm:translate-y-3 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100
+          className={`absolute inset-x-2.5 bottom-2.5 z-10 hidden items-center justify-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-semibold shadow-sm backdrop-blur transition-all duration-300 ease-out
+            sm:inline-flex sm:translate-y-3 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100
             focus-visible:translate-y-0 focus-visible:opacity-100
             ${
               addState === "added"
@@ -133,13 +132,15 @@ export function StoreProductCard({ product }: { product: Product }) {
         </button>
       </div>
 
-      <div className="pt-3 text-left">
+      {/* Caption: clean sans title, price a step bolder. Left-aligned on every
+          card so the grid reads as one clean column edge. */}
+      <div className="pt-4 text-left">
         <Link href={href} className="block">
-          <h3 className="line-clamp-2 [font-family:var(--font-sans)] text-[13px] font-normal normal-case leading-snug tracking-normal text-muted-foreground transition-colors group-hover:text-foreground">
+          <h3 className="line-clamp-2 [font-family:var(--font-sans)] text-[13px] font-normal normal-case leading-relaxed tracking-normal text-foreground/80 transition-colors group-hover:text-foreground">
             {product.name}
           </h3>
         </Link>
-        <p className="mt-0.5 text-sm font-semibold tracking-tight text-foreground">
+        <p className="mt-1.5 [font-family:var(--font-sans)] text-[13px] font-semibold tracking-normal text-foreground">
           {money.format(price)}
         </p>
       </div>
