@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { brand } from "@/lib/brand";
 
@@ -8,9 +9,18 @@ import { brand } from "@/lib/brand";
  * Hamburger button + slide-in drawer for narrow viewports. Header hides
  * its inline nav links below `sm` and renders this in their place; the
  * cart pill stays in the header chrome.
+ *
+ * The drawer is portalled to <body>. The header is a `sticky z-*` element,
+ * which creates a stacking context — so a drawer rendered inside it can never
+ * paint above page content that sits higher in the root context (the hero's
+ * caption layer would show straight through it). Portalling lifts the drawer
+ * into the root stacking context, where its z-index actually means something.
  */
 export function MobileNav() {
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     if (!open) return;
@@ -25,6 +35,62 @@ export function MobileNav() {
       document.body.style.overflow = previousOverflow;
     };
   }, [open]);
+
+  const drawer = (
+    <div className="fixed inset-0 z-[90] sm:hidden">
+      <button
+        type="button"
+        onClick={() => setOpen(false)}
+        aria-label="Close menu"
+        className="absolute inset-0 bg-background/90 backdrop-blur-sm"
+      />
+      <nav
+        id="mobile-nav-drawer"
+        aria-label="Mobile navigation"
+        className="absolute inset-y-0 right-0 flex w-[85%] max-w-sm flex-col border-l border-border bg-background shadow-2xl"
+      >
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+            Menu
+          </span>
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            aria-label="Close menu"
+            className="-mr-2 grid h-11 w-11 place-items-center rounded-md text-foreground transition-colors hover:bg-muted"
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
+        <ul className="flex flex-col gap-1 px-3 py-4">
+          {brand.header.nav.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                onClick={() => setOpen(false)}
+                className="block rounded-md px-3 py-3 text-base font-medium text-foreground transition-colors hover:bg-muted"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    </div>
+  );
 
   return (
     <>
@@ -53,61 +119,7 @@ export function MobileNav() {
         </svg>
       </button>
 
-      {open ? (
-        <div className="fixed inset-0 z-50 sm:hidden">
-          <button
-            type="button"
-            onClick={() => setOpen(false)}
-            aria-label="Close menu"
-            className="absolute inset-0 bg-background/80 backdrop-blur-sm"
-          />
-          <nav
-            id="mobile-nav-drawer"
-            aria-label="Mobile navigation"
-            className="absolute inset-y-0 right-0 w-[85%] max-w-sm flex flex-col bg-background border-l border-border shadow-2xl"
-          >
-            <div className="flex items-center justify-between px-6 py-4 border-b border-border">
-              <span className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-                Menu
-              </span>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label="Close menu"
-                className="grid place-items-center w-11 h-11 -mr-2 rounded-md text-foreground hover:bg-muted transition-colors"
-              >
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  aria-hidden="true"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </svg>
-              </button>
-            </div>
-            <ul className="flex flex-col gap-1 px-3 py-4">
-              {brand.header.nav.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setOpen(false)}
-                    className="block px-3 py-3 rounded-md text-base font-medium text-foreground hover:bg-muted transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-        </div>
-      ) : null}
+      {open && mounted ? createPortal(drawer, document.body) : null}
     </>
   );
 }

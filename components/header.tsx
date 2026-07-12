@@ -32,7 +32,7 @@ export function Header() {
   const mainLinks = brand.header.nav.filter((l) => l !== saleLink);
 
   return (
-    <header className="sticky top-0 z-30 bg-foreground text-background">
+    <header className="sticky top-0 z-40 bg-foreground text-background">
       {/* Row 1: wordmark · search · icons */}
       <div className="flex items-center gap-4 sm:gap-6 px-4 sm:px-6 lg:px-8 py-2.5">
         <Link href="/" className="flex items-baseline gap-2 group shrink-0">
