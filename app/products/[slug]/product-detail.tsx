@@ -15,10 +15,9 @@ import { brand } from "@/lib/brand";
  * exposes no slots for this structure, so it's replaced wholesale).
  *
  * Left: the media column, scrolls. Right: the buy column, sticky on desktop.
- * On mobile the CTA also pins to a fixed bar at the bottom of the screen.
  *
- * Add-to-bag defers rather than guesses: no size is pre-selected, so tapping
- * the CTA without one opens a bottom sheet, and picking a size completes the
+ * Add-to-cart defers rather than guesses: no size is pre-selected, so tapping
+ * a CTA without one opens a bottom sheet, and picking a size completes the
  * original action (add or buy). The header bag pulses off the cart count, so
  * this file doesn't need to know the header exists.
  *
@@ -125,8 +124,7 @@ export function ProductDetail({
 
   return (
     <>
-      {/* pb-32 on mobile keeps the sticky buy bar from covering the content. */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-10 pt-12 pb-32 sm:pt-16 lg:pb-16">
+      <section className="max-w-7xl mx-auto px-6 sm:px-10 py-12 sm:py-16">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
           {/* ── Media ───────────────────────────────────────────── */}
           <ProductGallery images={images} alt={product.name} />
@@ -283,26 +281,6 @@ export function ProductDetail({
           </div>
         </section>
       )}
-
-      {/* ── Sticky mobile buy bar ─────────────────────────────────
-          Pinned full-width at the bottom so the CTA is always in reach.
-          Sits above the back-to-top (z-50) but below the sheet (z-95). */}
-      <div className="fixed inset-x-0 bottom-0 z-[55] border-t border-border bg-background/95 px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-3 backdrop-blur lg:hidden">
-        <div className="mb-2 flex items-baseline justify-between gap-3">
-          <span className="truncate text-[13px] text-muted-foreground">
-            {selected ? `${p.sizeLabel} ${selected.label}` : p.selectSizeLabel}
-          </span>
-          <span className="shrink-0 text-sm font-semibold text-foreground">{money.format(price)}</span>
-        </div>
-        <button
-          type="button"
-          onClick={() => request("add")}
-          disabled={status !== "idle"}
-          className="w-full rounded-full bg-foreground py-4 text-[12px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
-        >
-          {ctaLabel(status, p.addToBagLabel)}
-        </button>
-      </div>
 
       {/* Contextual size prompt. */}
       <SizeSheet
