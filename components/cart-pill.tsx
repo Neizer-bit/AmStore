@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useCartDrawer } from "@cimplify/sdk/react";
 import { useCartCount } from "@/lib/cart";
+import { CartIcon } from "@/components/cart-icon";
 
 /**
  * Pulses whenever the cart count goes UP. Driven off the live count rather
@@ -57,18 +58,10 @@ export function CartPillSkeleton() {
   );
 }
 
-function BagIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-      <path d="M6 8h12l-1 12H7L6 8z" strokeLinejoin="round" />
-      <path d="M9 8V6.5a3 3 0 0 1 6 0V8" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 /**
- * Icon-style cart button for the dark ASOS header. Same behaviour as CartPill
- * (opens the drawer, live count) but rendered as a bag glyph with a count badge.
+ * Icon-style cart button for the dark header. Same behaviour as CartPill
+ * (opens the drawer, live count) but rendered as a trolley glyph with a count
+ * badge, and it pulses whenever the count goes up.
  */
 export function CartIconButton() {
   const { count } = useCartCount();
@@ -83,7 +76,7 @@ export function CartIconButton() {
       className="relative inline-grid place-items-center w-9 h-9 text-current hover:opacity-70 transition-opacity cursor-pointer"
     >
       <span className={pulse ? "cart-pulse inline-grid place-items-center" : "inline-grid place-items-center"}>
-        <BagIcon />
+        <CartIcon />
       </span>
       {count > 0 && (
         <span className="absolute top-0 right-0 min-w-[16px] h-4 px-1 grid place-items-center rounded-full bg-background text-foreground text-[10px] font-bold leading-none">

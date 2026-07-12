@@ -1,24 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { CartIcon } from "@/components/cart-icon";
 
 export type AddStatus = "idle" | "adding" | "added";
-
-function BagIcon() {
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      aria-hidden
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.6"
-      className="h-[15px] w-[15px] shrink-0"
-    >
-      <path d="M6 8h12l-1 12H7L6 8z" strokeLinejoin="round" />
-      <path d="M9 8V6.5a3 3 0 0 1 6 0V8" strokeLinecap="round" />
-    </svg>
-  );
-}
 
 function CheckIcon() {
   return (
@@ -74,7 +59,7 @@ export function AddToCartButton({
           transition={{ duration: 0.18 }}
           className="flex items-center gap-2"
         >
-          {added ? <CheckIcon /> : <BagIcon />}
+          {added ? <CheckIcon /> : <CartIcon className="h-[15px] w-[15px] shrink-0" />}
           {added ? addedLabel : label}
         </motion.span>
       </AnimatePresence>
