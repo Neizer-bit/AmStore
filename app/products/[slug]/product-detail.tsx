@@ -26,29 +26,6 @@ const money = new Intl.NumberFormat(brand.locale.replace("_", "-"), {
   minimumFractionDigits: 2,
 });
 
-const TRUST_ICONS: Record<string, React.ReactNode> = {
-  shipping: (
-    <>
-      <path d="M2 7h11v9H2z" />
-      <path d="M13 10h4l3 3v3h-7z" />
-      <circle cx="6" cy="18" r="1.6" />
-      <circle cx="17" cy="18" r="1.6" />
-    </>
-  ),
-  returns: (
-    <>
-      <path d="M4 9a8 8 0 1 1 1.2 6" />
-      <path d="M3 5v4h4" />
-    </>
-  ),
-  secure: (
-    <>
-      <rect x="4" y="10" width="16" height="10" rx="2" />
-      <path d="M8 10V7a4 4 0 0 1 8 0v3" />
-    </>
-  ),
-};
-
 type Status = "idle" | "adding" | "added";
 
 export function ProductDetail({
@@ -257,30 +234,6 @@ export function ProductDetail({
               </button>
             </div>
 
-            {/* Trust badges */}
-            <hr className="my-9 border-border" />
-            <ul className="m-0 grid list-none grid-cols-1 gap-6 p-0 sm:grid-cols-3 sm:gap-4">
-              {p.trust.map((t) => (
-                <li key={t.title} className="flex items-start gap-3">
-                  <svg
-                    viewBox="0 0 24 24"
-                    aria-hidden
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="mt-0.5 h-5 w-5 shrink-0 text-foreground/70"
-                  >
-                    {TRUST_ICONS[t.iconKey]}
-                  </svg>
-                  <span className="min-w-0">
-                    <span className="block text-[13px] font-semibold text-foreground">{t.title}</span>
-                    <span className="block text-[12px] leading-snug text-muted-foreground">{t.body}</span>
-                  </span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>

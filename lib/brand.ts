@@ -247,7 +247,6 @@ export interface Brand {
     wishlistLabel: string;
     shareLabel: string;
     shareCopiedLabel: string;
-    trust: { iconKey: "shipping" | "returns" | "secure"; title: string; body: string }[];
     relatedTitle: string;
   };
 
@@ -733,11 +732,6 @@ export const brand: Brand = {
     wishlistLabel: "Add to Wishlist",
     shareLabel: "Share",
     shareCopiedLabel: "Link copied",
-    trust: [
-      { iconKey: "shipping", title: "Free Shipping", body: "On orders over GH₵300" },
-      { iconKey: "returns", title: "Easy Returns", body: "14-day return policy" },
-      { iconKey: "secure", title: "Secure Checkout", body: "100% secure payment" },
-    ],
     relatedTitle: "You may also like",
   },
 
