@@ -82,7 +82,7 @@ export function ShopClient({
   }, [products, categoryId, sort]);
 
   return (
-    <section className="max-w-7xl mx-auto px-6 sm:px-8 py-8 sm:py-10">
+    <section className="max-w-7xl mx-auto px-6 sm:px-10 py-14 sm:py-20">
       <div className="border-b border-border pb-3 mb-6">
         <div className="flex flex-wrap items-center justify-end gap-4">
           <label className="flex items-center gap-2 text-sm">
@@ -125,7 +125,7 @@ export function ShopClient({
       </div>
 
       {visible.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-12">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-5 gap-y-14 sm:gap-x-8 sm:gap-y-20">
           {visible.map((p) => (
             <StoreProductCard key={p.id} product={p} />
           ))}

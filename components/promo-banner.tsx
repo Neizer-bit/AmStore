@@ -15,7 +15,7 @@ export function PromoBanner({ imageUrl }: { imageUrl?: string }) {
     <section data-reveal className="relative overflow-hidden bg-foreground text-background">
       <div className="grid lg:grid-cols-2">
         {/* Copy */}
-        <div className="relative z-10 flex flex-col items-start justify-center px-6 py-14 sm:px-10 sm:py-20 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2rem))]">
+        <div className="relative z-10 flex flex-col items-start justify-center px-6 py-20 sm:px-12 sm:py-28 lg:pl-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))]">
           <span className="text-[11px] font-medium uppercase tracking-[0.22em] text-background/55">
             {promo.badge}
           </span>

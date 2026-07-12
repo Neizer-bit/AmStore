@@ -19,15 +19,15 @@ export function CategoryTiles({ categories }: { categories: Category[] }) {
   if (categories.length === 0) return null;
 
   return (
-    <section aria-label="Shop by category" className="pt-9 pb-12 sm:pt-11 sm:pb-14">
+    <section aria-label="Shop by category" className="pt-12 pb-24 sm:pt-14 sm:pb-32">
       <h2
         data-reveal
-        className="m-0 mb-6 px-6 text-center [font-family:var(--font-display)] text-[clamp(1.375rem,2.4vw,1.875rem)] font-medium tracking-[0.04em] text-foreground sm:mb-8"
+        className="m-0 mb-8 px-6 text-center [font-family:var(--font-display)] text-[clamp(1.5rem,2.6vw,2rem)] font-medium tracking-[0.02em] text-foreground sm:mb-10"
       >
         {brand.landing.categories.title}
       </h2>
 
-      <div className="grid grid-cols-2 gap-2 px-2 sm:gap-3 sm:px-3 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-3 px-3 sm:gap-4 sm:px-4 lg:grid-cols-4">
         {(categories as CategoryTile[]).map((cat, i) => (
           <Link
             key={cat.id}

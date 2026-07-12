@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Cormorant_Garamond, Chewy } from "next/font/google";
+import { Inter, JetBrains_Mono, Playfair_Display, Chewy } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/providers";
 import { getServerClient, tags } from "@/lib/store-client";
@@ -27,7 +27,9 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const display = Cormorant_Garamond({
+// High-contrast editorial serif — the thick/thin stroke modulation is what
+// reads as luxury fashion (Cormorant Garamond, the old pick, is low-contrast).
+const display = Playfair_Display({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-display",

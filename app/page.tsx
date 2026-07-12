@@ -76,8 +76,8 @@ export default async function HomePage() {
 
       {/* New in — heading on the left, a taste of the catalogue on the right. */}
       {products.length > 0 && (
-        <section className="max-w-7xl mx-auto px-6 sm:px-8 py-14 sm:py-20">
-          <div className="grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,3fr)] lg:gap-14">
+        <section className="max-w-7xl mx-auto px-6 sm:px-10 py-20 sm:py-28">
+          <div className="grid gap-12 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,3fr)] lg:gap-20">
             <div data-reveal className="lg:self-center">
               <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.22em] text-foreground/55">
                 {featured.eyebrow}
@@ -93,7 +93,7 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-5 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:gap-x-8 lg:grid-cols-4">
               {products.map((p, i) => (
                 <div key={p.id} data-reveal data-reveal-delay={String((i % 4) + 1)}>
                   <StoreProductCard product={p} />

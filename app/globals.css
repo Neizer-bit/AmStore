@@ -41,12 +41,30 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
+
+  /* Body: geometric sans, opened up. The extra tracking + line-height is what
+     separates "editorial" from "default web page". */
+  body {
+    font-family: var(--font-sans), system-ui, sans-serif;
+    letter-spacing: 0.012em;
+    line-height: 1.7;
+  }
+
   a { color: inherit; text-decoration: none; }
+
+  /* Headings: high-contrast serif. Display serifs need NEGATIVE tracking at
+     large sizes (they're drawn loose) and a tight leading, or they read soft. */
   h1, h2, h3, h4 {
-    font-family: var(--font-display), Georgia, "Times New Roman", serif;
-    letter-spacing: -0.01em;
+    font-family: var(--font-display), "Playfair Display", Georgia, serif;
+    letter-spacing: -0.015em;
+    line-height: 1.14;
     font-weight: 500;
     text-transform: none;
+  }
+
+  /* Button + label text: airier tracking, the couture tell. */
+  button, [type="button"], [type="submit"] {
+    letter-spacing: 0.04em;
   }
 }
 

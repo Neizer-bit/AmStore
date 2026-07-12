@@ -10,8 +10,8 @@ export function SocialProof({ images }: { images: string[] }) {
   const { eyebrow, title, followLabel } = brand.landing.social;
 
   return (
-    <section className="max-w-7xl mx-auto px-6 sm:px-8 py-14 sm:py-16">
-      <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-12">
+    <section className="max-w-7xl mx-auto px-6 sm:px-10 py-20 sm:py-28">
+      <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:gap-16">
         <div data-reveal className="shrink-0">
           <p className="mb-2 text-[11px] font-medium uppercase tracking-[0.2em] text-foreground/55">
             {eyebrow}
