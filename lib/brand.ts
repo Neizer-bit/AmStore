@@ -234,6 +234,16 @@ export interface Brand {
     poweredBy?: { label: string; href: string };
   };
 
+  // ─── Product card (grid) ──────────────────────────────────────
+  productCard: {
+    /** Inline size run offered on the card. Kept short so it never wraps in a
+     *  2-up mobile grid. */
+    sizes: string[];
+    addToCartLabel: string;
+    addedLabel: string;
+    selectSizeToast: string;
+  };
+
   // ─── Product detail page ──────────────────────────────────────
   pdp: {
     sizeLabel: string;
@@ -721,6 +731,13 @@ export const brand: Brand = {
       successLabel: "You're in — welcome.",
     },
     poweredBy: { label: "Cimplify", href: "https://app.cimplify.io" },
+  },
+
+  productCard: {
+    sizes: ["S", "M", "L", "XL"],
+    addToCartLabel: "Add to Cart",
+    addedLabel: "Added to Cart",
+    selectSizeToast: "Please select a size.",
   },
 
   pdp: {
