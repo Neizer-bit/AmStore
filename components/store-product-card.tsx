@@ -10,8 +10,10 @@ import { WishlistButton } from "@/components/product-card/wishlist-button";
 import { ProductInfo } from "@/components/product-card/product-info";
 import { SizeSelector } from "@/components/product-card/size-selector";
 import { AddToCartButton, type AddStatus } from "@/components/product-card/add-to-cart-button";
+import { SizeGuideLink } from "@/components/product-card/size-guide-link";
 import { Badge, badgeFor } from "@/components/product-card/badges";
 import { Toast } from "@/components/product-card/toast";
+import { SizeGuideModal } from "@/components/size-guide-modal";
 
 /**
  * Premium product card.
@@ -22,6 +24,7 @@ import { Toast } from "@/components/product-card/toast";
  *  ├── WishlistButton    (spring-pop fill)
  *  ├── ProductInfo       (semi-bold name clamped to 2 lines, bold price)
  *  ├── SizeSelector      (own state per card, defaults to the first size)
+ *  ├── SizeGuideLink     (opens the shared measurement chart)
  *  └── AddToCartButton   (pill CTA → "✓ Added to Cart" → back)
  *
  * Cards sit in a stretched grid, so `h-full` + `mt-auto` on the CTA keeps every
@@ -49,6 +52,7 @@ export function StoreProductCard({ product }: { product: Product }) {
   const [size, setSize] = useState<string | null>(c.sizes[0] ?? null);
   const [status, setStatus] = useState<AddStatus>("idle");
   const [toast, setToast] = useState<string | null>(null);
+  const [guideOpen, setGuideOpen] = useState(false);
 
   const clearToast = useCallback(() => setToast(null), []);
 
@@ -95,6 +99,8 @@ export function StoreProductCard({ product }: { product: Product }) {
 
           <SizeSelector sizes={c.sizes} selected={size} onSelect={setSize} idBase={product.id} />
 
+          <SizeGuideLink onOpen={() => setGuideOpen(true)} />
+
           {/* mt-auto pins the CTA to the bottom so cards stay equal height. */}
           <div className="mt-auto pt-0.5">
             <AddToCartButton
@@ -107,6 +113,7 @@ export function StoreProductCard({ product }: { product: Product }) {
         </div>
       </motion.article>
 
+      <SizeGuideModal open={guideOpen} onClose={() => setGuideOpen(false)} />
       <Toast message={toast} onDone={clearToast} />
     </>
   );
