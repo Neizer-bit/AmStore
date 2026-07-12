@@ -344,8 +344,8 @@ export const brand: Brand = {
 
   promo: {
     badge: "Limited · while stock lasts",
-    title: "The sale edit is live.",
-    body: "Discover handcrafted batik and adire pieces designed for effortless elegance. Shop flowing dresses, statement skirts, easy rompers, and matching sets.",
+    title: "The Sale Edit Has Arrived.",
+    body: "Discover handpicked batik and adire pieces—now at exclusive prices for a limited time.",
     ctaLabel: "Shop the sale",
     ctaHref: "/collections/sale",
   },
