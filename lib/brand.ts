@@ -761,7 +761,7 @@ export const brand: Brand = {
       ],
       note: "All measurements are in centimeters (cm). Measurements may vary slightly by style.",
     },
-    sizes: ["XS", "S", "M", "L", "XL"],
+    sizes: ["S", "M", "L", "XL"],
     quantityLabel: "Quantity",
     addToCartLabel: "Add to Cart",
     selectSizeLabel: "Select a size",
