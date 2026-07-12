@@ -19,10 +19,10 @@ export function CategoryTiles({ categories }: { categories: Category[] }) {
   if (categories.length === 0) return null;
 
   return (
-    <section aria-label="Shop by category" className="py-16 sm:py-20">
+    <section aria-label="Shop by category" className="pt-9 pb-12 sm:pt-11 sm:pb-14">
       <h2
         data-reveal
-        className="m-0 mb-10 px-6 text-center [font-family:var(--font-display)] text-[clamp(1.5rem,2.8vw,2.125rem)] font-medium tracking-[0.01em] text-foreground sm:mb-12"
+        className="m-0 mb-6 px-6 text-center [font-family:var(--font-display)] text-[clamp(1.375rem,2.4vw,1.875rem)] font-medium tracking-[0.04em] text-foreground sm:mb-8"
       >
         {brand.landing.categories.title}
       </h2>
