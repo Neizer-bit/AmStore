@@ -234,6 +234,24 @@ export interface Brand {
     poweredBy?: { label: string; href: string };
   };
 
+  // ─── Product detail page ──────────────────────────────────────
+  pdp: {
+    sizeLabel: string;
+    sizeGuideLabel: string;
+    sizeGuideHref: string;
+    /** Fallback size run, used when a product carries no real variants. */
+    sizes: string[];
+    fitNote: string;
+    quantityLabel: string;
+    addToCartLabel: string;
+    buyNowLabel: string;
+    wishlistLabel: string;
+    shareLabel: string;
+    shareCopiedLabel: string;
+    trust: { iconKey: "shipping" | "returns" | "secure"; title: string; body: string }[];
+    relatedTitle: string;
+  };
+
   // ─── Journal (linked from the footer) ─────────────────────────
   journal: {
     eyebrow: string;
@@ -706,6 +724,26 @@ export const brand: Brand = {
       successLabel: "You're in — welcome.",
     },
     poweredBy: { label: "Cimplify", href: "https://app.cimplify.io" },
+  },
+
+  pdp: {
+    sizeLabel: "Size",
+    sizeGuideLabel: "Size Guide",
+    sizeGuideHref: "/faq",
+    sizes: ["XS", "S", "M", "L", "XL"],
+    fitNote: "True to size. Model is 5'8\" and wears size S.",
+    quantityLabel: "Quantity",
+    addToCartLabel: "Add to Cart",
+    buyNowLabel: "Buy Now",
+    wishlistLabel: "Add to Wishlist",
+    shareLabel: "Share",
+    shareCopiedLabel: "Link copied",
+    trust: [
+      { iconKey: "shipping", title: "Free Shipping", body: "On orders over GH₵300" },
+      { iconKey: "returns", title: "Easy Returns", body: "14-day return policy" },
+      { iconKey: "secure", title: "Secure Checkout", body: "100% secure payment" },
+    ],
+    relatedTitle: "You may also like",
   },
 
   journal: {
