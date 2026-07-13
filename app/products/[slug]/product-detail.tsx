@@ -124,24 +124,26 @@ export function ProductDetail({
 
   return (
     <>
-      <section className="max-w-7xl mx-auto px-6 sm:px-10 py-12 sm:py-16">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16 xl:gap-24">
+      <section className="max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-12">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
           {/* ── Media ───────────────────────────────────────────── */}
           <ProductGallery images={images} alt={product.name} />
 
           {/* ── Buy column (sticky on desktop) ──────────────────── */}
-          <div className="lg:sticky lg:top-28 lg:self-start">
-            <h1 className="m-0 text-[clamp(1.75rem,3vw,2.5rem)] text-foreground">{product.name}</h1>
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <h1 className="m-0 text-[clamp(1.5rem,2.2vw,2rem)] leading-[1.15] text-foreground">
+              {product.name}
+            </h1>
 
-            <p className="mt-4 text-2xl leading-loose text-foreground">{money.format(price)}</p>
+            <p className="mt-3 text-xl text-foreground">{money.format(price)}</p>
 
             {product.description && (
-              <p className="mt-5 max-w-md leading-relaxed text-muted-foreground">
+              <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
                 {product.description}
               </p>
             )}
 
-            <hr className="my-9 border-border" />
+            <hr className="my-6 border-border" />
 
             {/* Size */}
             <div className="flex items-baseline justify-between gap-4">
@@ -158,14 +160,14 @@ export function ProductDetail({
               </button>
             </div>
 
-            <div className="mt-4 flex flex-wrap gap-2.5">
+            <div className="mt-3 flex flex-wrap gap-2">
               {sizes.map((s, i) => (
                 <button
                   key={s.label + i}
                   type="button"
                   onClick={() => setSizeIdx(i)}
                   aria-pressed={i === sizeIdx}
-                  className={`h-12 min-w-[3.5rem] border px-4 text-sm transition-colors duration-200 ${
+                  className={`h-10 min-w-[3rem] border px-3.5 text-[13px] transition-colors duration-200 ${
                     i === sizeIdx
                       ? "border-foreground bg-foreground text-background"
                       : "border-border text-foreground hover:border-foreground"
@@ -178,10 +180,10 @@ export function ProductDetail({
 
             {/* Quantity + purchase actions: stepper on the left, the two CTAs
                 stacked beside it. */}
-            <p className="mt-8 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground">
+            <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground">
               {p.quantityLabel}
             </p>
-            <div className="mt-4 flex items-start gap-4">
+            <div className="mt-3 flex items-start gap-3">
               <div className="inline-flex shrink-0 items-center border border-border">
                 <QtyButton label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))}>
                   −
@@ -197,7 +199,7 @@ export function ProductDetail({
                   type="button"
                   onClick={request}
                   disabled={status !== "idle"}
-                  className="w-full rounded-full bg-foreground px-6 py-3 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
+                  className="w-full rounded-full bg-foreground px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.16em] text-background transition-opacity duration-200 hover:opacity-85 disabled:opacity-60"
                 >
                   {ctaLabel(status, p.addToCartLabel)}
                 </button>
@@ -206,7 +208,7 @@ export function ProductDetail({
             </div>
 
             {/* Micro-actions */}
-            <div className="mt-6 flex items-center gap-8">
+            <div className="mt-5 flex items-center gap-8">
               <button
                 type="button"
                 onClick={() => setWished((v) => !v)}
@@ -314,7 +316,7 @@ function QtyButton({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="grid h-11 w-10 place-items-center text-base text-foreground transition-colors hover:bg-muted"
+      className="grid h-10 w-9 place-items-center text-base text-foreground transition-colors hover:bg-muted"
     >
       {children}
     </button>

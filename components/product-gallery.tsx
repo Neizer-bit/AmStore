@@ -25,7 +25,11 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
 
   return (
     <div>
-      <div className="group relative aspect-[4/5] w-full overflow-hidden bg-muted">
+      {/* The frame keeps its 4:5 crop, but on desktop its width is capped so the
+          derived height (width × 1.25) can never outgrow the viewport — an
+          uncapped half-column renders ~700px tall and pushes the buy column
+          off-screen. Capping width, not height, preserves the ratio exactly. */}
+      <div className="group relative mx-auto aspect-[4/5] w-full overflow-hidden bg-muted lg:max-w-[max(18rem,calc((100svh_-_13rem)_*_0.8))]">
         <Image
           key={images[active]}
           src={images[active]}
