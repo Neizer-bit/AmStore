@@ -116,7 +116,7 @@ export function StoreProductCard({ product }: { product: Product }) {
               the inner one, handing the column back the exact child structure it
               had before — pills on their own, then Size Guide + CTA on one row,
               bottom-pinned by `mt-auto` so every card's CTA aligns. */}
-          <div className="mt-5 flex flex-wrap items-center gap-x-2 gap-y-3 md:mt-0 md:contents">
+          <div className="mt-4 flex flex-wrap items-center gap-x-2 gap-y-2.5 md:mt-0 md:contents">
             {/* `min-w-fit` is the guard. With `min-w-0` the pill run was
                 compressible, so in the narrow landing rail the Size Guide won
                 the row and squeezed the four pills into five stacked lines.

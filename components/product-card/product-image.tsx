@@ -21,7 +21,11 @@ export function ProductImage({
 }) {
   return (
     <Link href={href} aria-label={alt} className="block">
-      <div className="relative aspect-[3/4] w-full overflow-hidden bg-muted">
+      {/* Square on mobile. At 3:4 a full-width card in the single-column grid
+          gave a 427px-tall photo and a ~700px card — one product per screen.
+          A 1:1 crop takes ~110px out of the card without touching the type.
+          Desktop keeps its 3:4 portrait. */}
+      <div className="relative aspect-square w-full overflow-hidden bg-muted md:aspect-[3/4]">
         {src ? (
           <motion.div
             className="absolute inset-0"
