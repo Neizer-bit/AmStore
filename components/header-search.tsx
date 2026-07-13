@@ -189,7 +189,7 @@ export function HeaderSearch({ className = "" }: { className?: string }) {
     router.push(href);
   }
 
-  /** Resolve the raw term the same way a bare submit does (category → product → shop). */
+  /** Resolve the raw term the same way a bare submit does (category → product). */
   async function resolveTerm(raw: string) {
     // 1) Category / Sale / Shop All.
     const category = matchCategory(slugKey(raw));
@@ -199,8 +199,12 @@ export function HeaderSearch({ className = "" }: { className?: string }) {
     const product = matchProduct(raw, await loadProducts());
     if (product) return go(product);
 
-    // 3) Nothing matched — show the full shop.
-    go("/");
+    // 3) Nothing matched. Previously this silently dumped the shopper on the
+    //    full shop with no explanation. Instead, hold position and let the
+    //    dropdown surface the "no results" panel with somewhere to go.
+    await loadProducts();
+    setOpen(true);
+    setActive(-1);
   }
 
   function submit(e: React.FormEvent) {
@@ -228,7 +232,16 @@ export function HeaderSearch({ className = "" }: { className?: string }) {
     }
   }
 
-  const showDropdown = open && suggestions.length > 0;
+  const term = q.trim();
+  // A query long enough to have been matched, that matched nothing.
+  const noResults = term.length >= 2 && suggestions.length === 0;
+  const showDropdown = open && (suggestions.length > 0 || noResults);
+
+  // Somewhere to go when the query is a dead end: the real categories, plus a
+  // few pieces actually in the catalogue.
+  const empty = brand.header.searchEmpty;
+  const categoryLinks = brand.header.nav.filter((i) => slugKey(i.label) !== "shopall");
+  const popular = products.slice(0, 3);
 
   return (
     <div ref={rootRef} className={`relative ${className}`}>
@@ -268,7 +281,75 @@ export function HeaderSearch({ className = "" }: { className?: string }) {
         </button>
       </form>
 
-      {showDropdown && (
+      {/* No results: say so plainly, then give the shopper real places to go —
+          the actual categories and a few pieces from the catalogue. */}
+      {showDropdown && noResults && (
+        <div className="absolute left-0 right-0 top-full z-40 mt-2 overflow-hidden rounded-2xl border border-foreground/10 bg-background text-foreground shadow-xl">
+          <div className="border-b border-border px-5 pb-4 pt-5">
+            <p className="m-0 [font-family:var(--font-display)] text-lg font-medium leading-none text-foreground">
+              {empty.title}
+            </p>
+            <p className="mt-2 text-[13px] leading-relaxed text-muted-foreground">
+              <span className="text-foreground">&ldquo;{term}&rdquo;</span> — {empty.hint}
+            </p>
+          </div>
+
+          <div className="px-5 py-4">
+            <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.18em] text-foreground/50">
+              {empty.categoriesLabel}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {categoryLinks.map((c) => (
+                <button
+                  key={c.href}
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    go(c.href);
+                  }}
+                  className="rounded-full border border-foreground/20 px-3.5 py-1.5 text-[13px] text-foreground transition-colors duration-200 hover:border-foreground hover:bg-foreground hover:text-background"
+                >
+                  {c.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {popular.length > 0 && (
+            <div className="border-t border-border pb-2 pt-4">
+              <p className="mb-2 px-5 text-[10px] font-medium uppercase tracking-[0.18em] text-foreground/50">
+                {empty.popularLabel}
+              </p>
+              {popular.map((p) => (
+                <button
+                  key={p.slug}
+                  type="button"
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    go(`/products/${encodeURIComponent(p.slug)}`);
+                  }}
+                  className="flex w-full items-center gap-3 px-5 py-2.5 text-left transition-colors hover:bg-muted/60"
+                >
+                  <span className="relative h-12 w-9 shrink-0 overflow-hidden rounded-md bg-muted">
+                    {p.image && <Image src={p.image} alt="" fill sizes="36px" className="object-cover" />}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate text-sm text-foreground">{p.name}</span>
+                    <span className="block text-[11px] text-muted-foreground">{brand.shortName}</span>
+                  </span>
+                  {p.price != null && (
+                    <span className="shrink-0 text-sm font-semibold text-foreground">
+                      {money.format(p.price)}
+                    </span>
+                  )}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {showDropdown && !noResults && (
         <ul
           id="header-search-suggestions"
           role="listbox"

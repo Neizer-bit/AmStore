@@ -89,6 +89,13 @@ export interface Brand {
     nav: { label: string; href: string }[];
     /** Placeholder for the header search box. */
     searchPlaceholder?: string;
+    /** Copy for the search dropdown's no-results state. */
+    searchEmpty: {
+      title: string;
+      hint: string;
+      categoriesLabel: string;
+      popularLabel: string;
+    };
   };
 
   /** Thin announcement / trust bar above the header (optional). */
@@ -320,6 +327,13 @@ export const brand: Brand = {
   ],
 
   header: {
+    /** Shown in the search dropdown when a query matches nothing. */
+    searchEmpty: {
+      title: "No results found",
+      hint: "We couldn't find a match. Explore these instead.",
+      categoriesLabel: "Shop by category",
+      popularLabel: "Popular right now",
+    },
     nav: [
       { label: "Dresses", href: "/categories/dresses" },
       { label: "Rompers", href: "/categories/rompers" },
