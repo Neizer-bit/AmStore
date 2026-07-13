@@ -40,7 +40,7 @@ export function SizeSelector({
             aria-label={`Size ${size}`}
             whileTap={{ scale: 0.92 }}
             transition={{ type: "spring", stiffness: 500, damping: 28 }}
-            className={`grid h-9 min-w-9 place-items-center rounded-full border px-3 text-[13px] leading-none transition-colors duration-200 md:min-w-9 md:px-2 md:text-[12px] ${
+            className={`grid h-9 min-w-9 place-items-center rounded-full border px-2 text-[13px] leading-none transition-colors duration-200 md:min-w-9 md:px-2 md:text-[12px] ${
               active
                 ? "border-foreground bg-foreground text-background font-semibold"
                 : "border-foreground/20 bg-background text-foreground hover:border-foreground"

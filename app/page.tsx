@@ -104,13 +104,13 @@ export default async function HomePage() {
                   key={p.id}
                   data-reveal
                   data-reveal-delay={String((i % 3) + 1)}
-                  // Width is what sets the card's height here: the image is a
-                  // 3:4 crop, so height ≈ width × 1.33 plus ~17rem of name,
-                  // price, sizes and CTA. At a flat 72% the card ran taller than
-                  // the screen. Deriving the cap from viewport height —
-                  // (100svh − chrome − content) × 0.75 — keeps the *whole* card
-                  // on one screen at any phone size, without cropping the photo.
-                  className="w-[min(64%,calc((100svh_-_21rem)_*_0.75))] shrink-0 snap-start sm:w-[44%] lg:w-auto lg:shrink"
+                  // Width sets the card's height here: the image is a 3:4 crop,
+                  // so height ≈ width × 1.33 plus the name, price, sizes and
+                  // CTA. The viewport-height term keeps the whole card on one
+                  // screen; the 72% floor keeps it wide enough that the four
+                  // size pills still hold a single row (they need ~196px of
+                  // interior — below that they wrap and the card looks broken).
+                  className="w-[min(72%,calc((100svh_-_19rem)_*_0.78))] shrink-0 snap-start sm:w-[44%] lg:w-auto lg:shrink"
                 >
                   <StoreProductCard product={p} />
                 </div>

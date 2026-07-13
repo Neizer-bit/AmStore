@@ -19,6 +19,8 @@ interface OEmbed {
   title?: string;
   thumbnail_url?: string;
   author_name?: string;
+  /** TikTok's official embed markup (blockquote + their script tag). */
+  html?: string;
 }
 
 async function getClip(id: string): Promise<TikTokClip> {
@@ -35,6 +37,7 @@ async function getClip(id: string): Promise<TikTokClip> {
       caption: data.title,
       poster: data.thumbnail_url,
       author: data.author_name,
+      embedHtml: data.html,
     };
   } catch {
     // TikTok unreachable at build/revalidate time — the card still renders and

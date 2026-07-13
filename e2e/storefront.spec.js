@@ -55,7 +55,20 @@ test.describe("landing page", () => {
     // Click-to-load: no third-party iframe until the shopper asks for one.
     await expect(page.locator('iframe[src*="tiktok.com/embed"]')).toHaveCount(0);
     await tiles.first().click();
-    await expect(page.locator('iframe[src*="tiktok.com/embed"]')).toHaveCount(1);
+
+    // Opens in a lightbox, and TikTok's own embed.js builds the player there.
+    // NOTE: the clip cannot actually play from http://localhost — TikTok signs
+    // its media against the referrer and its CDN refuses a localhost origin
+    // (MEDIA_ELEMENT_ERROR: Format error). Playback is verified against the
+    // deployed HTTPS origin, so this asserts the wiring, not the pixels.
+    const dialog = page.getByRole("dialog", { name: /bubu|tiktok/i });
+    await expect(dialog).toBeVisible();
+    await expect(page.locator('iframe[src*="tiktok.com/embed"]')).toHaveCount(1, {
+      timeout: 20000,
+    });
+
+    await page.keyboard.press("Escape");
+    await expect(dialog).toBeHidden();
   });
 
   test("category tile opens that category", async ({ page }) => {
@@ -293,19 +306,28 @@ test.describe("mobile", () => {
     expect(Math.abs(a.height - b.height)).toBeLessThanOrEqual(1);
   });
 
-  test("grid is single-column, and Size Guide shares a line with Add to Cart", async ({ page }) => {
+  test("grid is single-column; Size Guide sits beside the size run", async ({ page }) => {
     await page.goto("/shop");
     const a = await page.locator("article").nth(0).boundingBox();
     const b = await page.locator("article").nth(1).boundingBox();
     expect(Math.round(a.x)).toBe(Math.round(b.x)); // stacked, not side by side
 
     const card = page.locator("article").first();
+    const pills = await card.getByRole("group", { name: "Select a size" }).boundingBox();
+    const pill = await card.getByRole("button", { name: "Size S" }).boundingBox();
     const sg = await card.getByRole("button", { name: "Size Guide" }).boundingBox();
     const cta = await card.getByRole("button", { name: /add to cart/i }).boundingBox();
-    expect(sg.x).toBeLessThan(cta.x); // Size Guide leads
-    const sgMid = sg.y + sg.height / 2;
-    const ctaMid = cta.y + cta.height / 2;
-    expect(Math.abs(sgMid - ctaMid)).toBeLessThanOrEqual(5); // on one line
+
+    // The size run holds a single row — it used to collapse into stacked lines.
+    expect(Math.round(pills.height / pill.height)).toBe(1);
+
+    // Size Guide sits to the right of the pills, on their line.
+    expect(sg.x).toBeGreaterThan(pills.x);
+    expect(Math.abs(sg.y + sg.height / 2 - (pills.y + pills.height / 2))).toBeLessThanOrEqual(12);
+
+    // ...and the CTA takes the row beneath, full width.
+    expect(cta.y).toBeGreaterThan(sg.y);
+    expect(cta.width).toBeGreaterThan(a.width - 45);
   });
 
   test("quick add works on touch (no hover)", async ({ page }) => {

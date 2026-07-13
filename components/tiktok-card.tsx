@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { TikTokModal } from "@/components/tiktok-modal";
 
 export interface TikTokClip {
   id: string;
@@ -9,42 +10,41 @@ export interface TikTokClip {
   caption?: string;
   poster?: string;
   author?: string;
+  /** TikTok's official embed markup, straight from oEmbed. */
+  embedHtml?: string;
 }
 
 /**
  * One 9:16 TikTok tile.
  *
  * Rest: the poster with a scrim, a glass play button, and the caption.
- * Tapped: the poster is swapped for TikTok's own player, so the clip plays
- * in place on the site rather than kicking the shopper out to the app.
+ * Tapped: opens the clip in a lightbox that plays it on the site.
+ *
+ * The player deliberately does NOT render inside the tile. TikTok's embed
+ * carries its own chrome and needs ~325x750 to lay out; squeezed into a ~276px
+ * card it clipped, grew scrollbars, and its play control stopped working. The
+ * lightbox gives it the room it needs.
  *
  * The poster is a plain <img>: next/image is wired to a custom Cimplify loader
  * in next.config, which would rewrite these TikTok CDN URLs and 404 them.
  */
 export function TikTokCard({ clip, watchLabel }: { clip: TikTokClip; watchLabel: string }) {
-  const [playing, setPlaying] = useState(false);
+  const [open, setOpen] = useState(false);
 
   // TikTok's caption is the whole post body, hashtags and all. Strip them for
   // the tile — "#fyp #ghanatiktok🇬🇭" is noise next to a garment.
   const caption = (clip.caption ?? "").replace(/#[^\s#]+/g, "").trim();
 
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ type: "spring", stiffness: 320, damping: 30 }}
-      className="group relative aspect-[9/16] w-[62%] shrink-0 snap-start overflow-hidden rounded-2xl bg-muted shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:w-[40%] lg:w-[calc((100%-4*0.75rem)/5)]"
-    >
-      {playing ? (
-        <iframe
-          src={`https://www.tiktok.com/embed/v2/${clip.id}`}
-          title={caption || "TikTok video"}
-          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-          className="h-full w-full border-0"
-        />
-      ) : (
+    <>
+      <motion.div
+        whileHover={{ y: -4 }}
+        transition={{ type: "spring", stiffness: 320, damping: 30 }}
+        className="group relative aspect-[9/16] w-[62%] shrink-0 snap-start overflow-hidden rounded-2xl bg-muted shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:w-[40%] lg:w-[calc((100%-4*0.75rem)/5)]"
+      >
         <button
           type="button"
-          onClick={() => setPlaying(true)}
+          onClick={() => setOpen(true)}
           aria-label={`${watchLabel}: ${caption || "TikTok video"}`}
           className="block h-full w-full text-left"
         >
@@ -84,7 +84,9 @@ export function TikTokCard({ clip, watchLabel }: { clip: TikTokClip; watchLabel:
             </span>
           </div>
         </button>
-      )}
-    </motion.div>
+      </motion.div>
+
+      {open && <TikTokModal clip={clip} onClose={() => setOpen(false)} />}
+    </>
   );
 }
