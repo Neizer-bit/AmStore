@@ -30,7 +30,7 @@ const PROMO_IMAGE = "/hero/2.jpg";
 const SOCIAL_IMAGES = ["/hero/1.jpg", "/hero/2.jpg", "/hero/3.jpg", "/hero/4.jpg"];
 
 /** How many pieces to preview in the "New in" rail before sending shoppers to /shop. */
-const FEATURED_COUNT = 4;
+const FEATURED_COUNT = 3;
 
 async function getLandingData() {
   const client = getServerClient();
@@ -99,12 +99,12 @@ export default async function HomePage() {
                 in to signal there's more to swipe. It bleeds to the screen edge
                 (-mx/px pair) while the first card stays aligned to the content.
                 Desktop keeps its 4-up grid untouched. */}
-            <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12 lg:overflow-visible lg:px-0 lg:pb-0">
+            <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-12 lg:overflow-visible lg:px-0 lg:pb-0">
               {products.map((p, i) => (
                 <div
                   key={p.id}
                   data-reveal
-                  data-reveal-delay={String((i % 4) + 1)}
+                  data-reveal-delay={String((i % 3) + 1)}
                   className="w-[72%] shrink-0 snap-start sm:w-[44%] lg:w-auto lg:shrink"
                 >
                   <StoreProductCard product={p} />
