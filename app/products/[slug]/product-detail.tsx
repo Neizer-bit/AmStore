@@ -61,7 +61,6 @@ export function ProductDetail({
 
   const [qty, setQty] = useState(1);
   const [status, setStatus] = useState<Status>("idle");
-  const [wished, setWished] = useState(false);
   const [copied, setCopied] = useState(false);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [pendingAdd, setPendingAdd] = useState(false);
@@ -124,28 +123,30 @@ export function ProductDetail({
 
   return (
     <>
-      <section className="max-w-7xl mx-auto px-6 sm:px-10 py-6 sm:py-12">
-        <div className="grid gap-6 sm:gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+      <section className="max-w-7xl mx-auto px-5 sm:px-10 py-4 sm:py-12">
+        <div className="grid gap-5 sm:gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
           {/* ── Media ───────────────────────────────────────────── */}
           <ProductGallery images={images} alt={product.name} />
 
           {/* ── Buy column (sticky on desktop) ──────────────────── */}
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <h1 className="m-0 text-[22px] leading-[1.15] text-foreground sm:text-[clamp(1.5rem,2.2vw,2rem)]">
+            <h1 className="m-0 text-[20px] leading-[1.2] text-foreground sm:text-[clamp(1.5rem,2.2vw,2rem)]">
               {product.name}
             </h1>
 
-            <p className="mt-2 text-lg text-foreground sm:mt-3 sm:text-xl">{money.format(price)}</p>
+            <p className="mt-1.5 text-[17px] text-foreground sm:mt-3 sm:text-xl">
+              {money.format(price)}
+            </p>
 
             {product.description && (
-              // Clamped on mobile: the full blurb runs four lines on a phone and
-              // was single-handedly pushing Add to Cart below the fold.
-              <p className="mt-3 line-clamp-3 max-w-md text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:line-clamp-none sm:text-[15px]">
+              // Clamped to two lines on mobile: the full blurb runs four lines on
+              // a phone and was, on its own, pushing Add to Cart below the fold.
+              <p className="mt-2.5 line-clamp-2 max-w-md text-[13px] leading-relaxed text-muted-foreground sm:mt-4 sm:line-clamp-none sm:text-[15px]">
                 {product.description}
               </p>
             )}
 
-            <hr className="my-4 border-border sm:my-6" />
+            <hr className="my-3.5 border-border sm:my-6" />
 
             {/* Size */}
             <div className="flex items-baseline justify-between gap-4">
@@ -182,10 +183,10 @@ export function ProductDetail({
 
             {/* Quantity + purchase actions: stepper on the left, the two CTAs
                 stacked beside it. */}
-            <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground sm:mt-6">
+            <p className="mt-3.5 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground sm:mt-6">
               {p.quantityLabel}
             </p>
-            <div className="mt-3 flex items-start gap-3">
+            <div className="mt-2.5 flex items-start gap-3 sm:mt-3">
               <div className="inline-flex shrink-0 items-center border border-border">
                 <QtyButton label="Decrease quantity" onClick={() => setQty((q) => Math.max(1, q - 1))}>
                   −
@@ -210,26 +211,7 @@ export function ProductDetail({
             </div>
 
             {/* Micro-actions */}
-            <div className="mt-4 flex items-center gap-8 sm:mt-5">
-              <button
-                type="button"
-                onClick={() => setWished((v) => !v)}
-                aria-pressed={wished}
-                className="inline-flex items-center gap-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  aria-hidden
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className={`h-4 w-4 ${wished ? "fill-foreground stroke-foreground" : "fill-none stroke-current"}`}
-                >
-                  <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
-                </svg>
-                {p.wishlistLabel}
-              </button>
-
+            <div className="mt-3.5 flex items-center gap-8 sm:mt-5">
               <button
                 type="button"
                 onClick={share}
@@ -272,7 +254,7 @@ export function ProductDetail({
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-3 lg:grid-cols-4 sm:gap-x-8 sm:gap-y-20">
+          <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-x-8 sm:gap-y-20">
             {related.map((r) => (
               <StoreProductCard key={r.id} product={r} />
             ))}

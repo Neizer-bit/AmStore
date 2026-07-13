@@ -61,9 +61,14 @@ export function FeatureHero({
 
         {/* Centred caption over the full-bleed shot. */}
         <div className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center px-6 text-center">
+          {/* Mobile: the line was breaking mid-phrase and orphaning "FITS." on a
+              line of its own. `text-balance` splits it evenly instead — "BOLD
+              PRINTS, / EASY FITS." — and the smaller, wider-tracked setting is
+              the house treatment the fashion titles use at this size. Restored
+              to the original clamp/tracking from sm: up, so desktop is unchanged. */}
           <h1
             data-reveal
-            className="m-0 max-w-4xl [font-family:var(--font-display)] text-[clamp(1.75rem,4.5vw,3.5rem)] font-medium uppercase leading-[1.15] tracking-[0.06em] text-white [text-shadow:0_1px_24px_rgba(0,0,0,0.35)]"
+            className="m-0 max-w-[16ch] text-balance [font-family:var(--font-display)] text-[26px] font-medium uppercase leading-[1.35] tracking-[0.11em] text-white [text-shadow:0_1px_24px_rgba(0,0,0,0.35)] sm:max-w-4xl sm:text-wrap sm:text-[clamp(1.75rem,4.5vw,3.5rem)] sm:leading-[1.15] sm:tracking-[0.06em]"
           >
             {title}
           </h1>
@@ -71,7 +76,7 @@ export function FeatureHero({
           <div
             data-reveal
             data-reveal-delay="1"
-            className="mt-8 flex flex-wrap items-center justify-center gap-3"
+            className="mt-7 flex flex-wrap items-center justify-center gap-3 sm:mt-8"
           >
             <Link
               href={primaryCta.href}

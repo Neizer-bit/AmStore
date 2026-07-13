@@ -140,7 +140,7 @@ function CollectionSkeleton() {
           <div className="h-12 w-72 bg-background/20 rounded animate-pulse" />
         </div>
       </section>
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 py-10 sm:py-12">
+      <section className="max-w-7xl mx-auto px-5 sm:px-8 py-10 sm:py-12">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {Array.from({ length: 8 }).map((_, i) => (
             <div key={i} className="aspect-[4/3] bg-muted rounded-2xl animate-pulse" />

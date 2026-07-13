@@ -40,15 +40,10 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
       {images.map((src, i) => {
         const isActive = i === active;
         return (
-          <Image
+          <div
             key={src + i}
-            src={src}
-            alt={i === 0 ? alt : ""}
             aria-hidden={i !== 0}
-            fill
-            sizes="100vw"
-            priority={i === 0}
-            className="object-cover object-[50%_38%] will-change-[opacity,transform]"
+            className="absolute inset-0 will-change-[opacity,transform]"
             style={
               motion
                 ? {
@@ -63,7 +58,33 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
                   }
                 : { opacity: isActive ? 1 : 0 }
             }
-          />
+          >
+            {/* Desktop-only blurred fill. The shots are portrait, so on a wide
+                banner `cover` has to blow them up ~1.3x and crops to a tight
+                band. Contain shows the whole look instead — and this blurred
+                copy of the same frame fills the flanks, so the studio backdrop
+                (which differs per slide) never shows a seam. */}
+            <Image
+              src={src}
+              alt=""
+              aria-hidden
+              fill
+              sizes="100vw"
+              priority={i === 0}
+              className="hidden scale-110 object-cover blur-2xl brightness-[0.92] lg:block"
+            />
+
+            {/* The shot itself. Mobile keeps `cover` (framed as before);
+                desktop contains it so the model reads full-length. */}
+            <Image
+              src={src}
+              alt={i === 0 ? alt : ""}
+              fill
+              sizes="100vw"
+              priority={i === 0}
+              className="object-cover object-[50%_38%] lg:object-contain"
+            />
+          </div>
         );
       })}
 

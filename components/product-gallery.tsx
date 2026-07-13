@@ -31,7 +31,7 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
           phone, pushing the buy column off-screen either way. Capping width
           rather than height preserves the ratio exactly instead of cropping.
           Mobile targets ~38svh of image; desktop keeps its larger budget. */}
-      <div className="group relative mx-auto aspect-[4/5] w-full max-w-[max(9rem,calc(100svh_*_0.3))] overflow-hidden bg-muted sm:max-w-none lg:max-w-[max(18rem,calc((100svh_-_13rem)_*_0.8))]">
+      <div className="group relative mx-auto aspect-[4/5] w-full max-w-[max(9rem,calc((100svh_-_29rem)_*_0.8))] overflow-hidden rounded-xl bg-muted sm:max-w-none sm:rounded-none lg:max-w-[max(18rem,calc((100svh_-_13rem)_*_0.8))]">
         <Image
           key={images[active]}
           src={images[active]}

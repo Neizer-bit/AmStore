@@ -82,7 +82,7 @@ export function ShopClient({
   }, [products, categoryId, sort]);
 
   return (
-    <section className="max-w-7xl mx-auto px-6 sm:px-10 py-14 sm:py-20">
+    <section className="max-w-7xl mx-auto px-5 sm:px-10 py-14 sm:py-20">
       <div className="border-b border-border pb-3 mb-6">
         <div className="flex flex-wrap items-center justify-end gap-4">
           <label className="flex items-center gap-2 text-sm">
@@ -105,7 +105,7 @@ export function ShopClient({
         {/* Category chip "cards" — every breakpoint. A single edge-to-edge
             horizontal scroller on mobile; wraps inline on desktop. Mirrors the
             desktop menu bar. */}
-        <div className="-mx-6 mt-4 overflow-x-auto px-6 sm:mx-0 sm:overflow-visible sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="-mx-5 mt-4 overflow-x-auto px-5 sm:mx-0 sm:overflow-visible sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           <div className="flex w-max gap-2 sm:w-auto sm:flex-wrap">
             <CategoryChip
               label="All"
@@ -125,7 +125,7 @@ export function ShopClient({
       </div>
 
       {visible.length > 0 ? (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-14 sm:gap-x-8 sm:gap-y-20">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-8 sm:gap-x-8 sm:gap-y-20">
           {visible.map((p) => (
             <StoreProductCard key={p.id} product={p} />
           ))}

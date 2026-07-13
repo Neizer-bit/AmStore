@@ -5,7 +5,7 @@ import { FeatureHero } from "@/components/feature-hero";
 import { CategoryTiles } from "@/components/category-tiles";
 import { MarqueeStrip } from "@/components/marquee-strip";
 import { PromoBanner } from "@/components/promo-banner";
-import { SocialProof } from "@/components/social-proof";
+import { TikTokRail } from "@/components/tiktok-rail";
 import { StoreProductCard } from "@/components/store-product-card";
 import { brand } from "@/lib/brand";
 
@@ -25,9 +25,8 @@ const HERO_IMAGES = [
   "/hero/5.jpg",
 ];
 
-/** Lifestyle shots reused for the sale band and the #AmayaliStyle strip. */
+/** Lifestyle shot for the sale band. */
 const PROMO_IMAGE = "/hero/2.jpg";
-const SOCIAL_IMAGES = ["/hero/1.jpg", "/hero/2.jpg", "/hero/3.jpg", "/hero/4.jpg"];
 
 /** How many pieces to preview in the "New in" rail before sending shoppers to /shop. */
 const FEATURED_COUNT = 3;
@@ -105,7 +104,13 @@ export default async function HomePage() {
                   key={p.id}
                   data-reveal
                   data-reveal-delay={String((i % 3) + 1)}
-                  className="w-[72%] shrink-0 snap-start sm:w-[44%] lg:w-auto lg:shrink"
+                  // Width is what sets the card's height here: the image is a
+                  // 3:4 crop, so height ≈ width × 1.33 plus ~17rem of name,
+                  // price, sizes and CTA. At a flat 72% the card ran taller than
+                  // the screen. Deriving the cap from viewport height —
+                  // (100svh − chrome − content) × 0.75 — keeps the *whole* card
+                  // on one screen at any phone size, without cropping the photo.
+                  className="w-[min(64%,calc((100svh_-_21rem)_*_0.75))] shrink-0 snap-start sm:w-[44%] lg:w-auto lg:shrink"
                 >
                   <StoreProductCard product={p} />
                 </div>
@@ -118,8 +123,8 @@ export default async function HomePage() {
       {/* Sale band with a model shot. */}
       <PromoBanner imageUrl={PROMO_IMAGE} />
 
-      {/* #AmayaliStyle */}
-      <SocialProof images={SOCIAL_IMAGES} />
+      {/* #AmayaliStyle — TikTok clips, playable in place. */}
+      <TikTokRail />
     </>
   );
 }

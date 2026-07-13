@@ -147,8 +147,22 @@ export interface Brand {
     categories: { title: string };
     /** Featured product rail + link into the full marketplace. */
     featured: { eyebrow: string; title: string; ctaLabel: string; ctaHref: string };
-    /** UGC / social-proof strip. */
-    social: { eyebrow: string; title: string; followLabel: string };
+    /**
+     * TikTok rail. `videoIds` are the numeric IDs from
+     * tiktok.com/@handle/video/<id>. Thumbnail, caption and author are pulled
+     * from TikTok's public oEmbed endpoint at render time, so adding a clip
+     * here is the only step needed to feature it.
+     */
+    tiktok: {
+      eyebrow: string;
+      title: string;
+      body: string;
+      followLabel: string;
+      handle: string;
+      profileUrl: string;
+      watchLabel: string;
+      videoIds: string[];
+    };
   };
 
   // ─── Marketplace (/shop) header ───────────────────────────────
@@ -269,7 +283,6 @@ export interface Brand {
     addToCartLabel: string;
     /** Bottom-sheet heading when a size still has to be chosen. */
     selectSizeLabel: string;
-    wishlistLabel: string;
     shareLabel: string;
     shareCopiedLabel: string;
     relatedTitle: string;
@@ -420,10 +433,22 @@ export const brand: Brand = {
       ctaHref: "/shop",
     },
 
-    social: {
-      eyebrow: "Loved by you",
+    tiktok: {
+      eyebrow: "As seen on TikTok",
       title: "#AmayaliStyle",
-      followLabel: "Follow us",
+      body: "New drops, dye days and fittings — straight from the studio in Accra.",
+      followLabel: "Follow @amasdaughter",
+      handle: "@amasdaughter",
+      profileUrl: "https://www.tiktok.com/@amasdaughter",
+      watchLabel: "Watch",
+      // Verified embeddable via TikTok's oEmbed endpoint.
+      videoIds: [
+        "7513863646192176390",
+        "7508708088594140421",
+        "7478969133573393669",
+        "7463426280361430278",
+        "7496460470627814662",
+      ],
     },
   },
 
@@ -779,7 +804,6 @@ export const brand: Brand = {
     quantityLabel: "Quantity",
     addToCartLabel: "Add to Cart",
     selectSizeLabel: "Select a size",
-    wishlistLabel: "Add to Wishlist",
     shareLabel: "Share",
     shareCopiedLabel: "Link copied",
     relatedTitle: "You may also like",

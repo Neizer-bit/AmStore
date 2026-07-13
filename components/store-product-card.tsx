@@ -6,7 +6,6 @@ import { parsePrice, type Product } from "@cimplify/sdk";
 import { useCart } from "@cimplify/sdk/react";
 import { brand } from "@/lib/brand";
 import { ProductImage } from "@/components/product-card/product-image";
-import { WishlistButton } from "@/components/product-card/wishlist-button";
 import { ProductInfo } from "@/components/product-card/product-info";
 import { SizeSelector } from "@/components/product-card/size-selector";
 import { AddToCartButton, type AddStatus } from "@/components/product-card/add-to-cart-button";
@@ -21,7 +20,6 @@ import { SizeGuideModal } from "@/components/size-guide-modal";
  * ProductCard
  *  ├── ProductImage      (scales 1.03 while the card is hovered)
  *  ├── Badge             (one editorial tag, if any)
- *  ├── WishlistButton    (spring-pop fill)
  *  ├── ProductInfo       (semi-bold name clamped to 2 lines, bold price)
  *  ├── SizeSelector      (own state per card, defaults to the first size)
  *  ├── SizeGuideLink     (opens the shared measurement chart)
@@ -47,7 +45,6 @@ export function StoreProductCard({ product }: { product: Product }) {
 
   const { addItem } = useCart();
   const [hovered, setHovered] = useState(false);
-  const [wished, setWished] = useState(false);
   // Each card owns its size. Defaults to the first available one.
   const [size, setSize] = useState<string | null>(c.sizes[0] ?? null);
   const [status, setStatus] = useState<AddStatus>("idle");
@@ -87,11 +84,6 @@ export function StoreProductCard({ product }: { product: Product }) {
         <div className="relative">
           <ProductImage src={img} alt={product.name} href={href} hovered={hovered} />
           {badge && <Badge label={badge} />}
-          <WishlistButton
-            wished={wished}
-            onToggle={() => setWished((v) => !v)}
-            label={product.name}
-          />
         </div>
 
         {/* Mobile runs an explicit 4/8/16px spacing scale between blocks rather
@@ -100,23 +92,36 @@ export function StoreProductCard({ product }: { product: Product }) {
         <div className="flex flex-1 flex-col p-4 md:gap-3.5 md:p-3.5">
           <ProductInfo name={product.name} price={money.format(price)} href={href} />
 
-          <div className="mt-4 md:mt-0">
+          <div className="mt-5 md:mt-0">
             <SizeSelector sizes={c.sizes} selected={size} onSelect={setSize} idBase={product.id} />
           </div>
 
-          <div className="mt-1 md:mt-0">
-            <SizeGuideLink onOpen={() => setGuideOpen(true)} />
-          </div>
+          {/* Size Guide left, CTA right — one line at every width now that the
+              mobile grid is single-column.
 
-          {/* Mobile: the reserved 2-line title already equalises card heights,
-              so a fixed 16px sits above the CTA. Desktop keeps `mt-auto`. */}
-          <div className="mt-2 md:mt-auto md:pt-0.5">
-            <AddToCartButton
-              status={status}
-              onClick={handleAdd}
-              label={c.addToCartLabel}
-              addedLabel={c.addedLabel}
-            />
+              The split is intrinsic, not a percentage: the Size Guide takes its
+              natural width (`shrink-0`, ~82px) and the button absorbs whatever
+              is left (`flex-1`). A fixed 35% basis broke in the narrow landing
+              rail — 35% of a ~202px interior is 70px, under the ~74px the label
+              needs, so "Guide" wrapped beneath "Size". This lands at the same
+              ~35/65 on desktop while staying wrap-proof at any card width. */}
+          <div className="mt-1.5 flex flex-wrap items-center gap-2 md:mt-auto md:pt-0.5">
+            <div className="shrink-0">
+              <SizeGuideLink onOpen={() => setGuideOpen(true)} />
+            </div>
+            {/* `min-w` is the guard: the button absorbs the leftover width, but
+                never shrinks below its own label. In the narrow landing rail
+                (~168px interior) there isn't room for both, so the row wraps and
+                the button drops to its own full-width line instead of being
+                crushed to 66px with the text clipped. */}
+            <div className="min-w-[8.5rem] flex-1">
+              <AddToCartButton
+                status={status}
+                onClick={handleAdd}
+                label={c.addToCartLabel}
+                addedLabel={c.addedLabel}
+              />
+            </div>
           </div>
         </div>
       </motion.article>

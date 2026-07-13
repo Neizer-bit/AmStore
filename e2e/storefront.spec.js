@@ -41,6 +41,23 @@ test.describe("landing page", () => {
     await expect(dots.nth(3)).toHaveAttribute("aria-current", "true");
   });
 
+  test("TikTok rail: real posters, and a clip plays in place", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await page.goto("/");
+
+    await expect(page.getByRole("heading", { name: "#AmayaliStyle" })).toBeVisible();
+    const tiles = page.getByRole("button", { name: /^Watch:/ });
+    await expect(tiles).toHaveCount(5);
+
+    // Posters come from TikTok's oEmbed, not from bundled images.
+    await expect(page.locator('img[src*="tiktok"]').first()).toBeVisible();
+
+    // Click-to-load: no third-party iframe until the shopper asks for one.
+    await expect(page.locator('iframe[src*="tiktok.com/embed"]')).toHaveCount(0);
+    await tiles.first().click();
+    await expect(page.locator('iframe[src*="tiktok.com/embed"]')).toHaveCount(1);
+  });
+
   test("category tile opens that category", async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto("/");
@@ -120,7 +137,7 @@ test.describe("product card", () => {
     await expect(page.getByRole("button", { name: /open cart, 1 item/i })).toBeVisible();
   });
 
-  test("size selection is per-card; wishlist toggles", async ({ page }) => {
+  test("size selection is per-card", async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto("/shop");
     const card = page.locator("article").first();
@@ -128,9 +145,16 @@ test.describe("product card", () => {
     await card.getByRole("button", { name: "Size L" }).click();
     await expect(card.getByRole("button", { name: "Size L" })).toHaveAttribute("aria-pressed", "true");
     await expect(card.getByRole("button", { name: "Size S" })).toHaveAttribute("aria-pressed", "false");
+  });
 
-    await card.getByRole("button", { name: /add .* to wishlist/i }).click();
-    await expect(card.getByRole("button", { name: /remove .* from wishlist/i })).toBeVisible();
+  test("wishlist is gone everywhere", async ({ page }) => {
+    await page.setViewportSize(DESKTOP);
+    await page.goto("/shop");
+    await expect(page.getByRole("button", { name: /wishlist/i })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /wishlist/i })).toHaveCount(0);
+
+    await page.goto("/products/abena-tiered-batik-maxi-skirt");
+    await expect(page.getByRole("button", { name: /wishlist/i })).toHaveCount(0);
   });
 
   test("Size Guide opens the measurement chart", async ({ page }) => {
@@ -141,7 +165,11 @@ test.describe("product card", () => {
     const dialog = page.getByRole("dialog", { name: "Size Guide" });
     await expect(dialog).toBeVisible();
     await expect(dialog.getByRole("columnheader", { name: "Bust" })).toBeVisible();
-    await expect(dialog.getByRole("cell", { name: "84–89 cm" })).toBeVisible();
+
+    // Scoped to the S row: "84-89 cm" is S's bust *and* XL's waist, so an
+    // unscoped cell lookup legitimately matches twice.
+    const rowS = dialog.getByRole("row").filter({ hasText: "8–10" });
+    await expect(rowS.getByRole("cell", { name: "84–89 cm" })).toBeVisible();
 
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
@@ -150,14 +178,25 @@ test.describe("product card", () => {
 
 // ── PDP ─────────────────────────────────────────────────────────
 test.describe("product detail page", () => {
+  /**
+   * The buy column only — the "You may also like" rail below is full of product
+   * cards that each carry their own "Add to Cart" and "Size Guide", so an
+   * unscoped lookup matches five buttons and Playwright rightly refuses to
+   * guess. The buy column is the section that owns the <h1>.
+   */
+  function buyColumn(page) {
+    return page.locator("section").filter({ has: page.getByRole("heading", { level: 1 }) });
+  }
+
   test("add to cart with a chosen size and qty", async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto("/products/abena-tiered-batik-maxi-skirt");
+    const buy = buyColumn(page);
 
     await expect(page.getByRole("heading", { level: 1 })).toContainText("Abena");
-    await page.getByRole("button", { name: "M", exact: true }).click();
-    await page.getByRole("button", { name: "Increase quantity" }).click();
-    await page.getByRole("button", { name: /add to cart/i }).click();
+    await buy.getByRole("button", { name: "M", exact: true }).click();
+    await buy.getByRole("button", { name: "Increase quantity" }).click();
+    await buy.getByRole("button", { name: /add to cart/i }).click();
 
     await expect(page.getByRole("button", { name: /open cart, 2 items/i })).toBeVisible();
   });
@@ -166,7 +205,7 @@ test.describe("product detail page", () => {
     await page.setViewportSize(DESKTOP);
     await page.goto("/products/adjoa-smocked-batik-mini-wine");
 
-    await page.getByRole("button", { name: /add to cart/i }).click();
+    await buyColumn(page).getByRole("button", { name: /add to cart/i }).click();
     const sheet = page.getByRole("dialog", { name: /select a size/i });
     await expect(sheet).toBeVisible();
 
@@ -178,7 +217,7 @@ test.describe("product detail page", () => {
   test("Size Guide modal opens from the PDP", async ({ page }) => {
     await page.setViewportSize(DESKTOP);
     await page.goto("/products/abena-tiered-batik-maxi-skirt");
-    await page.getByRole("button", { name: "Size Guide" }).click();
+    await buyColumn(page).getByRole("button", { name: "Size Guide" }).click();
     await expect(page.getByRole("dialog", { name: "Size Guide" })).toBeVisible();
   });
 
@@ -231,7 +270,8 @@ test.describe("mobile", () => {
   test("size pills sit on one row and never overflow the card", async ({ page }) => {
     await page.goto("/shop");
     const card = page.locator("article").first();
-    const pills = card.getByRole("button", { name: /^Size / });
+    // Anchored: a loose /^Size / also swallows the card's "Size Guide" link.
+    const pills = card.getByRole("button", { name: /^Size (S|M|L|XL)$/ });
     await expect(pills).toHaveCount(4);
 
     const all = await pills.all();
@@ -246,11 +286,26 @@ test.describe("mobile", () => {
     expect(new Set(ys).size).toBe(1);
   });
 
-  test("cards in a row are equal height", async ({ page }) => {
+  test("cards are equal height", async ({ page }) => {
     await page.goto("/shop");
     const a = await page.locator("article").nth(0).boundingBox();
     const b = await page.locator("article").nth(1).boundingBox();
     expect(Math.abs(a.height - b.height)).toBeLessThanOrEqual(1);
+  });
+
+  test("grid is single-column, and Size Guide shares a line with Add to Cart", async ({ page }) => {
+    await page.goto("/shop");
+    const a = await page.locator("article").nth(0).boundingBox();
+    const b = await page.locator("article").nth(1).boundingBox();
+    expect(Math.round(a.x)).toBe(Math.round(b.x)); // stacked, not side by side
+
+    const card = page.locator("article").first();
+    const sg = await card.getByRole("button", { name: "Size Guide" }).boundingBox();
+    const cta = await card.getByRole("button", { name: /add to cart/i }).boundingBox();
+    expect(sg.x).toBeLessThan(cta.x); // Size Guide leads
+    const sgMid = sg.y + sg.height / 2;
+    const ctaMid = cta.y + cta.height / 2;
+    expect(Math.abs(sgMid - ctaMid)).toBeLessThanOrEqual(5); // on one line
   });
 
   test("quick add works on touch (no hover)", async ({ page }) => {

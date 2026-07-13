@@ -20,11 +20,11 @@ export function ProductInfo({
   return (
     <div>
       <Link href={href} className="block">
-        <h3 className="line-clamp-2 min-h-[2.6em] [font-family:var(--font-sans)] text-[16px] font-medium normal-case leading-[1.3] tracking-normal text-foreground transition-colors hover:text-foreground md:min-h-0 md:text-[13px] md:font-semibold md:leading-snug md:text-foreground/90">
+        <h3 className="line-clamp-2 min-h-[2.8em] [font-family:var(--font-sans)] text-[15px] font-medium normal-case leading-[1.4] tracking-normal text-foreground transition-colors hover:text-foreground md:min-h-0 md:text-[13px] md:font-semibold md:leading-snug md:text-foreground/90">
           {name}
         </h3>
       </Link>
-      <p className="mt-2 [font-family:var(--font-sans)] text-[18px] font-bold tracking-tight text-foreground md:mt-1.5 md:text-[15px]">
+      <p className="mt-2.5 [font-family:var(--font-sans)] text-[17px] font-bold tracking-tight text-foreground md:mt-1.5 md:text-[15px]">
         {price}
       </p>
     </div>

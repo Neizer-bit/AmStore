@@ -19,7 +19,7 @@ export function ListingClient({ products }: { products: Product[] }) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-x-6 gap-y-14 md:grid-cols-3 lg:grid-cols-4 sm:gap-x-8 sm:gap-y-20">
+    <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-x-8 sm:gap-y-20">
       {products.map((p) => (
         <StoreProductCard key={p.id} product={p} />
       ))}

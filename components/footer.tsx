@@ -97,17 +97,17 @@ export async function Footer() {
   const year = new Date().getFullYear();
   return (
     <footer className="mt-8 border-t border-border bg-muted text-sm text-muted-foreground">
-      <div className="max-w-7xl mx-auto px-6 sm:px-8 pt-14 pb-7 sm:pt-16">
-        <div className="grid gap-10 gap-x-8 sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(3,minmax(0,0.7fr))_1.4fr] lg:gap-x-10">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8 pt-10 pb-6 sm:pt-16 sm:pb-7">
+        <div className="grid gap-7 gap-x-8 sm:gap-10 sm:grid-cols-2 lg:grid-cols-[1.5fr_repeat(3,minmax(0,0.7fr))_1.4fr] lg:gap-x-10">
           {/* Brand */}
           <div className="sm:col-span-2 lg:col-span-1 lg:max-w-xs">
-            <span className="[font-family:var(--font-display)] text-[26px] font-medium leading-none tracking-[0.02em] text-foreground">
+            <span className="[font-family:var(--font-display)] text-[22px] font-medium leading-none tracking-[0.02em] text-foreground sm:text-[26px]">
               {brand.name}
             </span>
-            <p className="mt-4 text-[13px] leading-relaxed">{brand.footer.blurb}</p>
+            <p className="mt-3 text-[13px] leading-relaxed sm:mt-4">{brand.footer.blurb}</p>
 
             {/* Socials — hairline circles, fill on hover. */}
-            <div className="mt-6 flex items-center gap-2">
+            <div className="mt-5 flex items-center gap-2 sm:mt-6">
               {brand.socials.map((s) => (
                 <a
                   key={s.label}
@@ -123,37 +123,45 @@ export async function Footer() {
             </div>
           </div>
 
-          {/* Shop / About / Help */}
-          {brand.footer.sitemap.map((section) => (
-            <nav key={section.title} aria-labelledby={`footer-${section.title}`}>
-              <p
-                id={`footer-${section.title}`}
-                className="mb-4 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground"
-              >
-                {section.title}
-              </p>
-              <ul className="m-0 list-none space-y-3 p-0">
-                {section.links.map((link) => (
-                  <li key={link.label}>
-                    <Link
-                      href={link.href}
-                      className="text-[13px] text-muted-foreground transition-colors duration-300 hover:text-foreground"
-                    >
-                      {link.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-          ))}
+          {/* Shop / About / Help.
+              On mobile these three sit side by side in their own 3-up grid —
+              stacked, they were most of the footer's height. `sm:contents`
+              dissolves the wrapper from sm up, so each <nav> becomes a direct
+              child of the outer grid again and desktop is untouched. */}
+          <div className="grid grid-cols-3 gap-x-4 sm:contents">
+            {brand.footer.sitemap.map((section) => (
+              <nav key={section.title} aria-labelledby={`footer-${section.title}`}>
+                <p
+                  id={`footer-${section.title}`}
+                  className="mb-3 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground sm:mb-4"
+                >
+                  {section.title}
+                </p>
+                <ul className="m-0 list-none space-y-2.5 p-0 sm:space-y-3">
+                  {section.links.map((link) => (
+                    <li key={link.label}>
+                      <Link
+                        href={link.href}
+                        className="text-[13px] text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            ))}
+          </div>
 
           {/* Newsletter */}
           <FooterNewsletter />
         </div>
 
         {/* Contact — a quiet hairline row under the columns. */}
-        <address className="mt-12 not-italic border-t border-border pt-6">
-          <ul className="m-0 flex list-none flex-col gap-3 p-0 text-[13px] sm:flex-row sm:flex-wrap sm:gap-x-8">
+        <address className="mt-7 not-italic border-t border-border pt-5 sm:mt-12 sm:pt-6">
+          {/* Mobile pairs the four lines into two rows instead of four; the
+              hairline `sm:flex` restore hands desktop back its single row. */}
+          <ul className="m-0 grid list-none grid-cols-2 gap-x-4 gap-y-2.5 p-0 text-[13px] sm:flex sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3">
             <ContactRow icon="pin">{brand.contact.address}</ContactRow>
             <ContactRow icon="phone">
               <a href={`tel:${brand.contact.phoneTel}`} className="transition-colors hover:text-foreground">
@@ -169,7 +177,7 @@ export async function Footer() {
           </ul>
         </address>
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-3 border-t border-border pt-5 text-xs sm:flex-row">
+        <div className="mt-5 flex flex-col items-center justify-between gap-2 border-t border-border pt-4 text-xs sm:mt-6 sm:flex-row sm:gap-3 sm:pt-5">
           <p className="m-0">© {year} {brand.name}. All rights reserved.</p>
           {brand.footer.poweredBy && (
             <p className="m-0 inline-flex items-center gap-1.5">

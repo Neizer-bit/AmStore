@@ -13,23 +13,15 @@ import { brand } from "@/lib/brand";
  * search / account / bag icons. All primary links live in the slide-out drawer,
  * and search hides behind a magnifier so it never dominates the bar.
  *
- * Desktop (md+): wordmark left, a large light search pill, and account /
- * wishlist / bag icons on the right, over a second nav row that leads with a
- * highlighted Sale tab.
+ * Desktop (md+): wordmark left, a large light search pill, and account / bag
+ * icons on the right, over a second nav row that leads with a highlighted Sale
+ * tab.
  */
 function PersonIcon() {
   return (
     <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
       <circle cx="12" cy="8" r="3.5" />
       <path d="M5 20c0-3.5 3.1-5.5 7-5.5s7 2 7 5.5" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function HeartIcon() {
-  return (
-    <svg viewBox="0 0 24 24" className="w-[22px] h-[22px]" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
-      <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
     </svg>
   );
 }
@@ -88,13 +80,6 @@ export function Header() {
             className="grid place-items-center w-9 h-9 hover:opacity-70 transition-opacity"
           >
             <PersonIcon />
-          </Link>
-          <Link
-            href="/account"
-            aria-label="Wishlist"
-            className="grid place-items-center w-9 h-9 hover:opacity-70 transition-opacity"
-          >
-            <HeartIcon />
           </Link>
           <Suspense fallback={<CartIconSkeleton />}>
             <CartIconButton />
