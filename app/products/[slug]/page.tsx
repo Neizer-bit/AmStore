@@ -149,7 +149,7 @@ async function ProductContent({
       />
       <nav
         aria-label="Breadcrumb"
-        className="max-w-7xl mx-auto px-6 sm:px-8 pt-6 text-[12px] font-mono text-muted-foreground flex items-center gap-2"
+        className="max-w-7xl mx-auto px-6 sm:px-8 pt-6 text-[12px] font-mono text-muted-foreground hidden sm:flex items-center gap-2"
       >
         <Link href="/" className="hover:text-foreground transition-colors">
           Home

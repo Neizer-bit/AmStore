@@ -124,26 +124,28 @@ export function ProductDetail({
 
   return (
     <>
-      <section className="max-w-7xl mx-auto px-6 sm:px-10 py-10 sm:py-12">
-        <div className="grid gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
+      <section className="max-w-7xl mx-auto px-6 sm:px-10 py-6 sm:py-12">
+        <div className="grid gap-6 sm:gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
           {/* ── Media ───────────────────────────────────────────── */}
           <ProductGallery images={images} alt={product.name} />
 
           {/* ── Buy column (sticky on desktop) ──────────────────── */}
           <div className="lg:sticky lg:top-24 lg:self-start">
-            <h1 className="m-0 text-[clamp(1.5rem,2.2vw,2rem)] leading-[1.15] text-foreground">
+            <h1 className="m-0 text-[22px] leading-[1.15] text-foreground sm:text-[clamp(1.5rem,2.2vw,2rem)]">
               {product.name}
             </h1>
 
-            <p className="mt-3 text-xl text-foreground">{money.format(price)}</p>
+            <p className="mt-2 text-lg text-foreground sm:mt-3 sm:text-xl">{money.format(price)}</p>
 
             {product.description && (
-              <p className="mt-4 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+              // Clamped on mobile: the full blurb runs four lines on a phone and
+              // was single-handedly pushing Add to Cart below the fold.
+              <p className="mt-3 line-clamp-3 max-w-md text-sm leading-relaxed text-muted-foreground sm:mt-4 sm:line-clamp-none sm:text-[15px]">
                 {product.description}
               </p>
             )}
 
-            <hr className="my-6 border-border" />
+            <hr className="my-4 border-border sm:my-6" />
 
             {/* Size */}
             <div className="flex items-baseline justify-between gap-4">
@@ -180,7 +182,7 @@ export function ProductDetail({
 
             {/* Quantity + purchase actions: stepper on the left, the two CTAs
                 stacked beside it. */}
-            <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground">
+            <p className="mt-4 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground sm:mt-6">
               {p.quantityLabel}
             </p>
             <div className="mt-3 flex items-start gap-3">
@@ -208,7 +210,7 @@ export function ProductDetail({
             </div>
 
             {/* Micro-actions */}
-            <div className="mt-5 flex items-center gap-8">
+            <div className="mt-4 flex items-center gap-8 sm:mt-5">
               <button
                 type="button"
                 onClick={() => setWished((v) => !v)}

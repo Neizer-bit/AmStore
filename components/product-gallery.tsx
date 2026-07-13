@@ -25,11 +25,13 @@ export function ProductGallery({ images, alt }: { images: string[]; alt: string 
 
   return (
     <div>
-      {/* The frame keeps its 4:5 crop, but on desktop its width is capped so the
-          derived height (width × 1.25) can never outgrow the viewport — an
-          uncapped half-column renders ~700px tall and pushes the buy column
-          off-screen. Capping width, not height, preserves the ratio exactly. */}
-      <div className="group relative mx-auto aspect-[4/5] w-full overflow-hidden bg-muted lg:max-w-[max(18rem,calc((100svh_-_13rem)_*_0.8))]">
+      {/* The frame keeps its 4:5 crop, but its width is capped against viewport
+          height so the derived height (width × 1.25) can never outgrow the
+          screen — uncapped, it renders ~700px tall on desktop and ~450px on a
+          phone, pushing the buy column off-screen either way. Capping width
+          rather than height preserves the ratio exactly instead of cropping.
+          Mobile targets ~38svh of image; desktop keeps its larger budget. */}
+      <div className="group relative mx-auto aspect-[4/5] w-full max-w-[max(9rem,calc(100svh_*_0.3))] overflow-hidden bg-muted sm:max-w-none lg:max-w-[max(18rem,calc((100svh_-_13rem)_*_0.8))]">
         <Image
           key={images[active]}
           src={images[active]}
