@@ -94,15 +94,23 @@ export function StoreProductCard({ product }: { product: Product }) {
           />
         </div>
 
-        <div className="flex flex-1 flex-col gap-3.5 p-3.5">
+        {/* Mobile runs an explicit 4/8/16px spacing scale between blocks rather
+            than one uniform gap, so each pair sits at its intended distance.
+            Desktop keeps its original uniform `gap-3.5` + `mt-auto`. */}
+        <div className="flex flex-1 flex-col p-4 md:gap-3.5 md:p-3.5">
           <ProductInfo name={product.name} price={money.format(price)} href={href} />
 
-          <SizeSelector sizes={c.sizes} selected={size} onSelect={setSize} idBase={product.id} />
+          <div className="mt-4 md:mt-0">
+            <SizeSelector sizes={c.sizes} selected={size} onSelect={setSize} idBase={product.id} />
+          </div>
 
-          <SizeGuideLink onOpen={() => setGuideOpen(true)} />
+          <div className="mt-1 md:mt-0">
+            <SizeGuideLink onOpen={() => setGuideOpen(true)} />
+          </div>
 
-          {/* mt-auto pins the CTA to the bottom so cards stay equal height. */}
-          <div className="mt-auto pt-0.5">
+          {/* Mobile: the reserved 2-line title already equalises card heights,
+              so a fixed 16px sits above the CTA. Desktop keeps `mt-auto`. */}
+          <div className="mt-2 md:mt-auto md:pt-0.5">
             <AddToCartButton
               status={status}
               onClick={handleAdd}

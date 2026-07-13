@@ -20,7 +20,16 @@ export function SizeSelector({
   if (sizes.length === 0) return null;
 
   return (
-    <div role="group" aria-label="Select a size" className="flex flex-wrap items-center gap-1.5">
+    <div
+      role="group"
+      aria-label="Select a size"
+      // Mobile: an even 4-up grid. A 2-column card only leaves ~119px of
+      // content width, so four 36px pills plus gaps (~168px) could never fit on
+      // one line — they wrapped every time. Letting them share the row equally
+      // keeps the 36px touch height, kills the wrap, and lines them up exactly.
+      // Desktop cards are wide enough, so they keep the original flex-wrap.
+      className="grid grid-cols-4 gap-1.5 md:flex md:flex-wrap md:items-center"
+    >
       {sizes.map((size) => {
         const active = size === selected;
         return (
@@ -32,7 +41,7 @@ export function SizeSelector({
             aria-label={`Size ${size}`}
             whileTap={{ scale: 0.92 }}
             transition={{ type: "spring", stiffness: 500, damping: 28 }}
-            className={`grid h-9 min-w-9 place-items-center rounded-full border px-2 text-[12px] leading-none transition-colors duration-200 ${
+            className={`grid h-9 w-full place-items-center rounded-full border text-[14px] leading-none transition-colors duration-200 md:w-auto md:min-w-9 md:px-2 md:text-[12px] ${
               active
                 ? "border-foreground bg-foreground text-background font-semibold"
                 : "border-foreground/20 bg-background text-foreground hover:border-foreground"

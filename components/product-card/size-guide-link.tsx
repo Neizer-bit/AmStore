@@ -13,7 +13,10 @@ export function SizeGuideLink({ onOpen }: { onOpen: () => void }) {
     <button
       type="button"
       onClick={onOpen}
-      className="group/sg -my-0.5 inline-flex items-center gap-1.5 self-start text-[11px] text-muted-foreground transition-colors duration-200 hover:text-foreground"
+      // `items-center` on the flex row is what actually baselines the glyph
+      // against the label. Mobile gets a 44px-high tap target; desktop keeps
+      // its original compact 11px link.
+      className="group/sg inline-flex min-h-11 items-center gap-1.5 self-start text-[13px] font-medium text-muted-foreground transition-colors duration-200 hover:text-foreground md:-my-0.5 md:min-h-0 md:text-[11px] md:font-normal"
     >
       <TapeMeasureIcon className="h-4 w-4 shrink-0" />
       <span className="underline decoration-transparent underline-offset-[3px] transition-colors duration-200 group-hover/sg:decoration-foreground">

@@ -93,9 +93,20 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-5 gap-y-12 sm:gap-x-8 lg:grid-cols-4">
+            {/* Mobile: a horizontal snap-scroller. The 2x2 grid squeezed each
+                card to ~150px, which is what made this feel cramped — one row
+                lets the cards be ~72% of the viewport, and the next card peeks
+                in to signal there's more to swipe. It bleeds to the screen edge
+                (-mx/px pair) while the first card stays aligned to the content.
+                Desktop keeps its 4-up grid untouched. */}
+            <div className="-mx-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-1 sm:-mx-10 sm:px-10 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-x-8 lg:gap-y-12 lg:overflow-visible lg:px-0 lg:pb-0">
               {products.map((p, i) => (
-                <div key={p.id} data-reveal data-reveal-delay={String((i % 4) + 1)}>
+                <div
+                  key={p.id}
+                  data-reveal
+                  data-reveal-delay={String((i % 4) + 1)}
+                  className="w-[72%] shrink-0 snap-start sm:w-[44%] lg:w-auto lg:shrink"
+                >
                   <StoreProductCard product={p} />
                 </div>
               ))}
