@@ -60,10 +60,15 @@ export function FeatureHero({
           pixel beside her is now doing work.
 
           Desktop only. Mobile keeps the full-bleed banner below, untouched. */}
-      {/* The hero is sized to sit inside ONE window: viewport height minus the
-          two-row header (~9.5rem), capped at 700px. That cap is what keeps the
-          whole banner above the fold on a 900px screen (152 + 700 = 852). */}
-      <div className="hidden lg:grid lg:h-[calc(100svh-9.5rem)] lg:max-h-[700px] lg:min-h-[520px] lg:grid-cols-[1fr_auto] lg:bg-muted">
+      {/* Sized to sit inside ONE window: viewport height minus the two-row
+          header (112px) and a little clearance — 9.5rem covers both, leaving
+          ~40px of the next section visible so the page reads as scrollable.
+
+          `min-h` is deliberately low. At 520px it was overriding the viewport
+          calc on short windows: it overflowed outright below 632px and sat
+          flush against the bottom edge at exactly 632, which is the cut-off
+          the banner was showing. A floor must never outrank "fits the screen". */}
+      <div className="hidden lg:grid lg:h-[calc(100svh-9.5rem)] lg:max-h-[700px] lg:min-h-[380px] lg:grid-cols-[1fr_auto] lg:bg-muted">
         {/* Copy panel */}
         <div className="flex flex-col justify-center px-10 xl:px-14 2xl:px-20">
           <div data-reveal className="max-w-[24rem]">
