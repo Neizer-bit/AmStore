@@ -72,7 +72,7 @@ export function CategoryTiles({ categories }: { categories: Category[] }) {
             <div className="pointer-events-none absolute inset-3 rounded-md border border-white/35 opacity-100 transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] sm:inset-4 sm:scale-[1.03] sm:border-white/50 sm:opacity-0 sm:group-hover:scale-100 sm:group-hover:opacity-100" />
 
             {/* Index — the editorial tell. */}
-            <span className="absolute left-4 top-4 text-[9px] font-medium tabular-nums tracking-[0.2em] text-white/70 transition-colors duration-500 group-hover:text-white sm:left-5 sm:top-5 sm:text-[11px] sm:text-white/60">
+            <span className="absolute left-4 top-4 text-[10px] font-medium tabular-nums tracking-[0.2em] text-white/70 transition-colors duration-500 group-hover:text-white sm:left-5 sm:top-5 sm:text-[11px] sm:text-white/60">
               {String(i + 1).padStart(2, "0")}
             </span>
 

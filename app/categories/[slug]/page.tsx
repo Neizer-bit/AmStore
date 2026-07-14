@@ -96,8 +96,8 @@ async function CategoryContent({
     <>
       <section className="bg-foreground text-background relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.04] pointer-events-none [background-image:radial-gradient(circle_at_2px_2px,white_1px,transparent_0)] [background-size:32px_32px]" />
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 py-12 sm:py-14">
-          <nav className="text-[12px] font-mono text-background/60 mb-3 flex items-center gap-2">
+        <div className="relative max-w-7xl mx-auto px-5 sm:px-8 py-8 sm:py-14">
+          <nav className="text-[12px] font-mono text-background/60 mb-3 hidden sm:flex items-center gap-2">
             <Link href="/" className="hover:text-background transition-colors">Home</Link>
             <span>/</span>
             <Link href="/shop" className="hover:text-background transition-colors">Shop</Link>

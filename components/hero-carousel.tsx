@@ -96,9 +96,13 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
         className="absolute inset-0 z-10 cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
       />
 
-      {/* Progress dots. */}
+      {/* Progress dots.
+          Mobile spreads them to 16px apart. That gap is what lets each dot own a
+          real hit area (see below) without its neighbour's overlapping it — at
+          the desktop 6px spacing, expanded areas collide and the last dot in the
+          DOM swallows taps meant for the others. Desktop keeps gap-1.5. */}
       {images.length > 1 && (
-        <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 flex items-center gap-1.5">
+        <div className="absolute bottom-5 left-1/2 z-20 -translate-x-1/2 flex items-center gap-4 sm:gap-1.5">
           {images.map((src, i) => (
             <button
               key={`dot-${src}-${i}`}
@@ -106,7 +110,13 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
               aria-label={`Show image ${i + 1}`}
               aria-current={i === active}
               onClick={() => go(i)}
-              className={`h-1.5 rounded-full transition-all duration-300 ${
+              // The dot is 6px — a hopeless finger target. A transparent
+              // `::before` grows the *hit* area to ~22x30 without moving the dot
+              // (padding would have shifted the whole strip). It's scoped to
+              // max-sm: on desktop the dots sit 6px apart, so expanded areas
+              // would overlap and one dot would steal its neighbours' clicks —
+              // a mouse doesn't need the help anyway.
+              className={`relative h-1.5 rounded-full transition-all duration-300 max-sm:before:absolute max-sm:before:-inset-x-2 max-sm:before:-inset-y-3 max-sm:before:content-[''] ${
                 i === active ? "w-6 bg-white" : "w-1.5 bg-white/55 hover:bg-white/85"
               }`}
             />

@@ -156,7 +156,7 @@ export function ProductDetail({
               <button
                 type="button"
                 onClick={() => setGuideOpen(true)}
-                className="inline-flex items-center gap-1.5 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+                className="relative inline-flex items-center gap-1.5 text-[13px] text-muted-foreground transition-colors before:absolute before:-inset-x-1 before:-inset-y-2.5 before:content-[''] hover:text-foreground sm:before:hidden"
               >
                 <TapeMeasureIcon className="h-4 w-4 shrink-0" />
                 <span className="underline underline-offset-4">{p.sizeGuideLabel}</span>
@@ -215,7 +215,7 @@ export function ProductDetail({
               <button
                 type="button"
                 onClick={share}
-                className="inline-flex items-center gap-2 text-[13px] text-muted-foreground transition-colors hover:text-foreground"
+                className="relative inline-flex items-center gap-2 text-[13px] text-muted-foreground transition-colors before:absolute before:-inset-x-1 before:-inset-y-2.5 before:content-[''] hover:text-foreground sm:before:hidden"
               >
                 <svg
                   viewBox="0 0 24 24"
@@ -249,7 +249,7 @@ export function ProductDetail({
             </h2>
             <Link
               href="/shop"
-              className="text-[13px] text-muted-foreground underline underline-offset-4 transition-colors hover:text-foreground"
+              className="relative inline-flex items-center text-[13px] text-muted-foreground underline underline-offset-4 transition-colors before:absolute before:-inset-x-2 before:-inset-y-2.5 before:content-[''] hover:text-foreground sm:before:hidden"
             >
               View all
             </Link>

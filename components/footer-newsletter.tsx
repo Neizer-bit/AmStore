@@ -39,12 +39,17 @@ export function FooterNewsletter() {
             onChange={(e) => setEmail(e.target.value)}
             placeholder={n.placeholder}
             aria-label={n.placeholder}
-            className="min-w-0 flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted-foreground"
+            // 44px tall on mobile: the field was a 19px hairline, which is both
+            // a miss-tap and the thing that makes iOS zoom on focus. sm: hands
+            // the original height back to desktop.
+            className="min-w-0 flex-1 bg-transparent text-[13px] text-foreground outline-none placeholder:text-muted-foreground max-sm:h-11"
           />
           <button
             type="submit"
             aria-label={n.submitLabel}
-            className="shrink-0 text-foreground/60 transition-all duration-300 hover:translate-x-0.5 hover:text-foreground"
+            // The arrow glyph stays 16px; the button around it grows to 44 on
+            // mobile so there's something to actually hit.
+            className="shrink-0 text-foreground/60 transition-all duration-300 hover:translate-x-0.5 hover:text-foreground max-sm:grid max-sm:h-11 max-sm:w-11 max-sm:place-items-center"
           >
             <svg
               viewBox="0 0 16 16"

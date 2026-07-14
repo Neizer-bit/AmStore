@@ -23,7 +23,7 @@ export function badgeFor(tags: string[] | undefined): string | null {
 
 export function Badge({ label }: { label: string }) {
   return (
-    <span className="absolute left-2.5 top-2.5 z-10 rounded-full bg-background/95 px-2.5 py-1 text-[9px] font-semibold uppercase tracking-[0.1em] text-foreground shadow-sm backdrop-blur-[2px]">
+    <span className="absolute left-2.5 top-2.5 z-10 rounded-full bg-background/95 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.1em] text-foreground shadow-sm backdrop-blur-[2px] md:text-[9px]">
       {label}
     </span>
   );

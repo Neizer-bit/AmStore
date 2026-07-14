@@ -137,12 +137,16 @@ export async function Footer() {
                 >
                   {section.title}
                 </p>
-                <ul className="m-0 list-none space-y-2.5 p-0 sm:space-y-3">
+                {/* Mobile links were 16px tall — a miss-tap every time. The
+                    min-height gives each a 36px target; dropping the list gap on
+                    mobile pays for most of the extra height, so the footer stays
+                    compact. Desktop keeps its original 13px links and 12px gap. */}
+                <ul className="m-0 list-none space-y-0 p-0 sm:space-y-3">
                   {section.links.map((link) => (
                     <li key={link.label}>
                       <Link
                         href={link.href}
-                        className="text-[13px] text-muted-foreground transition-colors duration-300 hover:text-foreground"
+                        className="inline-flex min-h-9 items-center text-[13px] text-muted-foreground transition-colors duration-300 hover:text-foreground sm:min-h-0"
                       >
                         {link.label}
                       </Link>
@@ -164,12 +168,12 @@ export async function Footer() {
           <ul className="m-0 grid list-none grid-cols-2 gap-x-4 gap-y-2.5 p-0 text-[13px] sm:flex sm:flex-row sm:flex-wrap sm:gap-x-8 sm:gap-y-3">
             <ContactRow icon="pin">{brand.contact.address}</ContactRow>
             <ContactRow icon="phone">
-              <a href={`tel:${brand.contact.phoneTel}`} className="transition-colors hover:text-foreground">
+              <a href={`tel:${brand.contact.phoneTel}`} className="inline-flex min-h-9 items-center transition-colors hover:text-foreground sm:min-h-0">
                 {brand.contact.phone}
               </a>
             </ContactRow>
             <ContactRow icon="mail">
-              <a href={`mailto:${brand.contact.email}`} className="transition-colors hover:text-foreground">
+              <a href={`mailto:${brand.contact.email}`} className="inline-flex min-h-9 items-center transition-colors hover:text-foreground sm:min-h-0">
                 {brand.contact.email}
               </a>
             </ContactRow>
@@ -187,7 +191,7 @@ export async function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={brand.footer.poweredBy.label}
-                className="inline-flex items-center gap-1 text-foreground transition-colors hover:text-foreground/70"
+                className="inline-flex min-h-9 items-center gap-1 text-foreground transition-colors hover:text-foreground/70 sm:min-h-0"
               >
                 <span className="font-semibold tracking-tight">{brand.footer.poweredBy.label}</span>
                 <svg

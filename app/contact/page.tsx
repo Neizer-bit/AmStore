@@ -32,7 +32,7 @@ export default function ContactPage() {
                   <p className="text-xs text-muted-foreground m-0">{line.label}</p>
                   <a
                     href={line.href}
-                    className="text-foreground hover:text-primary transition-colors"
+                    className="inline-flex min-h-9 items-center text-foreground transition-colors hover:text-primary sm:min-h-0"
                   >
                     {line.value}
                   </a>

@@ -40,7 +40,9 @@ export function Header() {
           <MobileNav />
         </div>
 
-        <Link href="/" aria-label={brand.name} className="group flex justify-center px-2">
+        {/* min-h-11 gives the wordmark a full 44px target — it was 29px. This
+            bar is md:hidden, so the desktop wordmark is untouched. */}
+        <Link href="/" aria-label={brand.name} className="group flex min-h-11 items-center justify-center px-2">
           <span className="[font-family:var(--font-brand)] font-bold normal-case text-[28px] leading-none text-background transition-opacity group-hover:opacity-80">
             {brand.shortName}
             <span className="ml-0.5 align-super text-[17px]" aria-hidden>♥</span>

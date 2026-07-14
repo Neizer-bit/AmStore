@@ -38,7 +38,12 @@ export function BackToTop() {
       onClick={toTop}
       aria-label="Back to top"
       tabIndex={shown ? 0 : -1}
-      className={`fixed bottom-6 right-6 z-50 grid h-11 w-11 place-items-center rounded-full bg-foreground text-background shadow-lg transition-all duration-300 ease-out hover:opacity-85 ${
+      // Desktop only. On a phone it parked itself over the bottom-right of a
+      // product card and swallowed taps meant for that card's Size Guide and
+      // Add to Cart — verified in Chromium. A floating button always covers
+      // *something*, and on mobile the thing it covers is the buy flow. Phones
+      // scroll fine without it; fashion apps don't ship one.
+      className={`fixed bottom-6 right-6 z-50 hidden h-11 w-11 place-items-center rounded-full bg-foreground text-background shadow-lg transition-all duration-300 ease-out hover:opacity-85 sm:grid ${
         shown ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
       }`}
     >
