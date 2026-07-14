@@ -41,7 +41,15 @@ export function FeatureHero({
         </div>
       )}
 
-      <div className="relative h-[74vh] max-h-[820px] min-h-[480px] w-full overflow-hidden">
+      {/* Desktop is taller than mobile on purpose.
+          The shots are portrait and shown with `object-contain`, so the model's
+          size is set entirely by the banner's HEIGHT — width just adds empty
+          flanks. Zooming is not an option: the photos are cropped tight to her
+          (1.5–4% headroom/footroom measured), so any scale-up clips her head or
+          feet, and the Ken Burns drift already spends what little margin exists.
+          Taking the banner to ~92vh grows her ~30% and shrinks the flanks.
+          Mobile keeps 74vh and `cover`, untouched. */}
+      <div className="relative h-[74vh] max-h-[820px] min-h-[480px] w-full overflow-hidden lg:h-[92vh] lg:max-h-[1040px]">
         {gallery.length > 1 ? (
           <HeroCarousel images={gallery} alt={imageAlt} />
         ) : (
@@ -58,6 +66,13 @@ export function FeatureHero({
         {/* Scrim — keeps the caption legible. Pointer-transparent so taps still
             advance the carousel; sits below the progress dots (z-20). */}
         <div className="pointer-events-none absolute inset-0 z-[15] bg-gradient-to-b from-black/30 via-black/35 to-black/50" />
+
+        {/* Vignette — desktop only. The flanks are empty studio beige, and a
+            flat field of it competes with the model for attention. Falling the
+            edges away throws the light onto her: she reads as the subject
+            rather than as something centred in a large background. It's an
+            ellipse, so it follows her standing shape rather than boxing it. */}
+        <div className="pointer-events-none absolute inset-0 z-[16] hidden bg-[radial-gradient(ellipse_38%_75%_at_50%_50%,transparent_35%,rgba(0,0,0,0.34)_100%)] lg:block" />
 
         {/* Centred caption over the full-bleed shot. */}
         <div className="pointer-events-none absolute inset-0 z-30 flex flex-col items-center justify-center px-6 text-center">

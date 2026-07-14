@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
+import { backdropFor } from "@/lib/product-backdrop";
 
 /**
  * Hero slideshow. Slides cross-fade into each other while the active shot
@@ -44,8 +45,20 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
             key={src + i}
             aria-hidden={i !== 0}
             className="absolute inset-0 will-change-[opacity,transform]"
-            style={
-              motion
+            style={{
+              // The flanks. Four of the five shots are portrait (0.67) while the
+              // banner is ~2.05 wide, so `cover` would crop 68% of the frame —
+              // the model's legs and most of the garment. Desktop therefore
+              // *contains* the shot, and the space either side is painted in
+              // THIS slide's own studio beige (sampled per image; see
+              // lib/product-backdrop.ts).
+              //
+              // A blurred copy of the frame used to fill that space and it read
+              // as a smear. The backdrops differ per slide (#e1b990 to #ebd1b7),
+              // so one shared colour would band — matched per slide, the join is
+              // invisible. On mobile the shot still covers, so this never shows.
+              backgroundColor: backdropFor(src),
+              ...(motion
                 ? {
                     opacity: isActive ? 1 : 0,
                     // Active slide keeps drifting in; inactive resets ready for its turn.
@@ -56,26 +69,11 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
                       : `${FADE_MS}ms, ${FADE_MS}ms`,
                     transitionTimingFunction: "cubic-bezier(0.4, 0, 0.2, 1), linear",
                   }
-                : { opacity: isActive ? 1 : 0 }
-            }
+                : { opacity: isActive ? 1 : 0 }),
+            }}
           >
-            {/* Desktop-only blurred fill. The shots are portrait, so on a wide
-                banner `cover` has to blow them up ~1.3x and crops to a tight
-                band. Contain shows the whole look instead — and this blurred
-                copy of the same frame fills the flanks, so the studio backdrop
-                (which differs per slide) never shows a seam. */}
-            <Image
-              src={src}
-              alt=""
-              aria-hidden
-              fill
-              sizes="100vw"
-              priority={i === 0}
-              className="hidden scale-110 object-cover blur-2xl brightness-[0.92] lg:block"
-            />
-
-            {/* The shot itself. Mobile keeps `cover` (framed as before);
-                desktop contains it so the model reads full-length. */}
+            {/* Mobile keeps `cover` (framed as before); desktop contains it so
+                the model reads full-length against the matched flanks. */}
             <Image
               src={src}
               alt={i === 0 ? alt : ""}
