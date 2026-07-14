@@ -144,7 +144,7 @@ export interface Brand {
   // ─── Landing page sections ────────────────────────────────────
   landing: {
     /** "Shop by category" tile grid. */
-    categories: { title: string };
+    categories: { eyebrow: string; title: string; ctaLabel: string };
     /** Featured product rail + link into the full marketplace. */
     featured: { eyebrow: string; title: string; ctaLabel: string; ctaHref: string };
     /**
@@ -424,7 +424,11 @@ export const brand: Brand = {
   },
 
   landing: {
-    categories: { title: "Shop By Category" },
+    categories: {
+      eyebrow: "The Edit",
+      title: "Shop By Category",
+      ctaLabel: "Explore",
+    },
 
     featured: {
       eyebrow: "New in",
