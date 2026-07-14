@@ -45,6 +45,8 @@ export function StoreProductCard({ product }: { product: Product }) {
 
   const { addItem } = useCart();
   const [hovered, setHovered] = useState(false);
+  /** Touch-only. See the pointerType guard on the article. */
+  const [pressed, setPressed] = useState(false);
   // Each card owns its size. Defaults to the first available one.
   const [size, setSize] = useState<string | null>(c.sizes[0] ?? null);
   const [status, setStatus] = useState<AddStatus>("idle");
@@ -77,27 +79,48 @@ export function StoreProductCard({ product }: { product: Product }) {
       <motion.article
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
+        // Touch has no hover, so every bit of this card's motion — the push-in,
+        // the lift, the shadow — was dead on a phone. The press drives it
+        // instead. Guarded on pointerType so a desktop mouse-down changes
+        // nothing: `pressed` can only ever be true for touch/pen.
+        onPointerDown={(e) => {
+          if (e.pointerType !== "mouse") setPressed(true);
+        }}
+        onPointerUp={() => setPressed(false)}
+        onPointerCancel={() => setPressed(false)}
+        onPointerLeave={() => setPressed(false)}
         // The card lifts *and* its shadow deepens together — a lift with a
         // static shadow is what made this feel stiff: the card moved but the
         // light didn't. Spring, not a linear tween, so it settles like an object.
         animate={{
           y: hovered ? -6 : 0,
+          scale: pressed ? 0.985 : 1,
           boxShadow: hovered
             ? "0 22px 44px rgba(0,0,0,0.16)"
-            : "0 6px 24px rgba(0,0,0,0.06)",
+            : pressed
+              ? "0 2px 10px rgba(0,0,0,0.10)"
+              : "0 6px 24px rgba(0,0,0,0.06)",
         }}
         transition={{ type: "spring", stiffness: 300, damping: 28 }}
         className="flex h-full flex-col overflow-hidden rounded-2xl bg-card"
       >
         <div className="relative">
-          <ProductImage src={img} alt={product.name} href={href} hovered={hovered} />
+          <ProductImage
+            src={img}
+            alt={product.name}
+            href={href}
+            hovered={hovered}
+            pressed={pressed}
+          />
           {badge && <Badge label={badge} />}
         </div>
 
         {/* Mobile runs an explicit 4/8/16px spacing scale between blocks rather
             than one uniform gap, so each pair sits at its intended distance.
             Desktop keeps its original uniform `gap-3.5` + `mt-auto`. */}
-        <div className="flex flex-1 flex-col p-3.5 md:gap-3.5 md:p-3.5">
+        {/* 16px gutter on mobile against 14px on desktop: the single-column card
+            is 320px wide, and a 14px inset on a card that size reads cramped. */}
+        <div className="flex flex-1 flex-col p-4 md:gap-3.5 md:p-3.5">
           <ProductInfo name={product.name} price={money.format(price)} href={href} />
 
           {/* Sizes, Size Guide and the CTA share one wrapping flex container, so

@@ -31,13 +31,17 @@ export function ProductImage({
   alt,
   href,
   hovered,
+  pressed = false,
 }: {
   src?: string;
   alt: string;
   href: string;
   hovered: boolean;
+  /** Touch-only press from the parent card. */
+  pressed?: boolean;
 }) {
   const EASE = [0.16, 1, 0.3, 1] as const;
+  const active = hovered || pressed;
 
   return (
     <Link href={href} aria-label={alt} className="block">
@@ -45,8 +49,10 @@ export function ProductImage({
         {src ? (
           <motion.div
             className="absolute inset-0"
-            animate={{ scale: hovered ? 1.06 : 1 }}
-            transition={{ duration: 1.2, ease: EASE }}
+            // The press answers immediately (0.45s) — a touch that takes 1.2s to
+            // respond feels broken. Hover keeps its slow couture pace.
+            animate={{ scale: hovered ? 1.06 : pressed ? 1.04 : 1 }}
+            transition={{ duration: pressed ? 0.45 : 1.2, ease: EASE }}
           >
             <Image
               src={src}
@@ -67,8 +73,8 @@ export function ProductImage({
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,transparent_50%,rgba(0,0,0,0.14)_100%)]"
-          animate={{ opacity: hovered ? 1 : 0.75 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          animate={{ opacity: active ? 1 : 0.75 }}
+          transition={{ duration: pressed ? 0.35 : 0.6, ease: EASE }}
         />
 
         {/* Sheen: a soft band of light drawn across the garment on hover. */}

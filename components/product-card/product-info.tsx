@@ -20,11 +20,15 @@ export function ProductInfo({
   return (
     <div>
       <Link href={href} className="block">
-        <h3 className="line-clamp-2 min-h-[2.7em] [font-family:var(--font-sans)] text-[14px] font-medium normal-case leading-[1.35] tracking-normal text-foreground transition-colors hover:text-foreground md:min-h-0 md:text-[13px] md:font-semibold md:leading-snug md:text-foreground/90">
+        <h3 className="line-clamp-2 min-h-[2.7em] [font-family:var(--font-sans)] text-[14px] font-medium normal-case leading-[1.35] tracking-[0.005em] text-foreground/95 transition-colors hover:text-foreground md:min-h-0 md:text-[13px] md:font-semibold md:tracking-normal md:leading-snug md:text-foreground/90">
           {name}
         </h3>
       </Link>
-      <p className="mt-1.5 [font-family:var(--font-sans)] text-[16px] font-bold tracking-tight text-foreground md:mt-1.5 md:text-[15px]">
+      {/* Semibold + tabular on mobile: bold read shouty next to the quiet name,
+          and tabular figures keep every price on the same optical column down
+          the grid — the detail that makes a list of prices look set rather than
+          typed. Desktop keeps its original bold/15px. */}
+      <p className="mt-1.5 [font-family:var(--font-sans)] text-[16px] font-semibold tabular-nums tracking-[-0.01em] text-foreground md:mt-1.5 md:text-[15px] md:font-bold md:tracking-tight">
         {price}
       </p>
     </div>
