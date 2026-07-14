@@ -242,8 +242,8 @@ export function ProductDetail({
 
       {/* ── You may also like ─────────────────────────────────── */}
       {related.length > 0 && (
-        <section className="max-w-7xl mx-auto border-t border-border px-6 sm:px-10 py-16 sm:py-24">
-          <div className="mb-10 flex items-baseline justify-between gap-6">
+        <section className="max-w-7xl mx-auto border-t border-border px-5 sm:px-10 py-12 sm:py-24">
+          <div className="mb-5 flex items-baseline justify-between gap-6 sm:mb-10">
             <h2 className="m-0 text-[11px] font-medium uppercase tracking-[0.18em] text-foreground [font-family:var(--font-sans)]">
               {brand.pdp.relatedTitle}
             </h2>
@@ -254,9 +254,18 @@ export function ProductDetail({
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-x-8 sm:gap-y-20">
+
+          {/* Mobile: a horizontal snap-rail. Stacked one-per-row, four suggestions
+              ran ~2,200px deep — nobody scrolls that far past the thing they came
+              for. Swiping sideways keeps the whole set within a thumb's reach, and
+              the next card peeks in to advertise there's more. The rail bleeds to
+              the screen edge (-mx/px pair) while the first card stays aligned to
+              the copy above it. From sm: up the original grid is restored. */}
+          <div className="-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:gap-x-8 sm:gap-y-20 sm:overflow-visible sm:px-0 sm:pb-0 md:grid-cols-3 lg:grid-cols-4">
             {related.map((r) => (
-              <StoreProductCard key={r.id} product={r} />
+              <div key={r.id} className="w-[75%] shrink-0 snap-start sm:w-auto sm:shrink">
+                <StoreProductCard product={r} />
+              </div>
             ))}
           </div>
         </section>
