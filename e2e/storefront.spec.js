@@ -31,14 +31,41 @@ test.describe("landing page", () => {
     await page.setViewportSize(DESKTOP);
     await page.goto("/");
 
-    const dots = page.locator('button[aria-label^="Show image"]');
+    // The desktop split and the mobile banner are separate markup, so both sets
+    // of dots exist in the DOM and one is display:none. Count only what's shown.
+    const dots = page.locator('button[aria-label^="Show image"]:visible');
     await expect(dots).toHaveCount(5);
 
     await dots.nth(2).click();
     await expect(dots.nth(2)).toHaveAttribute("aria-current", "true");
 
-    await page.getByRole("button", { name: "Next image" }).click();
+    await page.locator('button[aria-label="Next image"]:visible').click();
     await expect(dots.nth(3)).toHaveAttribute("aria-current", "true");
+  });
+
+  test("mobile keeps the full-bleed hero; desktop runs the split diptych", async ({ page }) => {
+    // Mobile: the shot spans the whole viewport width (full-bleed banner).
+    // offsetWidth, not boundingBox: the Ken Burns scale(1.09) inflates the
+    // rendered box, so boundingBox reports 425 for a 390px-wide element.
+    await page.setViewportSize(MOBILE);
+    await page.goto("/");
+    const mobW = await page
+      .locator('img[alt*="Amayali"]:visible')
+      .first()
+      .evaluate((el) => el.offsetWidth);
+    expect(mobW).toBe(MOBILE.width);
+
+    // Desktop: two frames, each cut to the photograph's own 2:3 so the model is
+    // never cropped, and the whole hero sits inside one window.
+    await page.setViewportSize(DESKTOP);
+    await page.goto("/");
+    const frames = page.locator('section img[alt*="Amayali"], section img[alt=""]');
+    const first = await frames.first().boundingBox();
+    expect(Math.abs(first.width / first.height - 2 / 3)).toBeLessThan(0.03);
+
+    const hero = await page.locator("section > div").first().boundingBox();
+    const header = await page.locator("header").first().boundingBox();
+    expect(header.height + hero.height).toBeLessThanOrEqual(DESKTOP.height);
   });
 
   test("TikTok rail: real posters, and a clip plays in place", async ({ page }) => {

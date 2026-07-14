@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useState } from "react";
-import { backdropFor } from "@/lib/product-backdrop";
 
 /**
  * Hero slideshow. Slides cross-fade into each other while the active shot
@@ -46,18 +45,6 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
             aria-hidden={i !== 0}
             className="absolute inset-0 will-change-[opacity,transform]"
             style={{
-              // The flanks. Four of the five shots are portrait (0.67) while the
-              // banner is ~2.05 wide, so `cover` would crop 68% of the frame —
-              // the model's legs and most of the garment. Desktop therefore
-              // *contains* the shot, and the space either side is painted in
-              // THIS slide's own studio beige (sampled per image; see
-              // lib/product-backdrop.ts).
-              //
-              // A blurred copy of the frame used to fill that space and it read
-              // as a smear. The backdrops differ per slide (#e1b990 to #ebd1b7),
-              // so one shared colour would band — matched per slide, the join is
-              // invisible. On mobile the shot still covers, so this never shows.
-              backgroundColor: backdropFor(src),
               ...(motion
                 ? {
                     opacity: isActive ? 1 : 0,
@@ -72,15 +59,18 @@ export function HeroCarousel({ images, alt }: { images: string[]; alt: string })
                 : { opacity: isActive ? 1 : 0 }),
             }}
           >
-            {/* Mobile keeps `cover` (framed as before); desktop contains it so
-                the model reads full-length against the matched flanks. */}
+            {/* This carousel is now the MOBILE hero only — desktop runs the
+                editorial split (see feature-hero.tsx), which cuts its column to
+                the photo's own 2:3 and needs no contain, no flanks and no fill.
+                The `lg:` contain + matched-beige treatment that used to live
+                here went with it. */}
             <Image
               src={src}
               alt={i === 0 ? alt : ""}
               fill
               sizes="100vw"
               priority={i === 0}
-              className="object-cover object-[50%_38%] lg:object-contain"
+              className="object-cover object-[50%_38%]"
             />
           </div>
         );
