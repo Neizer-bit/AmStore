@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { brand } from "@/lib/brand";
+import { backdropFor } from "@/lib/product-backdrop";
 
 /**
  * Card media.
@@ -50,12 +51,21 @@ export function ProductImage({
           slicing up to 44% off the tall pieces — the maxi skirts and the
           activewear lost their hems outright. Mobile switches to `object-contain`
           in a 4:5 frame, so nothing is ever cut.
-          Contain letterboxes, and the shots don't share a backdrop (37 distinct
-          corner colours across 11 photos), so one flat fill colour would band
-          visibly on nearly all of them. The bands are filled instead with a
-          blurred, blown-up copy of that same photo — every garment gets its own
-          backdrop back, and the seam disappears. */}
-      <div className="relative aspect-[4/5] w-full overflow-hidden bg-muted md:aspect-[3/4]">
+
+          Contain letterboxes, and these shots were taken under different light
+          (backdrops span #dab790 to #edddc6), so a single flat fill bands on
+          nearly every card. The frame is painted in *this* photo's own beige
+          instead — sampled per image (see lib/product-backdrop.ts) — so the
+          letterbox is the same colour as the backdrop it continues, and the
+          seam disappears. A blurred copy of the photo was the first attempt and
+          it read as a smear; a matched flat colour is invisible.
+
+          The fill sits *outside* the zoom wrapper: it must not scale with the
+          image, or its edges would pull away from the frame on press/hover. */}
+      <div
+        className="relative aspect-[4/5] w-full overflow-hidden bg-muted md:aspect-[3/4] md:!bg-muted"
+        style={{ backgroundColor: backdropFor(src) }}
+      >
         {src ? (
           <motion.div
             className="absolute inset-0"
@@ -64,16 +74,6 @@ export function ProductImage({
             animate={{ scale: hovered ? 1.06 : pressed ? 1.04 : 1 }}
             transition={{ duration: pressed ? 0.45 : 1.2, ease: EASE }}
           >
-            {/* Backdrop fill (mobile only). Same `src`, so it's the cached image
-                drawn a second time — no extra network request. */}
-            <Image
-              src={src}
-              alt=""
-              aria-hidden
-              fill
-              sizes="100vw"
-              className="scale-125 object-cover blur-2xl md:hidden"
-            />
             <Image
               src={src}
               alt={alt}
