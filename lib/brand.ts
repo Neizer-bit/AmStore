@@ -260,6 +260,8 @@ export interface Brand {
     /** Inline size run offered on the card. Kept short so it never wraps in a
      *  2-up mobile grid. */
     sizes: string[];
+    /** Understated affordance revealed over the image on hover. */
+    viewLabel: string;
     addToCartLabel: string;
     addedLabel: string;
     selectSizeToast: string;
@@ -783,6 +785,7 @@ export const brand: Brand = {
 
   productCard: {
     sizes: ["S", "M", "L", "XL"],
+    viewLabel: "View",
     addToCartLabel: "Add to Cart",
     addedLabel: "Added to Cart",
     selectSizeToast: "Please select a size.",

@@ -3,10 +3,28 @@
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { brand } from "@/lib/brand";
 
 /**
- * Card media. Scales to 1.03 while the card is hovered (the parent drives the
- * `hovered` prop so the whole card animates as one gesture).
+ * Card media.
+ *
+ * The catalogue is flat studio product shots on a single tan backdrop — no
+ * model, no scene — so left alone they sit dead-flat on the card. Four things
+ * give them the depth the photography doesn't:
+ *
+ *  - a **vignette**, always on. It's what separates the garment from the
+ *    backdrop and stops the tile reading as a pasted-on rectangle.
+ *  - a **slow push-in** on hover: 1.06 over 1.2s on the same ease the category
+ *    tiles use. A fast zoom reads as a UI hover; a slow one reads couture.
+ *  - a **sheen** that sweeps across the fabric once per hover — the trick the
+ *    fashion houses use to make a still shot feel like satin.
+ *  - a **View** line rising from the bottom edge, so the image is visibly a way
+ *    into the product rather than decoration.
+ *
+ * Hover state is driven by the parent's `hovered` prop so the whole card
+ * animates as a single gesture. Everything is transform/opacity — GPU only, no
+ * layout work — and on touch, where there is no hover, the vignette still
+ * carries the depth.
  */
 export function ProductImage({
   src,
@@ -19,24 +37,22 @@ export function ProductImage({
   href: string;
   hovered: boolean;
 }) {
+  const EASE = [0.16, 1, 0.3, 1] as const;
+
   return (
     <Link href={href} aria-label={alt} className="block">
-      {/* Square on mobile. At 3:4 a full-width card in the single-column grid
-          gave a 427px-tall photo and a ~700px card — one product per screen.
-          A 1:1 crop takes ~110px out of the card without touching the type.
-          Desktop keeps its 3:4 portrait. */}
       <div className="relative aspect-square w-full overflow-hidden bg-muted md:aspect-[3/4]">
         {src ? (
           <motion.div
             className="absolute inset-0"
-            animate={{ scale: hovered ? 1.03 : 1 }}
-            transition={{ duration: 0.5, ease: [0.22, 0.61, 0.2, 1] }}
+            animate={{ scale: hovered ? 1.06 : 1 }}
+            transition={{ duration: 1.2, ease: EASE }}
           >
             <Image
               src={src}
               alt={alt}
               fill
-              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 50vw"
+              sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 100vw"
               className="object-cover"
             />
           </motion.div>
@@ -45,6 +61,39 @@ export function ProductImage({
             No image
           </div>
         )}
+
+        {/* Vignette — the single biggest lift on a flat backdrop. Always on, so
+            touch gets it too; it deepens a touch under the cursor. */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,transparent_50%,rgba(0,0,0,0.14)_100%)]"
+          animate={{ opacity: hovered ? 1 : 0.75 }}
+          transition={{ duration: 0.6, ease: EASE }}
+        />
+
+        {/* Sheen: a soft band of light drawn across the garment on hover. */}
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-y-0 w-1/2 bg-gradient-to-r from-transparent via-white/20 to-transparent"
+          initial={false}
+          animate={{ x: hovered ? "260%" : "-120%" }}
+          transition={{ duration: hovered ? 1.1 : 0, ease: EASE }}
+        />
+
+        {/* "View" — rises from the bottom edge with a hairline above it. */}
+        <motion.div
+          aria-hidden
+          data-view-affordance
+          className="pointer-events-none absolute inset-x-0 bottom-0 hidden flex-col items-center pb-4 md:flex"
+          initial={false}
+          animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
+          transition={{ duration: 0.45, ease: EASE }}
+        >
+          <span className="mb-1.5 block h-px w-6 bg-white/80" />
+          <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white [text-shadow:0_1px_8px_rgba(0,0,0,0.45)]">
+            {brand.productCard.viewLabel}
+          </span>
+        </motion.div>
       </div>
     </Link>
   );

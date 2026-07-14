@@ -77,9 +77,17 @@ export function StoreProductCard({ product }: { product: Product }) {
       <motion.article
         onHoverStart={() => setHovered(true)}
         onHoverEnd={() => setHovered(false)}
-        animate={{ y: hovered ? -4 : 0 }}
-        transition={{ type: "spring", stiffness: 320, damping: 30 }}
-        className="flex h-full flex-col overflow-hidden rounded-2xl bg-card shadow-[0_6px_24px_rgba(0,0,0,0.06)]"
+        // The card lifts *and* its shadow deepens together — a lift with a
+        // static shadow is what made this feel stiff: the card moved but the
+        // light didn't. Spring, not a linear tween, so it settles like an object.
+        animate={{
+          y: hovered ? -6 : 0,
+          boxShadow: hovered
+            ? "0 22px 44px rgba(0,0,0,0.16)"
+            : "0 6px 24px rgba(0,0,0,0.06)",
+        }}
+        transition={{ type: "spring", stiffness: 300, damping: 28 }}
+        className="flex h-full flex-col overflow-hidden rounded-2xl bg-card"
       >
         <div className="relative">
           <ProductImage src={img} alt={product.name} href={href} hovered={hovered} />
