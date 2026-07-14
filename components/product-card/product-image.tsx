@@ -45,7 +45,17 @@ export function ProductImage({
 
   return (
     <Link href={href} aria-label={alt} className="block">
-      <div className="relative aspect-square w-full overflow-hidden bg-muted md:aspect-[3/4]">
+      {/* Mobile shows the WHOLE garment; desktop keeps its 3:4 cover crop.
+          The source shots run 0.56–1.10 in aspect, so a square cover crop was
+          slicing up to 44% off the tall pieces — the maxi skirts and the
+          activewear lost their hems outright. Mobile switches to `object-contain`
+          in a 4:5 frame, so nothing is ever cut.
+          Contain letterboxes, and the shots don't share a backdrop (37 distinct
+          corner colours across 11 photos), so one flat fill colour would band
+          visibly on nearly all of them. The bands are filled instead with a
+          blurred, blown-up copy of that same photo — every garment gets its own
+          backdrop back, and the seam disappears. */}
+      <div className="relative aspect-[4/5] w-full overflow-hidden bg-muted md:aspect-[3/4]">
         {src ? (
           <motion.div
             className="absolute inset-0"
@@ -54,12 +64,22 @@ export function ProductImage({
             animate={{ scale: hovered ? 1.06 : pressed ? 1.04 : 1 }}
             transition={{ duration: pressed ? 0.45 : 1.2, ease: EASE }}
           >
+            {/* Backdrop fill (mobile only). Same `src`, so it's the cached image
+                drawn a second time — no extra network request. */}
+            <Image
+              src={src}
+              alt=""
+              aria-hidden
+              fill
+              sizes="100vw"
+              className="scale-125 object-cover blur-2xl md:hidden"
+            />
             <Image
               src={src}
               alt={alt}
               fill
               sizes="(min-width: 1024px) 25vw, (min-width: 640px) 33vw, 100vw"
-              className="object-cover"
+              className="object-contain md:object-cover"
             />
           </motion.div>
         ) : (
